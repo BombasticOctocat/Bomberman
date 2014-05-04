@@ -21,6 +21,7 @@
     <slf4jVersion>1.7.7</slf4jVersion>
     <jdkVersion>1.8</jdkVersion>
     <junitVersion>4.11</junitVersion>
+    <guiceVersion>3.0</guiceVersion>
   </properties>
 
   <dependencies>
@@ -49,6 +50,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4jVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guiceVersion}</version>
     </dependency>
   </dependencies>
 
