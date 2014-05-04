@@ -1,25 +1,28 @@
 package com.bombasticoctocat.bomberman;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import java.util.List;
+
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import org.slf4j.Logger;
 
-public class Bomberman extends Application {
-    @InjectLog Logger log;
+import com.google.inject.Inject;
+import com.google.inject.Module;
+
+import com.cathive.fx.guice.GuiceApplication;
+import com.cathive.fx.guice.GuiceFXMLLoader;
+
+public class Bomberman extends GuiceApplication {
+    @InjectLog private Logger log;
+    @Inject private GuiceFXMLLoader fxmlLoader;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Injector injector = Guice.createInjector(new BombermanModule());
-        injector.injectMembers(this);
-
         log.info("Started application");
 
-        Scene root = new Scene(FXMLLoader.load(getClass().getResource("main.fxml")));
+        Scene root = new Scene(fxmlLoader.load(getClass().getResource("main.fxml")).getRoot());
         primaryStage.setScene(root);
         primaryStage.setTitle("Bomberman");
         primaryStage.show();
@@ -27,5 +30,10 @@ public class Bomberman extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void init(List<Module> modules) throws Exception {
+        modules.add(new BombermanModule());
     }
 }
