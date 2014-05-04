@@ -22,6 +22,7 @@
     <jdkVersion>1.8</jdkVersion>
     <junitVersion>4.11</junitVersion>
     <guiceVersion>3.0</guiceVersion>
+    <fx-guiceVersion>2.1.1</fx-guiceVersion>
     <controlsfxVersion>8.0.5</controlsfxVersion>
   </properties>
 
@@ -56,6 +57,11 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guiceVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.cathive.fx</groupId>
+      <artifactId>fx-guice</artifactId>
+      <version>${fx-guiceVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.controlsfx</groupId>
