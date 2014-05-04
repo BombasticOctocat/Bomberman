@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.google.inject.AbstractModule;
+import com.google.inject.matcher.Matchers;
 
 import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
@@ -35,5 +37,12 @@ public class Bomberman extends GuiceApplication {
     @Override
     public void init(List<Module> modules) throws Exception {
         modules.add(new BombermanModule());
+    }
+}
+
+class BombermanModule extends AbstractModule {
+    @Override
+    protected void configure() {
+        bindListener(Matchers.any(), new Slf4jLoggerTypeListener());
     }
 }
