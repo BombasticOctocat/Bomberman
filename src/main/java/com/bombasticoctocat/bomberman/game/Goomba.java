@@ -5,12 +5,12 @@ package com.bombasticoctocat.bomberman.game;
  */
 public class Goomba implements Particle {
     @Override
-    public int getX() {
+    public double getX() {
         return 0;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return 0;
     }
 
