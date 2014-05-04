@@ -1,5 +1,7 @@
 package com.bombasticoctocat.bomberman;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,13 +9,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Bomberman extends Application {
-    private static final Logger log = LoggerFactory.getLogger(Bomberman.class);
+    @InjectLog Logger log;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
+        Injector injector = Guice.createInjector(new BombermanModule());
+        injector.injectMembers(this);
+
         log.info("Started application");
 
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
