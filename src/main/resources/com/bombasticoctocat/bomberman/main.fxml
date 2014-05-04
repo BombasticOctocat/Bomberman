@@ -10,18 +10,18 @@
       <menus>
         <Menu text="_Game">
           <items>
-            <MenuItem onAction="#handleMenuAction" text="_New" />
-            <MenuItem onAction="#handleMenuAction" text="E_xit" />
+            <MenuItem onAction="#handleNewClick" text="_New" />
+            <MenuItem onAction="#handleExitClick" text="E_xit" />
           </items>
         </Menu>
         <Menu text="_Edit">
           <items>
-            <MenuItem onAction="#handleMenuAction" text="_Settings" />
+            <MenuItem onAction="#handleSettingsClick" text="_Settings" />
           </items>
         </Menu>
         <Menu text="_Help">
           <items>
-            <MenuItem onAction="#handleMenuAction" text="_About" />
+            <MenuItem onAction="#handleAboutClick" text="_About" />
           </items>
         </Menu>
       </menus>
