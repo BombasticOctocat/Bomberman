@@ -6,6 +6,10 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -24,6 +28,12 @@ public class Bomberman extends GuiceApplication {
     public void start(Stage primaryStage) throws Exception {
         log.info("Started application");
 
+        Platform.setImplicitExit(false);
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            Bomberman.handleExitEvent();
+        });
+
         Scene root = new Scene(fxmlLoader.load(getClass().getResource("main.fxml")).getRoot());
         primaryStage.setScene(root);
         primaryStage.setTitle("Bomberman");
@@ -32,6 +42,20 @@ public class Bomberman extends GuiceApplication {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static void handleExitEvent() {
+        Action response = Dialogs.create()
+            .owner(null)
+            .masthead(null)
+            .nativeTitleBar()
+            .title("Are you sure?")
+            .message("Are you sure you want to exit application?")
+            .showConfirm();
+
+        if (response == Dialog.Actions.YES) {
+            Platform.exit();
+        }
     }
 
     @Override
