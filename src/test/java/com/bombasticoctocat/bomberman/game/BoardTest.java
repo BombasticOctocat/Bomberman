@@ -6,18 +6,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.*;
-
 public class BoardTest {
 
-    @Mock Hero hero;
-    @Mock Directions directions;
-    Board subject;
+    private @Mock Hero hero;
+    private @Mock Directions directions;
+    private @Mock BoardMap boardMap;
+    private Board subject;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = new Board(hero);
+        subject = new Board(hero, boardMap);
     }
 
     @Test
