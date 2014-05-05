@@ -8,39 +8,36 @@ import java.util.List;
 
 public class Board {
 
-    private static final int WIDTH = 1550;
-    private static final int HEIGHT = 650;
-    private static final int TILES_HORIZONTAL = 31;
-    private static final int TILES_VERTICAL = 13;
-
     private Hero hero;
+    private BoardMap boardMap;
 
-    public Board(Hero hero) {
+    public Board(Hero hero, BoardMap boardMap) {
         this.hero = hero;
+        this.boardMap = boardMap;
     }
 
     public Board() {
-        this(new Hero());
+        this(new Hero(), new BoardMap());
     }
 
     public int tilesHorizontal() {
-        return TILES_HORIZONTAL;
+        return boardMap.tilesHorizontal();
     }
 
     public int tilesVertical() {
-        return TILES_VERTICAL;
+        return boardMap.tilesVertical();
     }
 
     public int width() {
-        return WIDTH;
+        return boardMap.width();
     }
 
     public int height() {
-        return HEIGHT;
+        return boardMap.height();
     }
 
     public Tile getTileAt(int col, int row) {
-        return null;
+        return boardMap.getTileAt(col, row);
     }
 
     public Hero getHero() {
