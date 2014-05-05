@@ -4,6 +4,7 @@ import java.util.List;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import org.controlsfx.control.action.Action;
@@ -37,6 +38,7 @@ public class Bomberman extends GuiceApplication {
                         .title("Unexpected Exception")
                         .showException(e);
 
+                    e.printStackTrace();
                     Platform.exit();
                 });
             });
@@ -47,9 +49,12 @@ public class Bomberman extends GuiceApplication {
             Bomberman.handleExitEvent();
         });
 
-        Scene root = new Scene(fxmlLoader.load(getClass().getResource("main.fxml")).getRoot());
-        primaryStage.setScene(root);
+        Pane root = fxmlLoader.load(getClass().getResource("fxml/main.fxml")).getRoot();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Bomberman");
+        primaryStage.setMinWidth(root.getMinWidth());
+        primaryStage.setMinHeight(root.getMinHeight());
         primaryStage.show();
     }
 
