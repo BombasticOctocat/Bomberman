@@ -1,30 +1,37 @@
 package com.bombasticoctocat.bomberman.game;
 
+import java.util.EnumSet;
+
 /**
  * Created by kustosz on 04/05/14.
  */
 
 public class Directions {
-    public static final int UP = 1;
-    public static final int DOWN = 1 << 1;
-    public static final int LEFT = 1 << 2;
-    public static final int RIGHT = 1 << 3;
+    private enum Direction { UP, DOWN, LEFT, RIGHT };
+    public static final Direction UP = Direction.UP;
+    public static final Direction DOWN = Direction.DOWN;
+    public static final Direction LEFT = Direction.LEFT;
+    public static final Direction RIGHT = Direction.RIGHT;
 
-    private int mask;
+    private EnumSet<Direction> set;
 
-    public Directions(int mask) {
-        this.mask = mask;
+    public Directions(EnumSet<Direction> set) {
+        this.set = set;
     }
 
     public Directions() {
-        this(0);
+        this(EnumSet.noneOf(Direction.class));
+    }
+
+    private int valueOf(Direction dir) {
+        return set.contains(dir) ? 1 : 0;
     }
 
     public int getVerticalDirection() {
-        return Integer.signum(mask & DOWN) - Integer.signum(mask & UP);
+        return valueOf(DOWN) - valueOf(UP);
     }
 
     public int getHorizontalDirection() {
-        return Integer.signum(mask & RIGHT) - Integer.signum(mask & LEFT);
+        return valueOf(RIGHT) - valueOf(LEFT);
     }
 }
