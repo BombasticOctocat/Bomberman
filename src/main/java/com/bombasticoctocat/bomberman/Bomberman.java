@@ -21,7 +21,7 @@ import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
 
 public class Bomberman extends GuiceApplication {
-    @InjectLog private Logger log;
+    @InjectLog private static Logger log;
     @Inject private GuiceFXMLLoader fxmlLoader;
 
     @Override
@@ -54,6 +54,7 @@ public class Bomberman extends GuiceApplication {
             .showConfirm();
 
         if (response == Dialog.Actions.YES) {
+            log.info("Exiting application");
             Platform.exit();
         }
     }
