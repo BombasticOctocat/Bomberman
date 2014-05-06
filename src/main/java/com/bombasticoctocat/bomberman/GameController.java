@@ -5,6 +5,7 @@ import java.util.EnumSet;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
@@ -101,16 +102,24 @@ public class GameController {
         Timeline game = new Timeline(new KeyFrame(Duration.millis(tickTime), event -> handleClockTick()));
         game.setCycleCount(Timeline.INDEFINITE);
 
-        gamePane.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            if (oldScene != null){
+        final ChangeListener<Boolean> lostFocusWindowListener = (ob, ov, focused) -> {
+            if (!focused) {
+                keyboardState.clear();
+            }
+        };
+
+        gamePane.sceneProperty().addListener((o, oldScene, newScene) -> {
+            if (oldScene != null) {
                 oldScene.setOnKeyPressed(null);
                 oldScene.setOnKeyReleased(null);
+                oldScene.getWindow().focusedProperty().removeListener(lostFocusWindowListener);
             } else {
                 game.play();
             }
             if (newScene != null) {
                 newScene.setOnKeyPressed(this::handleKeyEvent);
                 newScene.setOnKeyReleased(this::handleKeyEvent);
+                newScene.getWindow().focusedProperty().addListener(lostFocusWindowListener);
             } else {
                 game.stop();
             }
