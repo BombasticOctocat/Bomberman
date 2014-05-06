@@ -1,5 +1,7 @@
 package com.bombasticoctocat.bomberman;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,13 +13,10 @@ import com.google.inject.Inject;
 
 import com.cathive.fx.guice.GuiceFXMLLoader;
 
-import java.io.IOException;
-
 public class MainController {
     @FXML private AnchorPane windowPane;
     @InjectLog Logger log;
-    @Inject
-    private GuiceFXMLLoader fxmlLoader;
+    @Inject private GuiceFXMLLoader fxmlLoader;
 
     Node loadView(String name) throws IOException {
         Node node = fxmlLoader.load(getClass().getResource("fxml/" + name + ".fxml")).getRoot();

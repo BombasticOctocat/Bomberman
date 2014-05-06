@@ -4,6 +4,12 @@
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.layout.*?>
 
-<Canvas fx:id="gameCanvas" height="200.0" width="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-        AnchorPane.topAnchor="0.0"
-        AnchorPane.leftAnchor="0.0"/>
+<Pane fx:id="gamePane" fx:controller="com.bombasticoctocat.bomberman.GameController" xmlns:fx="http://javafx.com/fxml/1"
+      AnchorPane.topAnchor="0.0"
+      AnchorPane.leftAnchor="0.0"
+      AnchorPane.rightAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0">
+  <children>
+    <Canvas fx:id="gameCanvas" height="600.0" width="400.0" xmlns="http://javafx.com/javafx/8" />
+  </children>
+</Pane>
