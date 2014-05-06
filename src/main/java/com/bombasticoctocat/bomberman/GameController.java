@@ -27,7 +27,7 @@ import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.bombasticoctocat.bomberman.game.*;
 
 public class GameController {
-    @InjectLog private Logger log;
+    @InjectLog private static Logger log;
     @FXML private Canvas gameCanvas;
     @FXML private Pane gamePane;
     @Inject private GuiceFXMLLoader fxmlLoader;
@@ -35,7 +35,7 @@ public class GameController {
     private Group characterGroup;
     private WritableImage characterImage;
     private Board board;
-    private double canvasWidth, canvasHeight, boardToCanvasScale, tickTime = 25.0;
+    private double canvasWidth, canvasHeight, boardToCanvasScale, tickTime = 17.0;
     private EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
     private final Object sync = new Object();
 
@@ -98,13 +98,22 @@ public class GameController {
         gamePane.heightProperty().addListener((o, ov, nv) -> handleGeometryChange());
         gamePane.widthProperty().addListener((o, ov, nv) -> handleGeometryChange());
 
-        gamePane.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            newScene.setOnKeyPressed(this::handleKeyEvent);
-            newScene.setOnKeyReleased(this::handleKeyEvent);
-        });
-
         Timeline game = new Timeline(new KeyFrame(Duration.millis(tickTime), event -> handleClockTick()));
         game.setCycleCount(Timeline.INDEFINITE);
-        game.play();
+
+        gamePane.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (oldScene != null){
+                oldScene.setOnKeyPressed(null);
+                oldScene.setOnKeyReleased(null);
+            } else {
+                game.play();
+            }
+            if (newScene != null) {
+                newScene.setOnKeyPressed(this::handleKeyEvent);
+                newScene.setOnKeyReleased(this::handleKeyEvent);
+            } else {
+                game.stop();
+            }
+        });
     }
 }
