@@ -1,33 +1,50 @@
 package com.bombasticoctocat.bomberman;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 
 import org.slf4j.Logger;
 
-public class MainController {
-    @FXML private Pane windowPane;
-    @InjectLog Logger log;
+import com.google.inject.Inject;
 
-    @FXML
-    private void handleNewClick(ActionEvent actionEvent) {
-        log.info("Clicked 'New'");
+import com.cathive.fx.guice.GuiceFXMLLoader;
+
+public class MainController {
+    @FXML private AnchorPane windowPane;
+    @InjectLog Logger log;
+    @Inject private GuiceFXMLLoader fxmlLoader;
+
+    Node loadView(String name) throws IOException {
+        Node node = fxmlLoader.load(getClass().getResource("fxml/" + name + ".fxml")).getRoot();
+        windowPane.getChildren().setAll(node);
+        return node;
     }
 
     @FXML
-    private void handleExitClick(ActionEvent actionEvent) {
+    private void handleNewClick(ActionEvent actionEvent) throws IOException {
+        log.info("Clicked 'New'");
+        loadView("game");
+    }
+
+    @FXML
+    private void handleExitClick(ActionEvent actionEvent) throws IOException  {
         log.info("Clicked 'Exit'");
         Bomberman.handleExitEvent();
     }
 
     @FXML
-    private void handleSettingsClick(ActionEvent actionEvent) {
+    private void handleSettingsClick(ActionEvent actionEvent) throws IOException  {
         log.info("Clicked 'Settings'");
+        loadView("settings");
     }
 
     @FXML
-    private void handleAboutClick(ActionEvent actionEvent) {
+    private void handleAboutClick(ActionEvent actionEvent) throws IOException  {
         log.info("Clicked 'About'");
+        loadView("about");
     }
 }

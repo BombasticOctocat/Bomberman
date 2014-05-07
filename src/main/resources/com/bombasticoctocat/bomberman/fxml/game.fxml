@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="gamePane" fx:controller="com.bombasticoctocat.bomberman.GameController" xmlns:fx="http://javafx.com/fxml/1"
+      AnchorPane.topAnchor="0.0"
+      AnchorPane.leftAnchor="0.0"
+      AnchorPane.rightAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0">
+  <children>
+    <Canvas fx:id="gameCanvas" height="600.0" width="400.0" xmlns="http://javafx.com/javafx/8" />
+  </children>
+</Pane>

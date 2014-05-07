@@ -7,7 +7,7 @@ import java.util.EnumSet;
  */
 
 public class Directions {
-    private enum Direction { UP, DOWN, LEFT, RIGHT };
+    public enum Direction { UP, DOWN, LEFT, RIGHT };
     public static final Direction UP = Direction.UP;
     public static final Direction DOWN = Direction.DOWN;
     public static final Direction LEFT = Direction.LEFT;
@@ -16,7 +16,7 @@ public class Directions {
     private EnumSet<Direction> set;
 
     public Directions(EnumSet<Direction> set) {
-        this.set = set;
+        this.set = EnumSet.copyOf(set);
     }
 
     public Directions() {
