@@ -29,19 +29,19 @@ public class Bomberman extends GuiceApplication {
     public void start(Stage primaryStage) throws Exception {
         log.info("Started application");
 
-            Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-                Platform.runLater(() -> {
-                    Dialogs.create()
-                        .nativeTitleBar()
-                        .owner(null)
-                        .masthead(null)
-                        .title("Unexpected Exception")
-                        .showException(e);
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            e.printStackTrace();
+            Platform.runLater(() -> {
+                Dialogs.create()
+                    .nativeTitleBar()
+                    .owner(null)
+                    .masthead(null)
+                    .title("Unexpected Exception")
+                    .showException(e);
 
-                    e.printStackTrace();
-                    Platform.exit();
-                });
+                Platform.exit();
             });
+        });
 
         Platform.setImplicitExit(false);
         primaryStage.setOnCloseRequest(event -> {
