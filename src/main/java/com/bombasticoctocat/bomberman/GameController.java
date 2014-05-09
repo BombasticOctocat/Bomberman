@@ -1,7 +1,8 @@
 package com.bombasticoctocat.bomberman;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.EnumSet;
+import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,7 +28,7 @@ import com.cathive.fx.guice.GuiceFXMLLoader;
 
 import com.bombasticoctocat.bomberman.game.*;
 
-public class GameController {
+public class GameController implements ViewController {
     @InjectLog private static Logger log;
     @FXML private Canvas gameCanvas;
     @FXML private Pane gamePane;
@@ -102,10 +103,26 @@ public class GameController {
         }
     }
 
-    @FXML private void initialize() throws IOException {
+    @Override
+    public void enteredView() {
+        log.info("Entered view");
+    }
+
+    @Override
+    public void leavedView() {
+        log.info("Leaved view");
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         board = new Board();
 
-        characterGroup = fxmlLoader.load(getClass().getResource("fxml/tiles/character.fxml")).getRoot();
+        try {
+            characterGroup = fxmlLoader.load(getClass().getResource("fxml/tiles/character.fxml")).getRoot();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
         characterGroup.cacheProperty().set(true);
 
         gamePane.heightProperty().addListener((o, ov, nv) -> handleGeometryChange());
