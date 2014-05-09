@@ -103,6 +103,14 @@ public class GameController implements ViewController {
         }
     }
 
+    public void startGame() {
+        log.info("Start game");
+    }
+
+    public void stopGame() {
+        log.info("Stop game");
+    }
+
     @Override
     public void enteredView() {
         log.info("Entered view");

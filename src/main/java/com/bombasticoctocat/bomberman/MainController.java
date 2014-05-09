@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -14,6 +15,9 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -64,6 +68,10 @@ public class MainController implements Initializable {
         }
 
         public void loadView(String viewName) {
+            if (viewName.equals(currViewName)) {
+                return;
+            }
+
             if (!loadedViews.containsKey(viewName)) {
                 GuiceFXMLLoader.Result fxml = loadFxml(viewName);
                 loadedViews.put(viewName, fxml.getRoot());
@@ -86,14 +94,32 @@ public class MainController implements Initializable {
     @FXML
     private void handleNewClick(ActionEvent actionEvent) {
         log.info("Clicked 'New'");
-        viewManager.loadView("game");
+        if (gameIsNotRunning.get()) {
+            viewManager.loadView("game");
+            ((GameController) viewManager.getController("game")).startGame();
+            gameIsNotRunning.set(false);
+        } else {
+            Action response = Dialogs.create()
+                .owner(null)
+                .masthead(null)
+                .nativeTitleBar()
+                .title("Are you sure?")
+                .message("Are you sure you want to start new game while another is running?")
+                .showConfirm();
+
+            if (response == Dialog.Actions.YES) {
+                viewManager.loadView("game");
+                GameController gameController = (GameController) viewManager.getController("game");
+                gameController.stopGame();
+                gameController.startGame();
+            }
+        }
     }
 
     @FXML
     private void handleRestoreClick(ActionEvent actionEvent) {
-        if (!gameIsNotRunning.get()) {
-            viewManager.loadView("game");
-        }
+        log.info("Clicked 'Restore'");
+        viewManager.loadView("game");
     }
 
     @FXML
