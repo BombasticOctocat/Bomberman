@@ -33,13 +33,13 @@ public class GameController implements ViewController {
     @InjectLog private static Logger log;
     @FXML private Canvas gameCanvas;
     @FXML private Pane gamePane;
-    @Inject ParticlesImagesManager particlesImagesManager;
+    @Inject private ParticlesImagesManager particlesImagesManager;
 
     private Board board;
-    boolean isVisible = false, isRunning = false, isPaused = true, placedBomb = false;
+    private boolean isVisible = false, isRunning = false, isPaused = true, placedBomb = false;
     private double canvasWidth, canvasHeight, boardToCanvasScale;
     private final EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
-    long previousFrameTime;
+    private long previousFrameTime;
     private final ReentrantLock boardLock = new ReentrantLock();
     private Thread boardUpdaterThread;
     private final LinkedBlockingQueue<BoardUpdate> boardUpdatesQueue = new LinkedBlockingQueue<>();
@@ -69,7 +69,7 @@ public class GameController implements ViewController {
         try {
             while (true) {
                 BoardUpdate update = boardUpdatesQueue.take();
-                boardLock.lock();
+                boardLock.lockInterruptibly();
                 try {
                     board.tick(update.delta, update.directions, update.placedBomb);
                 } finally {
@@ -90,7 +90,16 @@ public class GameController implements ViewController {
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
             Hero hero = board.getHero();
+
             List<Goomba> goombas = board.getGoombas();
+            if (goombas != null) {
+                for (Goomba goomba: goombas) {
+                    WritableImage img = particlesImagesManager.getParticleImage("goomba", goomba);
+                    if (img != null) {
+                        gc.drawImage(img, goomba.getX() * boardToCanvasScale, goomba.getY() * boardToCanvasScale);
+                    }
+                }
+            }
 
             WritableImage img = particlesImagesManager.getParticleImage("character", hero);
             if (img != null) {
@@ -141,7 +150,7 @@ public class GameController implements ViewController {
                 boardLock.unlock();
             }
         } else {
-            log.warn("Droped frame");
+            log.warn("Dropped frame");
         }
     }
 

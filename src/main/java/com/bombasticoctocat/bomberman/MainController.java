@@ -25,26 +25,26 @@ import com.cathive.fx.guice.GuiceFXMLLoader;
 
 public class MainController implements Initializable {
     @FXML private AnchorPane windowPane;
-    @FXML private BooleanProperty gameIsNotRunning = new SimpleBooleanProperty();
+    @FXML private final BooleanProperty gameIsNotRunning = new SimpleBooleanProperty();
     @FXML private MenuItem restoreMenuItem;
 
     @Inject private GuiceFXMLLoader fxmlLoader;
-    @InjectLog Logger log;
+    @InjectLog private Logger log;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
          /* I wanted to use bidirectional binding from FXML file
             and perform binding with gameIsNotRunning in FXML
-            unfortunatelly this feature is not implemented in
+            unfortunately this feature is not implemented in
             JavaFX 8 yet, so we need to do it manually. */
         restoreMenuItem.disableProperty().bindBidirectional(gameIsNotRunning);
         gameIsNotRunning.set(true);
     }
 
     private class ViewManager {
-        HashMap<String, Node> loadedViews = new HashMap<>();
-        HashMap<String, ViewController> viewControllers = new HashMap<>();
-        String currViewName;
+        private final HashMap<String, Node> loadedViews = new HashMap<>();
+        private final HashMap<String, ViewController> viewControllers = new HashMap<>();
+        private String currViewName;
 
         public String getCurrViewName() {
             return currViewName;

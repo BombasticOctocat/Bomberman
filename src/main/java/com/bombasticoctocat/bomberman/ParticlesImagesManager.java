@@ -51,7 +51,7 @@ public class ParticlesImagesManager {
             node.snapshot(param -> {
                 image = param.getImage();
                 return null;
-            }, parameters, new WritableImage((int)(width * scale), (int)(height * scale)));
+            }, parameters, new WritableImage((int)(width * scale) + 1, (int)(height * scale) + 1));
         }
     }
 
