@@ -47,6 +47,10 @@ public class BoardMap {
     }
 
     public Tile getTileAt(int col, int row) {
-        return tiles.get(row).get(col);
+        Tile result = null;
+        if (col >= 0 && col < tilesHorizontal() && row >= 0 && row < tilesVertical()) {
+            result = tiles.get(row).get(col);
+        }
+        return result;
     }
 }

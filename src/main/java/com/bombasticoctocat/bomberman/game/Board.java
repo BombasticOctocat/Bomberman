@@ -10,10 +10,12 @@ public class Board {
 
     private Hero hero;
     private BoardMap boardMap;
+    private CollisionDetector collisionDetector;
 
     public Board(Hero hero, BoardMap boardMap) {
         this.hero = hero;
         this.boardMap = boardMap;
+        this.collisionDetector = new CollisionDetector(boardMap);
     }
 
     public Board() {
@@ -49,7 +51,7 @@ public class Board {
     }
 
     public void tick(long timeDelta, Directions directions, boolean bombPlanted) {
-        hero.move(timeDelta, directions);
+        hero.move(timeDelta, directions, collisionDetector);
     }
 
 }

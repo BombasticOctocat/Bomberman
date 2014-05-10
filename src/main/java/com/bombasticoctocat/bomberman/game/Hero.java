@@ -20,9 +20,20 @@ public class Hero implements Particle {
         positionY = INITIAL_Y_POSITION;
     }
 
-    public void move(long timeDelta, Directions directions) {
-        positionX += directions.getHorizontalDirection() * axisMovement(timeDelta, directions);
-        positionY += directions.getVerticalDirection() * axisMovement(timeDelta, directions);
+    public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector) {
+        Displacement displacement = new Displacement(
+            directions.getHorizontalDirection() * axisMovement(timeDelta, directions),
+            directions.getVerticalDirection() * axisMovement(timeDelta, directions)
+        );
+
+        displacement = collisionDetector.blockDisplacement(this, displacement);
+
+        move(displacement);
+    }
+
+    private void move(Displacement displacement) {
+        positionX += displacement.getX();
+        positionY += displacement.getY();
     }
 
     private double axisMovement(long timeDelta, Directions directions) {
