@@ -38,7 +38,6 @@ public class ParticlesImagesManager {
             this.node = node;
             this.width = width;
             this.height = height;
-            this.image = new WritableImage(1, 1);
             if (scale > 0) refresh();
         }
 
@@ -82,7 +81,6 @@ public class ParticlesImagesManager {
         }
     }
 
-    /* When called before any refresh setted up scale return empty image of size 1x1 */
     public WritableImage getParticleImage(String particleName, Particle particle) {
         if (!loadedParticles.containsKey(particleName)) {
             Group particleNode = loadFxmlParticle(particleName).getRoot();

@@ -2,15 +2,20 @@ package com.bombasticoctocat.bomberman;
 
 import java.net.URL;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -33,8 +38,17 @@ public class GameController implements ViewController {
     private Board board;
     boolean isVisible = false, isRunning = false, isPaused = true, placedBomb = false;
     private double canvasWidth, canvasHeight, boardToCanvasScale;
-    private EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
+    private final EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
     long previousFrameTime;
+    private final ReentrantLock boardLock = new ReentrantLock();
+    private Thread boardUpdaterThread;
+    private final LinkedBlockingQueue<BoardUpdate> boardUpdatesQueue = new LinkedBlockingQueue<>();
+
+    private static class BoardUpdate {
+        public long delta;
+        public Directions directions;
+        public boolean placedBomb;
+    }
 
     private void handleGeometryChange() {
         canvasWidth = gamePane.getWidth();
@@ -48,6 +62,49 @@ public class GameController implements ViewController {
         boardToCanvasScale = canvasHeight / board.height();
 
         particlesImagesManager.refreshParticlesImages(boardToCanvasScale);
+    }
+
+    private void boardUpdater() {
+        log.info("Started board updater thread");
+        try {
+            while (true) {
+                BoardUpdate update = boardUpdatesQueue.take();
+                boardLock.lock();
+                try {
+                    board.tick(update.delta, update.directions, update.placedBomb);
+                } finally {
+                    boardLock.unlock();
+                }
+                Platform.runLater(this::canvasRenderer);
+            }
+        } catch (InterruptedException e) {
+            log.info("Exiting board updater thread");
+        }
+    }
+
+    private void canvasRenderer() {
+        boardLock.lock();
+        try {
+            GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+            gc.setFill(Color.LIGHTGREEN);
+            gc.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            Hero hero = board.getHero();
+            List<Goomba> goombas = board.getGoombas();
+
+            WritableImage img = particlesImagesManager.getParticleImage("character", hero);
+            if (img != null) {
+                gc.drawImage(img, hero.getX() * boardToCanvasScale, hero.getY() * boardToCanvasScale);
+            }
+
+            if (isPaused) {
+                gc.setFill(Color.RED);
+                gc.setFont(Font.font(12));
+                gc.fillText("paused", canvasWidth - 52, 17);
+            }
+        } finally {
+            boardLock.unlock();
+        }
     }
 
     private void handleClockTick(ActionEvent event) {
@@ -65,23 +122,26 @@ public class GameController implements ViewController {
         if (previousFrameTime == 0) {
             previousFrameTime = currentFrameTime;
         }
-        if (!isPaused) {
-            board.tick(currentFrameTime - previousFrameTime, new Directions(directions), placedBomb);
-        }
-        previousFrameTime = currentFrameTime;
-        placedBomb = false;
-
-        Hero hero = board.getHero();
-
-        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-        gc.setFill(Color.LIGHTGREEN);
-        gc.fillRect(0, 0, canvasWidth, canvasHeight);
-        gc.drawImage(particlesImagesManager.getParticleImage("character", hero), hero.getX() * boardToCanvasScale, hero.getY() * boardToCanvasScale);
-
-        if (isPaused) {
-            gc.setFill(Color.RED);
-            gc.setFont(Font.font(12));
-            gc.fillText("paused", canvasWidth - 52, 17);
+        if (boardLock.tryLock()) {
+            try {
+                if (!isPaused) {
+                    BoardUpdate update = new BoardUpdate();
+                    update.delta = currentFrameTime - previousFrameTime;
+                    update.placedBomb = placedBomb;
+                    update.directions = new Directions(directions);
+                    try {
+                        boardUpdatesQueue.put(update);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                previousFrameTime = currentFrameTime;
+                placedBomb = false;
+            } finally {
+                boardLock.unlock();
+            }
+        } else {
+            log.warn("Droped frame");
         }
     }
 
@@ -105,6 +165,9 @@ public class GameController implements ViewController {
     public void startGame() {
         log.info("Start game");
         board = new Board();
+        boardUpdaterThread = new Thread(this::boardUpdater);
+        boardUpdaterThread.start();
+        boardUpdatesQueue.clear();
         isRunning = true;
         isPaused = false;
         placedBomb = false;
@@ -113,6 +176,8 @@ public class GameController implements ViewController {
 
     public void stopGame() {
         log.info("Stop game");
+        boardUpdaterThread.interrupt();
+        boardUpdaterThread = null;
         board = null;
         isRunning = false;
     }
