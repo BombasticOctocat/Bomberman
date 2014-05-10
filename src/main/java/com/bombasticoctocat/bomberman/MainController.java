@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -61,7 +60,11 @@ public class MainController implements Initializable {
 
         private GuiceFXMLLoader.Result loadFxml(String viewName) {
             try {
-                return fxmlLoader.load(getClass().getResource("fxml/" + viewName + ".fxml"));
+                URL resUrl = getClass().getResource("fxml/" + viewName + ".fxml");
+                if (resUrl == null) {
+                    throw new RuntimeException("Could not find: fxml/" + viewName + ".fxml");
+                }
+                return fxmlLoader.load(resUrl);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
