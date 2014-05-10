@@ -1,6 +1,7 @@
 package com.bombasticoctocat.bomberman;
 
 import java.net.URL;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -67,7 +68,7 @@ public class GameController implements ViewController {
     private void boardUpdater() {
         log.info("Started board updater thread");
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 BoardUpdate update = boardUpdatesQueue.take();
                 boardLock.lockInterruptibly();
                 try {
@@ -86,10 +87,24 @@ public class GameController implements ViewController {
         boardLock.lock();
         try {
             GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-            gc.setFill(Color.LIGHTGREEN);
+            gc.setFill(Color.BLACK);
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
             Hero hero = board.getHero();
+
+            EnumMap<Tile.Type, String> tileMaper = new EnumMap<>(Tile.Type.class);
+            tileMaper.put(Tile.CONCRETE, "concrete");
+            tileMaper.put(Tile.EMPTY, "empty");
+            tileMaper.put(Tile.BRICKS, "bricks");
+            for (int i = 0; i < board.tilesHorizontal(); ++i) {
+                for (int j = 0; j < board.tilesVertical(); ++j) {
+                    Tile tile = board.getTileAt(i, j);
+                    WritableImage img = particlesImagesManager.getParticleImage(tileMaper.get(tile.getType()), tile);
+                    if (img != null) {
+                        gc.drawImage(img, (int)(tile.getX() * boardToCanvasScale), (int)(tile.getY() * boardToCanvasScale));
+                    }
+                }
+            }
 
             List<Goomba> goombas = board.getGoombas();
             if (goombas != null) {
@@ -174,21 +189,21 @@ public class GameController implements ViewController {
     public void startGame() {
         log.info("Start game");
         board = new Board();
+        boardUpdatesQueue.clear();
         boardUpdaterThread = new Thread(this::boardUpdater);
         boardUpdaterThread.start();
-        boardUpdatesQueue.clear();
+        previousFrameTime = 0;
+        placedBomb = false;
         isRunning = true;
         isPaused = false;
-        placedBomb = false;
-        previousFrameTime = 0;
     }
 
     public void stopGame() {
         log.info("Stop game");
+        isRunning = false;
         boardUpdaterThread.interrupt();
         boardUpdaterThread = null;
         board = null;
-        isRunning = false;
     }
 
     @Override
