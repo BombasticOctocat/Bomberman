@@ -50,16 +50,14 @@ public class CollisionDetector {
     }
 
     public List<Tile> adjacentTiles(Particle particle) {
-        double x = particle.getX() + (particle.width() / 2);
-        double y = particle.getY() + (particle.height() / 2);
-        int col = (int) (x / Tile.WIDTH);
-        int row = (int) (y / Tile.HEIGHT);
+        int col = particle.getColumn();
+        int row = particle.getRow();
 
         List<Tile> result = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 Tile tile = map.getTileAt(col+i, row+j);
-                if (tile != null && (tile.getType() != Tile.EMPTY || tile.isBombPlanted())) {
+                if (tile != null && particle.shouldCollideWith(tile)) {
                     result.add(tile);
                 }
             }

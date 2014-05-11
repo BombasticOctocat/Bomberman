@@ -15,4 +15,8 @@ public abstract class Particle {
         double y = getY() + (height() / 2);
         return (int) (y / Tile.HEIGHT);
     }
+
+    public boolean shouldCollideWith(Tile tile) {
+        return (tile.getType() != Tile.EMPTY || tile.isBombPlanted());
+    }
 }
