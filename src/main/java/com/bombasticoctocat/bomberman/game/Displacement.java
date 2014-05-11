@@ -1,8 +1,5 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by gswirski on 06/05/14.
- */
 public class Displacement {
     private final double x;
     private final double y;

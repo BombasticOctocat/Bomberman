@@ -53,7 +53,7 @@ public class Tile extends Particle {
     public List<Flames> detonate() {
         LinkedList<Flames> result = new LinkedList<>();
         for (Tile tile : boardMap.tilesInRange(getColumn(), getRow(), bomb.range())) {
-            Flames flames = tile.setInFire();
+            Flames flames = tile.setOnFire();
             if (flames != null) {
                 result.add(flames);
             }
@@ -62,7 +62,7 @@ public class Tile extends Particle {
         return result;
     }
 
-    public Flames setInFire() {
+    public Flames setOnFire() {
         if (type != Tile.CONCRETE) {
             type = Tile.EMPTY;
             Flames flames = new Flames(this);

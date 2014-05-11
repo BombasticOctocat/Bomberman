@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by marcin on 05/05/14.
- */
 public class BoardMap {
     private List<List<Tile>> tiles;
 
@@ -48,12 +45,6 @@ public class BoardMap {
 
     public Bomb plantBomb(int col, int row) {
         return getTileAt(col, row).plantBomb();
-    }
-
-    public void clearFlames(List<Flames> flamesList) {
-        for (Flames flames : flamesList) {
-            flames.clear();
-        }
     }
 
     public List<Tile> tilesInRange(int column, int row, int range) {

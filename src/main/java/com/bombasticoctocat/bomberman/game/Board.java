@@ -60,7 +60,7 @@ public class Board {
         timer.tick(timeDelta);
 
         if (plantBomb) {
-            hero.plantBomb(timer, boardMap);
+            hero.plantBomb(boardMap);
         }
 
         hero.move(timeDelta, directions, collisionDetector);

@@ -1,9 +1,5 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-
 public class Hero extends Particle {
     private static final int HEIGHT = 40;
     private static final int WIDTH = 40;
@@ -44,8 +40,8 @@ public class Hero extends Particle {
     }
 
 
-    public void plantBomb(Timer timer, BoardMap boardMap) {
-        final Bomb bomb = boardMap.plantBomb(getColumn(), getRow());
+    public void plantBomb(BoardMap boardMap) {
+        boardMap.plantBomb(getColumn(), getRow());
     }
 
     public double speed() {

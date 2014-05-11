@@ -1,8 +1,5 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by marcin on 05/05/14.
- */
 public class TilesFactory {
     private int rows;
     private int cols;
