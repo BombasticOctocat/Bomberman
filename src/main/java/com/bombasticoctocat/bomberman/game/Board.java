@@ -10,14 +10,18 @@ public class Board {
 
     private Hero hero;
     private BoardMap boardMap;
+    private CollisionDetector collisionDetector;
 
-    public Board(Hero hero, BoardMap boardMap) {
+    public Board(Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
         this.hero = hero;
         this.boardMap = boardMap;
+        this.collisionDetector = collisionDetector;
     }
 
     public Board() {
-        this(new Hero(), new BoardMap());
+        this.hero = new Hero();
+        this.boardMap = new BoardMap();
+        this.collisionDetector = new CollisionDetector(boardMap);
     }
 
     public int tilesHorizontal() {
@@ -49,7 +53,7 @@ public class Board {
     }
 
     public void tick(long timeDelta, Directions directions, boolean bombPlanted) {
-        hero.move(timeDelta, directions);
+        hero.move(timeDelta, directions, collisionDetector);
     }
 
 }

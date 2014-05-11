@@ -78,6 +78,18 @@ public class GameController {
             GraphicsContext gc = gameCanvas.getGraphicsContext2D();
             gc.setFill(Color.LIGHTGREEN);
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
+            for (int x = 0; x < board.tilesHorizontal(); x++) {
+                for (int y = 0; y < board.tilesHorizontal(); y++) {
+                    Tile tile = board.getTileAt(x, y);
+                    if (tile != null && tile.getType() != Tile.EMPTY) {
+                        gc.setFill((tile.getType() == Tile.CONCRETE) ? Color.BLACK : Color.RED);
+                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
+                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                    }
+
+                }
+            }
+
             gc.drawImage(characterImage, hero.getX() * boardToCanvasScale, hero.getY() * boardToCanvasScale);
         }
     }
