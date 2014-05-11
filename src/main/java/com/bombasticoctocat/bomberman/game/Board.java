@@ -12,14 +12,16 @@ public class Board {
     private BoardMap boardMap;
     private CollisionDetector collisionDetector;
 
-    public Board(Hero hero, BoardMap boardMap) {
+    public Board(Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
         this.hero = hero;
         this.boardMap = boardMap;
-        this.collisionDetector = new CollisionDetector(boardMap);
+        this.collisionDetector = collisionDetector;
     }
 
     public Board() {
-        this(new Hero(), new BoardMap());
+        this.hero = new Hero();
+        this.boardMap = new BoardMap();
+        this.collisionDetector = new CollisionDetector(boardMap);
     }
 
     public int tilesHorizontal() {
