@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
@@ -23,12 +24,16 @@ public class ParticlesImagesManager {
     @Inject private GuiceFXMLLoader fxmlLoader;
     @InjectLog private static Logger log;
 
+    private int imagesLeftToRender = 0;
     private double scale = 0.0;
+    private double refreshToScale = 0.0;
+    private Runnable onRefreshcCompleteCallback;
 
     private class ParticleInformation {
         private final Group node;
         private final int width, height;
         private WritableImage image;
+
 
         public WritableImage getImage() {
             return image;
@@ -48,8 +53,20 @@ public class ParticlesImagesManager {
                     (width * scale) / node.prefWidth(0.0),
                     (height * scale) / node.prefHeight(0.0)));
 
+            ++imagesLeftToRender;
             node.snapshot(param -> {
                 image = param.getImage();
+                --imagesLeftToRender;
+                if (imagesLeftToRender == 0 && refreshToScale != 0.0) {
+                    if (onRefreshcCompleteCallback != null) {
+                        Platform.runLater(onRefreshcCompleteCallback);
+                    }
+                    if (refreshToScale != 0.0) {
+                        double newScale = refreshToScale;
+                        refreshToScale = 0.0;
+                        refreshParticlesImages(newScale);
+                    }
+                }
                 return null;
             }, parameters, new WritableImage((int)(width * scale) + 1, (int)(height * scale) + 1));
         }
@@ -62,10 +79,15 @@ public class ParticlesImagesManager {
             return;
         }
 
-        scale = newScale;
+        if (imagesLeftToRender == 0) {
+            scale = newScale;
 
-        for (Map.Entry<String, ParticleInformation> particle: loadedParticles.entrySet()) {
-            particle.getValue().refresh();
+            for (Map.Entry<String, ParticleInformation> particle : loadedParticles.entrySet()) {
+                particle.getValue().refresh();
+            }
+        } else {
+            refreshToScale = newScale;
+            log.debug("Delayed refresh");
         }
     }
 
@@ -88,5 +110,13 @@ public class ParticlesImagesManager {
             loadedParticles.put(particleName, particleInfo);
         }
         return loadedParticles.get(particleName).getImage();
+    }
+
+    public void setOnRefreshCompleteHandler(Runnable callback) {
+        onRefreshcCompleteCallback = callback;
+    }
+
+    public boolean isRefreshing() {
+        return imagesLeftToRender != 0;
     }
 }
