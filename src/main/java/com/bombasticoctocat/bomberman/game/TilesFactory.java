@@ -7,17 +7,17 @@ public class TilesFactory {
     private int rows;
     private int cols;
     private double density;
-    private BoardMap boardMap;
+    private Timer timer;
 
-    public TilesFactory(BoardMap boardMap, int rows, int cols, double density) {
+    public TilesFactory(Timer timer, int rows, int cols, double density) {
         this.rows = rows;
         this.cols = cols;
         this.density = density;
-        this.boardMap = boardMap;
+        this.timer = timer;
     }
 
-    public Tile createForCoordinates(int row, int col) {
-        return new Tile(boardMap, getTypeForCoordinates(row, col), row, col);
+    public Tile createForCoordinates(BoardMap boardMap, int row, int col) {
+        return new Tile(boardMap, timer, getTypeForCoordinates(row, col), row, col);
     }
 
     private Tile.Type getTypeForCoordinates(int row, int col) {

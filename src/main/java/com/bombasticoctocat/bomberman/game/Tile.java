@@ -16,14 +16,16 @@ public class Tile extends Particle {
     public static final int HEIGHT = 60;
 
     private BoardMap boardMap;
+    private Timer timer;
     private Type type;
     private int row;
     private int col;
     private Bomb bomb;
     private LinkedList<Flames> flamesList;
 
-    public Tile(BoardMap boardMap, Type type, int row, int col) {
+    public Tile(BoardMap boardMap, Timer timer, Type type, int row, int col) {
         this.boardMap = boardMap;
+        this.timer = timer;
         this.type = type;
         this.row = row;
         this.col = col;
@@ -37,6 +39,7 @@ public class Tile extends Particle {
     public Bomb plantBomb() {
         if (bomb == null) {
             bomb = new Bomb(this);
+            timer.schedule(Board.FUSE_TIME, bomb::detonate);
             return bomb;
         }
 
@@ -64,6 +67,11 @@ public class Tile extends Particle {
             type = Tile.EMPTY;
             Flames flames = new Flames(this);
             flamesList.add(flames);
+            timer.schedule(Board.FLAMES_DURATION, flames::clear);
+
+            if (bomb != null) {
+                bomb.detonate();
+            }
             return flames;
         }
 
