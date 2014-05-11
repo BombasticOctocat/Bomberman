@@ -1,19 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
-          AnchorPane.topAnchor="0.0"
-          AnchorPane.bottomAnchor="0.0"
-          AnchorPane.leftAnchor="0.0"
-          AnchorPane.rightAnchor="0.0">
-  <padding>
-    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-  </padding>
-  <children>
-    <Text text="Settings" GridPane.columnSpan="2" />
-  </children>
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:controller="com.bombasticoctocat.bomberman.SettingsController">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+    <columnConstraints>
+        <ColumnConstraints minWidth="10.0" prefWidth="150.0" />
+        <ColumnConstraints />
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+    </rowConstraints>
+    <children>
+        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="UP" onAction="#handleUpSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </Button>
+        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="DOWN" onAction="#handleDownSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="LEFT" onAction="#handleLeftSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="RIGHT" onAction="#handleRightSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="BOMB" onAction="#handleSetBombSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="DEFAULT" onAction="#handleRestoreDefaultSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE UP" GridPane.rowIndex="1" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE DOWN" textAlignment="CENTER" GridPane.rowIndex="2" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE LEFT" textAlignment="CENTER" GridPane.rowIndex="3" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE RIGHT" textAlignment="CENTER" GridPane.rowIndex="4" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="SET BOMB" textAlignment="CENTER" GridPane.rowIndex="5" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="RESTORE DEFAULT" textAlignment="CENTER" GridPane.rowIndex="7" />
+        <Label alignment="CENTER" prefHeight="60.0" prefWidth="254.0" text="SETTINGS">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+    </children>
 </GridPane>
