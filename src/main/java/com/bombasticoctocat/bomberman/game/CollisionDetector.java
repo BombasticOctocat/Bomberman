@@ -12,6 +12,7 @@ public class CollisionDetector {
 
     public Displacement blockDisplacement(Particle particle, Displacement move) {
         double fromX1 = particle.getX();
+        double fromX2 = fromX1 + particle.width();
         double fromY1 = particle.getY();
         double fromY2 = fromY1 + particle.height();
 
@@ -22,24 +23,24 @@ public class CollisionDetector {
 
         List<Tile> tiles = adjacentTiles(particle);
         for (Tile tile : tiles) {
-            if (fromX1 < tile.getX() && toX2 > tile.getX() && fromY2 > tile.getY() && fromY1 < tile.getY() + tile.height()) {
+            if (fromX2 <= tile.getX() && toX2 > tile.getX() && fromY2 > tile.getY() && fromY1 < tile.getY() + tile.height()) {
                 toX2 = tile.getX();
                 toX1 = toX2 - particle.width();
             }
 
-            if (fromX1 > tile.getX() && toX1 < tile.getX() + tile.width() && fromY2 > tile.getY() && fromY1 < tile.getY() + tile.height()) {
+            if (fromX1 >= tile.getX() + tile.width() && toX1 < tile.getX() + tile.width() && fromY2 > tile.getY() && fromY1 < tile.getY() + tile.height()) {
                 toX1 = tile.getX() + tile.width();
                 toX2 = toX1 + particle.width();
             }
         }
 
         for (Tile tile : tiles) {
-            if (fromY1 < tile.getY() && toY2 > tile.getY() && toX2 > tile.getX() && toX1 < tile.getX() + tile.width()) {
+            if (fromY2 <= tile.getY() && toY2 > tile.getY() && toX2 > tile.getX() && toX1 < tile.getX() + tile.width()) {
                 toY2 = tile.getY();
                 toY1 = toY2 - particle.height();
             }
 
-            if (fromY1 > tile.getY() && toY1 < tile.getY() + tile.height() && toX2 > tile.getX() && toX1 < tile.getX() + tile.width()) {
+            if (fromY1 >= tile.getY() + tile.height() && toY1 < tile.getY() + tile.height() && toX2 > tile.getX() && toX1 < tile.getX() + tile.width()) {
                 toY1 = tile.getY() + tile.height();
                 toY2 = toY1 + particle.height();
             }
@@ -58,7 +59,7 @@ public class CollisionDetector {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 Tile tile = map.getTileAt(col+i, row+j);
-                if (tile != null && tile.getType() != Tile.EMPTY) {
+                if (tile != null && (tile.getType() != Tile.EMPTY || tile.isBombPlanted())) {
                     result.add(tile);
                 }
             }
