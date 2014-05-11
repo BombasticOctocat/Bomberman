@@ -3,9 +3,6 @@ package com.bombasticoctocat.bomberman.game;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by gswirski on 06/05/14.
- */
 public class CollisionDetector {
     private final BoardMap map;
 

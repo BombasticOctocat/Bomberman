@@ -1,9 +1,6 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-public class Tile implements Particle {
+public class Tile extends Particle {
     public enum Type {
         EMPTY, BRICKS, CONCRETE;
     }
@@ -18,6 +15,7 @@ public class Tile implements Particle {
     private Type type;
     private int row;
     private int col;
+    private boolean hasBomb;
 
     public Tile(Type type, int row, int col) {
         this.type = type;
@@ -27,6 +25,14 @@ public class Tile implements Particle {
 
     public Type getType() {
         return type;
+    }
+
+    public void plantBomb() {
+        hasBomb = true;
+    }
+
+    public boolean isBombPlanted() {
+        return hasBomb;
     }
 
     @Override

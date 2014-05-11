@@ -2,10 +2,6 @@ package com.bombasticoctocat.bomberman.game;
 
 import java.util.List;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-
 public class Board {
 
     private Hero hero;
@@ -52,7 +48,10 @@ public class Board {
         return null;
     }
 
-    public void tick(long timeDelta, Directions directions, boolean bombPlanted) {
+    public void tick(long timeDelta, Directions directions, boolean plantBomb) {
+        if (plantBomb) {
+            hero.plantBomb(boardMap);
+        }
         hero.move(timeDelta, directions, collisionDetector);
     }
 

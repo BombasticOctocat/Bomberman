@@ -53,4 +53,8 @@ public class BoardMap {
         }
         return result;
     }
+
+    public void plantBomb(int col, int row) {
+        getTileAt(col, row).plantBomb();
+    }
 }

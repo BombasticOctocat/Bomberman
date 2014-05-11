@@ -3,10 +3,10 @@ package com.bombasticoctocat.bomberman.game;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.*;
 
 public class HeroTest {
 
@@ -18,18 +18,18 @@ public class HeroTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        initMocks(this);
         subject = new Hero();
         initialX = subject.getX();
         initialY = subject.getY();
-        Mockito.when(collisionDetector.blockDisplacement(Mockito.eq(subject), Mockito.isA(Displacement.class))).
+        when(collisionDetector.blockDisplacement(eq(subject), isA(Displacement.class))).
                 thenAnswer(invocationOnMock -> (Displacement) invocationOnMock.getArguments()[1]);
     }
 
     @Test
     public void testMove() {
-        Mockito.when(directions.getHorizontalDirection()).thenReturn(1);
-        Mockito.when(directions.getVerticalDirection()).thenReturn(0);
+        when(directions.getHorizontalDirection()).thenReturn(1);
+        when(directions.getVerticalDirection()).thenReturn(0);
         long timeDelta = 17;
 
         subject.move(timeDelta, directions, collisionDetector);
@@ -40,8 +40,8 @@ public class HeroTest {
 
     @Test
     public void testDiagonalMovement() {
-        Mockito.when(directions.getHorizontalDirection()).thenReturn(-1);
-        Mockito.when(directions.getVerticalDirection()).thenReturn(1);
+        when(directions.getHorizontalDirection()).thenReturn(-1);
+        when(directions.getVerticalDirection()).thenReturn(1);
         long timeDelta = 17;
 
         subject.move(timeDelta, directions, collisionDetector);
