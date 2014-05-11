@@ -1,6 +1,7 @@
 package com.bombasticoctocat.bomberman.game;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class BoardMap {
 
     public BoardMap() {
         tiles = new ArrayList<>();
-        TilesFactory factory = new TilesFactory(tilesVertical(), tilesHorizontal(), density());
+        TilesFactory factory = new TilesFactory(this, tilesVertical(), tilesHorizontal(), density());
 
         for (int i = 0; i < tilesVertical(); i++) {
             List<Tile> row = new ArrayList<>();
@@ -56,5 +57,22 @@ public class BoardMap {
 
     public Bomb plantBomb(int col, int row) {
         return getTileAt(col, row).plantBomb();
+    }
+
+    public void clearFlames(List<Flames> flamesList) {
+        for (Flames flames : flamesList) {
+            flames.clear();
+        }
+    }
+
+    public List<Tile> tilesInRange(int column, int row, int range) {
+        LinkedList<Tile> result = new LinkedList<>();
+        for (int x = column - range; x <= column + range; x++) {
+            result.add(getTileAt(x, row));
+        }
+        for (int y = row - range; y <= row + range; y++) {
+            result.add(getTileAt(column, y));
+        }
+        return result;
     }
 }

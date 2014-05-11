@@ -23,14 +23,21 @@ public class Timer {
 
     public void tick(long timeDelta) {
         timePassed += timeDelta;
+
+        LinkedList<Event> executionList = new LinkedList<>();
         Iterator<Event> iterator = events.iterator();
+
+
         while (iterator.hasNext()) {
             Event event = iterator.next();
             if (event.time <= timePassed) {
-                event.callback.call();
                 iterator.remove();
+                executionList.add(event);
             }
         }
 
+        for (Event event : executionList) {
+            event.callback.call();
+        }
     }
 }
