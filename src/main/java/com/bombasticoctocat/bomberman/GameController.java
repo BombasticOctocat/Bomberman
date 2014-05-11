@@ -22,6 +22,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 import org.slf4j.Logger;
@@ -37,13 +38,14 @@ public class GameController implements ViewController {
     @Inject private ParticlesImagesManager particlesImagesManager;
 
     private Board board;
-    private boolean isVisible = false, isRunning = false, isPaused = true, placedBomb = false;
+    private boolean isPaused = true, placedBomb = false;
     private double canvasWidth, canvasHeight, boardToCanvasScale;
     private final EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
     private long previousFrameTime;
     private final ReentrantLock boardLock = new ReentrantLock();
     private Thread boardUpdaterThread;
     private final LinkedBlockingQueue<BoardUpdate> boardUpdatesQueue = new LinkedBlockingQueue<>();
+    private Timeline gameTimeline;
 
     private static class BoardUpdate {
         public long delta;
@@ -87,7 +89,7 @@ public class GameController implements ViewController {
         boardLock.lock();
         try {
             GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-            gc.setFill(Color.BLACK);
+            gc.setFill(Color.web("#162d50"));
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
             Hero hero = board.getHero();
@@ -101,7 +103,7 @@ public class GameController implements ViewController {
                     Tile tile = board.getTileAt(i, j);
                     WritableImage img = particlesImagesManager.getParticleImage(tileMaper.get(tile.getType()), tile);
                     if (img != null) {
-                        gc.drawImage(img, (int)(tile.getX() * boardToCanvasScale), (int)(tile.getY() * boardToCanvasScale));
+                        gc.drawImage(img, tile.getX() * boardToCanvasScale, tile.getY() * boardToCanvasScale);
                     }
                 }
             }
@@ -122,9 +124,11 @@ public class GameController implements ViewController {
             }
 
             if (isPaused) {
-                gc.setFill(Color.RED);
-                gc.setFont(Font.font(12));
-                gc.fillText("paused", canvasWidth - 52, 17);
+                gc.setFill(Color.color(0.0, 0.0, 0.0, 0.6));
+                gc.fillRect(canvasWidth - 94, 0, canvasWidth - 94, 28);
+                gc.setFill(Color.color(0.9, 0.1, 0.1, 1.0));
+                gc.setFont(Font.font("System", FontWeight.BOLD, 20));
+                gc.fillText("paused", canvasWidth - 87, 20);
             }
         } finally {
             boardLock.unlock();
@@ -132,10 +136,6 @@ public class GameController implements ViewController {
     }
 
     private void handleClockTick(ActionEvent event) {
-        if (!isRunning || !isVisible) {
-            return;
-        }
-
         EnumSet<Directions.Direction> directions = EnumSet.noneOf(Directions.Direction.class);
         if (keyboardState.contains(KeyCode.UP)) directions.add(Directions.UP);
         if (keyboardState.contains(KeyCode.LEFT)) directions.add(Directions.LEFT);
@@ -158,6 +158,8 @@ public class GameController implements ViewController {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                } else {
+                    canvasRenderer();
                 }
                 previousFrameTime = currentFrameTime;
                 placedBomb = false;
@@ -192,15 +194,12 @@ public class GameController implements ViewController {
         boardUpdatesQueue.clear();
         boardUpdaterThread = new Thread(this::boardUpdater);
         boardUpdaterThread.start();
-        previousFrameTime = 0;
         placedBomb = false;
-        isRunning = true;
         isPaused = false;
     }
 
     public void stopGame() {
         log.info("Stop game");
-        isRunning = false;
         boardUpdaterThread.interrupt();
         boardUpdaterThread = null;
         board = null;
@@ -209,13 +208,14 @@ public class GameController implements ViewController {
     @Override
     public void enteredView() {
         log.info("Entered view");
-        isVisible = true;
+        previousFrameTime = 0;
+        gameTimeline.play();
     }
 
     @Override
     public void leavedView() {
         log.info("Leaved view");
-        isVisible = false;
+        gameTimeline.stop();
         if (!isPaused) log.info("Paused game");
         isPaused = true;
     }
@@ -226,9 +226,8 @@ public class GameController implements ViewController {
         gamePane.heightProperty().addListener((o, ov, nv) -> handleGeometryChange());
         gamePane.widthProperty().addListener((o, ov, nv) -> handleGeometryChange());
 
-        Timeline game = new Timeline(new KeyFrame(Duration.millis(18.0), this::handleClockTick));
-        game.setCycleCount(Timeline.INDEFINITE);
-        game.play();
+        gameTimeline = new Timeline(new KeyFrame(Duration.millis(18.0), this::handleClockTick));
+        gameTimeline.setCycleCount(Timeline.INDEFINITE);
 
         final ChangeListener<Boolean> lostFocusWindowListener = (ob, ov, focused) -> {
             if (!focused) {

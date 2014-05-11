@@ -24,6 +24,7 @@ import com.cathive.fx.guice.GuiceFXMLLoader;
 public class Bomberman extends GuiceApplication {
     @InjectLog private static Logger log;
     @Inject private GuiceFXMLLoader fxmlLoader;
+    private static MainController mainController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -40,6 +41,7 @@ public class Bomberman extends GuiceApplication {
                     .showException(e);
 
                 Platform.exit();
+                System.exit(1);
             });
         });
 
@@ -49,7 +51,9 @@ public class Bomberman extends GuiceApplication {
             Bomberman.handleExitEvent();
         });
 
-        Pane root = fxmlLoader.load(getClass().getResource("fxml/main.fxml")).getRoot();
+        GuiceFXMLLoader.Result result = fxmlLoader.load(getClass().getResource("fxml/main.fxml"));
+        mainController = result.getController();
+        Pane root = result.getRoot();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bomberman");
@@ -72,8 +76,12 @@ public class Bomberman extends GuiceApplication {
             .showConfirm();
 
         if (response == Dialog.Actions.YES) {
+            if (mainController != null) {
+                mainController.leaveViews();
+            }
             log.info("Exiting application");
             Platform.exit();
+            System.exit(0);
         }
     }
 

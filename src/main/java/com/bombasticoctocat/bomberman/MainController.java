@@ -91,8 +91,22 @@ public class MainController implements Initializable {
                 ctrl.enteredView();
             }
         }
+
+        public void leaveCurrView() {
+            if (currViewName != null) {
+                ViewController ctrl = viewControllers.get(currViewName);
+                if (ctrl != null) {
+                    ctrl.leavedView();
+                }
+                windowPane.getChildren().clear();
+            }
+        }
     }
     private final ViewManager viewManager = new ViewManager();
+
+    public void leaveViews() {
+        viewManager.leaveCurrView();
+    }
 
     @FXML
     private void handleNewClick(ActionEvent actionEvent) {
