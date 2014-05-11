@@ -10,7 +10,7 @@ public class Hero implements Particle {
     private static final int WIDTH = 40;
     private static final int INITIAL_X_POSITION = 70;
     private static final int INITIAL_Y_POSITION = 70;
-    private static final double SPEED = 1.0;
+    private static final double SPEED = 0.3;
 
     private double positionX;
     private double positionY;
