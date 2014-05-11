@@ -6,9 +6,9 @@ import java.util.LinkedList;
 public class Timer {
     private class Event {
         public long time;
-        public Callback callback;
+        public Runnable callback;
 
-        public Event(long time, Callback callback) {
+        public Event(long time, Runnable callback) {
             this.time = time;
             this.callback = callback;
         }
@@ -17,7 +17,7 @@ public class Timer {
     long timePassed = 0;
     LinkedList<Event> events = new LinkedList<>();
 
-    public void schedule(long time, Callback callback) {
+    public void schedule(long time, Runnable callback) {
         events.add(new Event(timePassed + time, callback));
     }
 
@@ -37,7 +37,7 @@ public class Timer {
         }
 
         for (Event event : executionList) {
-            event.callback.call();
+            event.callback.run();
         }
     }
 }
