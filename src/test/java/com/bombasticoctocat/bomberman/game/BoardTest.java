@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class BoardTest {
-
+    private @Mock Timer timer;
     private @Mock Hero hero;
     private @Mock Directions directions;
     private @Mock BoardMap boardMap;
@@ -17,7 +17,7 @@ public class BoardTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = new Board(hero, boardMap, collisionDetector);
+        subject = new Board(timer, hero, boardMap, collisionDetector);
     }
 
     @Test

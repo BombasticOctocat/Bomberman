@@ -15,7 +15,7 @@ public class Tile extends Particle {
     private Type type;
     private int row;
     private int col;
-    private boolean hasBomb;
+    private Bomb bomb;
 
     public Tile(Type type, int row, int col) {
         this.type = type;
@@ -27,12 +27,17 @@ public class Tile extends Particle {
         return type;
     }
 
-    public void plantBomb() {
-        hasBomb = true;
+    public Bomb plantBomb() {
+        bomb = new Bomb(this);
+        return bomb;
     }
 
     public boolean isBombPlanted() {
-        return hasBomb;
+        return bomb != null;
+    }
+
+    public void detonate() {
+        bomb = null;
     }
 
     @Override

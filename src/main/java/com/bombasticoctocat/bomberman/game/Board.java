@@ -7,14 +7,17 @@ public class Board {
     private Hero hero;
     private BoardMap boardMap;
     private CollisionDetector collisionDetector;
+    private Timer timer;
 
-    public Board(Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
+    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
+        this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
         this.collisionDetector = collisionDetector;
     }
 
     public Board() {
+        this.timer = new Timer();
         this.hero = new Hero();
         this.boardMap = new BoardMap();
         this.collisionDetector = new CollisionDetector(boardMap);
@@ -49,9 +52,12 @@ public class Board {
     }
 
     public void tick(long timeDelta, Directions directions, boolean plantBomb) {
+        timer.tick(timeDelta);
+
         if (plantBomb) {
-            hero.plantBomb(boardMap);
+            hero.plantBomb(timer, boardMap);
         }
+
         hero.move(timeDelta, directions, collisionDetector);
     }
 

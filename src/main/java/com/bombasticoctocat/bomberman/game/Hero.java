@@ -5,6 +5,7 @@ package com.bombasticoctocat.bomberman.game;
  */
 
 public class Hero extends Particle {
+    public static final int FUSE_TIME = 1000;
 
     private static final int HEIGHT = 40;
     private static final int WIDTH = 40;
@@ -45,8 +46,9 @@ public class Hero extends Particle {
     }
 
 
-    public void plantBomb(BoardMap boardMap) {
-        boardMap.plantBomb(getColumn(), getRow());
+    public void plantBomb(Timer timer, BoardMap boardMap) {
+        final Bomb bomb = boardMap.plantBomb(getColumn(), getRow());
+        timer.schedule(FUSE_TIME, bomb::detonate);
     }
 
     public double speed() {
