@@ -15,7 +15,6 @@ public class CollisionDetector {
 
     public Displacement blockDisplacement(Particle particle, Displacement move) {
         double fromX1 = particle.getX();
-        double fromX2 = fromX1 + particle.width();
         double fromY1 = particle.getY();
         double fromY2 = fromY1 + particle.height();
 
@@ -24,7 +23,6 @@ public class CollisionDetector {
         double toY1 = fromY1 + move.getY();
         double toY2 = toY1 + particle.height();
 
-        //System.out.println("-----");
         List<Tile> tiles = adjacentTiles(particle);
         for (Tile tile : tiles) {
             if (fromX1 < tile.getX() && toX2 > tile.getX() && fromY2 > tile.getY() && fromY1 < tile.getY() + tile.height()) {
@@ -36,7 +34,9 @@ public class CollisionDetector {
                 toX1 = tile.getX() + tile.width();
                 toX2 = toX1 + particle.width();
             }
+        }
 
+        for (Tile tile : tiles) {
             if (fromY1 < tile.getY() && toY2 > tile.getY() && toX2 > tile.getX() && toX1 < tile.getX() + tile.width()) {
                 toY2 = tile.getY();
                 toY1 = toY2 - particle.height();

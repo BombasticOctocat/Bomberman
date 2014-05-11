@@ -90,9 +90,6 @@ public class GameController {
                 }
             }
 
-            gc.setFill(Color.RED);
-            gc.fillRect(hero.getX() * boardToCanvasScale, hero.getY() * boardToCanvasScale,
-                    hero.width() * boardToCanvasScale, hero.height() * boardToCanvasScale);
             gc.drawImage(characterImage, hero.getX() * boardToCanvasScale, hero.getY() * boardToCanvasScale);
         }
     }
