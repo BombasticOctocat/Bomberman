@@ -226,13 +226,13 @@ public class GameController implements ViewController {
 
                     if (tile.isInFire()) {
                         gc.setFill(Color.ORANGE);
-                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale, j * Tile.HEIGHT * boardToCanvasScale,
+                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
                                 Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
                     }
 
                     if (tile.isBombPlanted()) {
                         gc.setFill(Color.RED);
-                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale, j * Tile.HEIGHT * boardToCanvasScale,
+                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
                                 Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
                     }
                 }
