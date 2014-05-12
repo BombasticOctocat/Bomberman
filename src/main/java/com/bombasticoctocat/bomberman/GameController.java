@@ -60,7 +60,7 @@ public class GameController implements ViewController {
         gameCanvas.setWidth(canvasWidth);
         gameCanvas.setHeight(canvasHeight);
 
-        boardToCanvasScale = Math.max(canvasHeight / board.height(), canvasWidth / board.width());
+        boardToCanvasScale = Math.max(canvasHeight / (board.height() * 0.8), canvasWidth / board.width());
 
         particlesImagesManager.refreshParticlesImages(boardToCanvasScale);
     }
@@ -111,7 +111,6 @@ public class GameController implements ViewController {
                     }
                     map.add(row);
                 }
-                log.debug("initialized MapImageManager");
             } finally {
                 boardLock.unlock();
             }
@@ -167,7 +166,6 @@ public class GameController implements ViewController {
                     renderTileOnImage(pixelWriter, row.get(j));
                 }
             }
-            log.debug("refreshed image size MapImageManager");
         }
 
         WritableImage getMapImage() {
@@ -183,11 +181,24 @@ public class GameController implements ViewController {
             gc.setFill(Color.rgb(22, 45, 80));
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
+            Hero hero = board.getHero();
+            double wpx, wpy; //rendering window pos {x,y}
+            {
+                double heroCenterX = hero.getX() + hero.width() / 2.0;
+                double heroCenterY = hero.getY() + hero.height() / 2.0;
+                double windowWidth = canvasWidth / boardToCanvasScale;
+                double windowHeight = canvasHeight / boardToCanvasScale;
+                double windowX = Math.min(Math.max(heroCenterX - windowWidth / 2.0, 0.0), board.width() - windowWidth);
+                double windowY = Math.min(Math.max(heroCenterY - windowHeight / 2.0, 0.0), board.height() - windowHeight);
+                wpx = windowX * boardToCanvasScale;
+                wpy = windowY * boardToCanvasScale;
+            }
+
             mapImageManager.refreshMapImageTiles();
 
             WritableImage mapImage = mapImageManager.getMapImage();
             if (mapImage != null) {
-                gc.drawImage(mapImage, 0, 0, canvasWidth, canvasHeight,
+                gc.drawImage(mapImage, wpx, wpy, canvasWidth, canvasHeight,
                                        0, 0, canvasWidth, canvasHeight);
             }
 
@@ -203,16 +214,14 @@ public class GameController implements ViewController {
                 for (Goomba goomba: goombas) {
                     WritableImage img = particlesImagesManager.getParticleImage("goomba", goomba);
                     if (img != null) {
-                        gc.drawImage(img, goomba.getX() * boardToCanvasScale, goomba.getY() * boardToCanvasScale);
+                        gc.drawImage(img, goomba.getX() * boardToCanvasScale - wpx, goomba.getY() * boardToCanvasScale - wpy);
                     }
                 }
             }
 
-            Hero hero = board.getHero();
-
             WritableImage img = particlesImagesManager.getParticleImage("character", hero);
             if (img != null) {
-                gc.drawImage(img, hero.getX() * boardToCanvasScale, hero.getY() * boardToCanvasScale);
+                gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
             }
 
             if (isPaused) {
