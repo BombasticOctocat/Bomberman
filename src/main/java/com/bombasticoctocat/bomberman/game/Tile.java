@@ -32,7 +32,6 @@ public class Tile extends Particle {
     }
 
     public void plantBomb(Bomb bomb) {
-        System.out.println("PLANT ON " + getX() + ", " + getY());
         bomb.setTile(this);
         this.bomb = bomb;
     }
