@@ -57,7 +57,7 @@ public class ParticlesImagesManager {
             node.snapshot(param -> {
                 image = param.getImage();
                 --imagesLeftToRender;
-                if (imagesLeftToRender == 0 && refreshToScale != 0.0) {
+                if (imagesLeftToRender == 0) {
                     if (onRefreshcCompleteCallback != null) {
                         Platform.runLater(onRefreshcCompleteCallback);
                     }
