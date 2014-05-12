@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:controller="com.bombasticoctocat.bomberman.SettingsController">
+
+<GridPane fx:id="settingsPane" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bombasticoctocat.bomberman.SettingsController">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
@@ -23,55 +25,55 @@
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
         <RowConstraints />
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
+<RowConstraints minHeight="10.0" prefHeight="60.0" />
     </rowConstraints>
     <children>
-        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="UP" onAction="#handleUpSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Button fx:id="UpSettingBtn" id="UpSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleUpSettingClick" prefHeight="33.0" prefWidth="75.0" text="Up" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <font>
-                <Font name="System Bold" size="12.0" />
-            </font>
-            <contextMenu>
-                <ContextMenu>
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                    </items>
-                </ContextMenu>
-            </contextMenu>
-        </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="DOWN" onAction="#handleDownSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <font>
-                <Font name="System Bold" size="12.0" />
+                <Font size="12.0" />
             </font>
         </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="LEFT" onAction="#handleLeftSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Button fx:id="DownSettingBtn" id="DownSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleDownSettingClick" prefHeight="33.0" prefWidth="75.0" text="Down" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <font>
-                <Font name="System Bold" size="12.0" />
+                <Font size="12.0" />
             </font>
         </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="RIGHT" onAction="#handleRightSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button fx:id="LeftSettingBtn" id="LeftSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLeftSettingClick" prefHeight="33.0" prefWidth="75.0" text="Left" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <font>
-                <Font name="System Bold" size="12.0" />
+                <Font size="12.0" />
             </font>
         </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="BOMB" onAction="#handleSetBombSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button fx:id="RightSettingBtn" id="RightSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRightSettingClick" prefHeight="33.0" prefWidth="75.0" text="Right" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <font>
-                <Font name="System Bold" size="12.0" />
+                <Font size="12.0" />
             </font>
         </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="75.0" text="DEFAULT" onAction="#handleRestoreDefaultSettingClick" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+        <Button fx:id="SetBombSettingBtn" id="SetBombSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleSetBombSettingClick" prefHeight="33.0" prefWidth="75.0" text="Bomb" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
             <font>
-                <Font name="System Bold" size="12.0" />
+                <Font size="12.0" />
             </font>
         </Button>
-        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE UP" GridPane.rowIndex="1" />
-        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE DOWN" textAlignment="CENTER" GridPane.rowIndex="2" />
-        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE LEFT" textAlignment="CENTER" GridPane.rowIndex="3" />
-        <Label prefHeight="30.0" prefWidth="100.0" text="MOVE RIGHT" textAlignment="CENTER" GridPane.rowIndex="4" />
-        <Label prefHeight="30.0" prefWidth="100.0" text="SET BOMB" textAlignment="CENTER" GridPane.rowIndex="5" />
-        <Label prefHeight="30.0" prefWidth="100.0" text="RESTORE DEFAULT" textAlignment="CENTER" GridPane.rowIndex="7" />
+        <Button fx:id="PauseSettingBtn" id="PauseSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handlePauseSettingClick" prefHeight="33.0" prefWidth="75.0" text="Pause" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <font>
+                <Font size="12.0" />
+            </font>
+        </Button>
+        <Button fx:id="RestoreDefaultSettingBtn" id="RestoreDefaultSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRestoreDefaultSettingClick" prefHeight="33.0" prefWidth="75.0" text="Default" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <font>
+                <Font size="12.0" />
+            </font>
+        </Button>
+        <Label prefHeight="30.0" prefWidth="100.0" text="Move Up" GridPane.rowIndex="1" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Move Down" textAlignment="CENTER" GridPane.rowIndex="2" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Move Left" textAlignment="CENTER" GridPane.rowIndex="3" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Move Right" textAlignment="CENTER" GridPane.rowIndex="4" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Set Bomb" textAlignment="CENTER" GridPane.rowIndex="5" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Restore default" textAlignment="CENTER" GridPane.rowIndex="8" />
         <Label alignment="CENTER" prefHeight="60.0" prefWidth="254.0" text="SETTINGS">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
+<Label prefHeight="30.0" prefWidth="100.0" text="Pause" textAlignment="CENTER" GridPane.rowIndex="7" />
     </children>
 </GridPane>
