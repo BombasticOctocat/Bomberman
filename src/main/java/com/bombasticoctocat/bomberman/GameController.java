@@ -204,18 +204,19 @@ public class GameController implements ViewController {
             for (int i = 0; i < board.tilesHorizontal(); ++i) {
                 for (int j = 0; j < board.tilesVertical(); ++j) {
                     Tile tile = board.getTileAt(i, j);
-                    // TODO: bomb, bonus, flames etc rendering
 
                     if (tile.isOnFire()) {
-                        gc.setFill(Color.ORANGE);
-                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
-                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                        WritableImage img = particlesImagesManager.getParticleImage("flames", tile);
+                        if (img != null) {
+                            gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
+                        }
                     }
 
                     if (tile.isBombPlanted()) {
-                        gc.setFill(Color.RED);
-                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
-                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                        WritableImage img = particlesImagesManager.getParticleImage("bomb", tile);
+                        if (img != null) {
+                            gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
+                        }
                     }
                 }
             }
@@ -308,6 +309,8 @@ public class GameController implements ViewController {
     public void startGame() {
         log.info("Start game");
         board = new Board();
+        // quite dirty hack to preaload flames fxml (they don't show up on first explosion without it)
+        particlesImagesManager.getParticleImage("flames", board.getTileAt(0, 0));
         mapImageManager.initialize();
         boardUpdatesQueue.clear();
         boardUpdaterThread = new Thread(this::boardUpdater);
@@ -341,7 +344,6 @@ public class GameController implements ViewController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        log.info("Initialized game controller");
         gamePane.heightProperty().addListener((o, ov, nv) -> handleGeometryChange());
         gamePane.widthProperty().addListener((o, ov, nv) -> handleGeometryChange());
 
@@ -368,5 +370,7 @@ public class GameController implements ViewController {
                 newScene.getWindow().focusedProperty().addListener(lostFocusWindowListener);
             }
         });
+
+        log.info("Initialized game controller");
     }
 }
