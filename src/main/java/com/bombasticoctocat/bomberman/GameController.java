@@ -231,17 +231,10 @@ public class GameController implements ViewController {
                 }
             }
 
-            if (hero.isAlive()) {
-                WritableImage img = particlesImagesManager.getParticleImage("character", hero);
-                if (img != null) {
-                    gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
-                }
-            } else {
-                gc.setFill(Color.RED);
-                gc.fillRect(hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy,
-                            hero.width(), hero.height());
+            WritableImage img = particlesImagesManager.getParticleImage(hero.isAlive() ? "character" : "killed", hero);
+            if (img != null) {
+                gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
             }
-
 
             if (isPaused) {
                 gc.setFill(Color.color(0.0, 0.0, 0.0, 0.6));
