@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bombasticoctocat.bomberman.MainController">
+<BorderPane fx:controller="com.bombasticoctocat.bomberman.MainController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <top>
     <MenuBar useSystemMenuBar="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
       <menus>
         <Menu text="_Game">
           <items>
             <MenuItem onAction="#handleNewClick" text="_New" />
+            <MenuItem fx:id="restoreMenuItem" onAction="#handleRestoreClick" text="_Restore" />
             <MenuItem onAction="#handleExitClick" text="E_xit" />
           </items>
         </Menu>
