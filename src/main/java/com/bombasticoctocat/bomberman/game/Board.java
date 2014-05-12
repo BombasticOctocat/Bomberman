@@ -2,25 +2,29 @@ package com.bombasticoctocat.bomberman.game;
 
 import java.util.List;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-
 public class Board {
+    public static final int FUSE_TIME = 1000;
+    public static final int FLAMES_DURATION = 100;
+    public static final int TILES_HORIZONTAL = 31;
+    public static final int TILES_VERTICAL = 13;
+    public static final double DENSITY = 0.3;
 
     private Hero hero;
     private BoardMap boardMap;
     private CollisionDetector collisionDetector;
+    private Timer timer;
 
-    public Board(Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
+    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
+        this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
         this.collisionDetector = collisionDetector;
     }
 
     public Board() {
+        this.timer = new Timer();
         this.hero = new Hero();
-        this.boardMap = new BoardMap();
+        this.boardMap = new BoardMap(new TilesFactory(timer, TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
         this.collisionDetector = new CollisionDetector(boardMap);
     }
 
@@ -52,7 +56,13 @@ public class Board {
         return null;
     }
 
-    public void tick(long timeDelta, Directions directions, boolean bombPlanted) {
+    public void tick(long timeDelta, Directions directions, boolean plantBomb) {
+        timer.tick(timeDelta);
+
+        if (plantBomb) {
+            hero.plantBomb(boardMap);
+        }
+
         hero.move(timeDelta, directions, collisionDetector);
     }
 

@@ -1,10 +1,7 @@
 package com.bombasticoctocat.bomberman;
 
-import java.net.URL;
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
-
+import com.bombasticoctocat.bomberman.game.*;
+import com.google.inject.Inject;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -21,12 +18,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
-
 import org.slf4j.Logger;
 
-import com.google.inject.Inject;
-
-import com.bombasticoctocat.bomberman.game.*;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class GameController implements ViewController {
     @InjectLog private static Logger log;
@@ -181,6 +178,26 @@ public class GameController implements ViewController {
             gc.setFill(Color.rgb(22, 45, 80));
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
+ /*
+            for (int x = 0; x < board.tilesHorizontal(); x++) {
+                for (int y = 0; y < board.tilesVertical(); y++) {
+                    Tile tile = board.getTileAt(x, y);
+                    if (tile.getType() != Tile.EMPTY) {
+                        gc.setFill((tile.getType() == Tile.CONCRETE) ? Color.BLACK : Color.GRAY);
+                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
+                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                    }
+                    if (tile.isInFire()) {
+                        gc.setFill(Color.ORANGE);
+                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
+                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                    }
+                    if (tile.isBombPlanted()) {
+                        gc.setFill(Color.RED);
+                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
+                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                    }
+                */
             Hero hero = board.getHero();
             double wpx, wpy; //rendering window pos {x,y}
             {
@@ -206,6 +223,18 @@ public class GameController implements ViewController {
                 for (int j = 0; j < board.tilesVertical(); ++j) {
                     Tile tile = board.getTileAt(i, j);
                     // TODO: bomb, bonus, flames etc rendering
+
+                    if (tile.isInFire()) {
+                        gc.setFill(Color.ORANGE);
+                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
+                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                    }
+
+                    if (tile.isBombPlanted()) {
+                        gc.setFill(Color.RED);
+                        gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
+                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
+                    }
                 }
             }
 

@@ -1,11 +1,6 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-
-public class Hero implements Particle {
-
+public class Hero extends Particle {
     private static final int HEIGHT = 40;
     private static final int WIDTH = 40;
     private static final int INITIAL_X_POSITION = 70;
@@ -44,6 +39,11 @@ public class Hero implements Particle {
         }
     }
 
+
+    public void plantBomb(BoardMap boardMap) {
+        boardMap.plantBomb(getColumn(), getRow());
+    }
+
     public double speed() {
         return SPEED;
     }
@@ -67,4 +67,5 @@ public class Hero implements Particle {
     public int height() {
         return HEIGHT;
     }
+
 }

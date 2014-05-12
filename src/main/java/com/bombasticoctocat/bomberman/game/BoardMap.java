@@ -1,41 +1,30 @@
 package com.bombasticoctocat.bomberman.game;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by marcin on 05/05/14.
- */
 public class BoardMap {
-    private static final int TILES_HORIZONTAL = 31;
-    private static final int TILES_VERTICAL = 13;
-    private static final double DENSITY = 0.3;
-
     private List<List<Tile>> tiles;
 
-    public BoardMap() {
+    public BoardMap(TilesFactory factory) {
         tiles = new ArrayList<>();
-        TilesFactory factory = new TilesFactory(tilesVertical(), tilesHorizontal(), density());
 
         for (int i = 0; i < tilesVertical(); i++) {
             List<Tile> row = new ArrayList<>();
             tiles.add(row);
             for (int j = 0; j < tilesHorizontal(); j++) {
-                row.add(factory.createForCoordinates(i, j));
+                row.add(factory.createForCoordinates(this, i, j));
             }
         }
     }
 
-    private double density() {
-        return DENSITY;
-    }
-
     public int tilesHorizontal() {
-        return TILES_HORIZONTAL;
+        return Board.TILES_HORIZONTAL;
     }
 
     public int tilesVertical() {
-        return TILES_VERTICAL;
+        return Board.TILES_VERTICAL;
     }
 
     public int width() {
@@ -50,6 +39,21 @@ public class BoardMap {
         Tile result = null;
         if (col >= 0 && col < tilesHorizontal() && row >= 0 && row < tilesVertical()) {
             result = tiles.get(row).get(col);
+        }
+        return result;
+    }
+
+    public Bomb plantBomb(int col, int row) {
+        return getTileAt(col, row).plantBomb();
+    }
+
+    public List<Tile> tilesInRange(int column, int row, int range) {
+        LinkedList<Tile> result = new LinkedList<>();
+        for (int x = column - range; x <= column + range; x++) {
+            result.add(getTileAt(x, row));
+        }
+        for (int y = row - range; y <= row + range; y++) {
+            result.add(getTileAt(column, y));
         }
         return result;
     }

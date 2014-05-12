@@ -2,10 +2,6 @@ package com.bombasticoctocat.bomberman.game;
 
 import java.util.EnumSet;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-
 public class Directions {
     public enum Direction { UP, DOWN, LEFT, RIGHT };
     public static final Direction UP = Direction.UP;

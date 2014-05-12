@@ -1,9 +1,6 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by kustosz on 04/05/14.
- */
-public class Goomba implements Particle {
+public class Goomba extends Particle {
     @Override
     public double getX() {
         return 0;
