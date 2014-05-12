@@ -57,4 +57,18 @@ public class BoardMap {
         }
         return result;
     }
+
+    public List<Tile> adjacentTiles(int col, int row) {
+        List<Tile> result = new ArrayList<>();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                Tile tile = getTileAt(col+i, row+j);
+                if (tile != null) {
+                    result.add(tile);
+                }
+            }
+        }
+
+        return result;
+    }
 }

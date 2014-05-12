@@ -12,13 +12,15 @@ public class Board {
     private Hero hero;
     private BoardMap boardMap;
     private CollisionDetector collisionDetector;
+    private DeathDetector deathDetector;
     private Timer timer;
 
-    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector) {
+    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector, DeathDetector deathDetector) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
         this.collisionDetector = collisionDetector;
+        this.deathDetector = deathDetector;
     }
 
     public Board() {
@@ -26,6 +28,7 @@ public class Board {
         this.boardMap = new BoardMap(new TilesFactory(TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
         this.hero = new Hero(new Detonator(boardMap, timer));
         this.collisionDetector = new CollisionDetector(boardMap);
+        this.deathDetector = new DeathDetector(boardMap);
     }
 
     public int tilesHorizontal() {
@@ -63,7 +66,7 @@ public class Board {
             hero.plantBomb();
         }
 
-        hero.move(timeDelta, directions, collisionDetector);
+        hero.move(timeDelta, directions, collisionDetector, deathDetector);
     }
 
 }
