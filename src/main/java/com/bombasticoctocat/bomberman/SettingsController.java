@@ -13,7 +13,6 @@ public class SettingsController {
     @InjectLog Logger log;
     @FXML private Button UpSettingBtn, DownSettingBtn, LeftSettingBtn, RightSettingBtn,
                          SetBombSettingBtn, RestoreDefaultSettingBtn, PauseSettingBtn;
-    @FXML private GridPane settingsPane;
     //private String upB, downB, leftB, rightB, setB, defaultB, pauseB;
 
     private void handleKeyEvent(KeyEvent event) {
@@ -23,6 +22,7 @@ public class SettingsController {
             String newSetting = event.getCode().toString();
             log.info(newSetting);
             switch(src.getId()){
+
                 case "UpSettingBtn":
                     UpSettingBtn.setText(newSetting);
                     break;
@@ -45,56 +45,63 @@ public class SettingsController {
                 case "PauseSettingBtn":
                     PauseSettingBtn.setText(newSetting);
                     break;
+
                 default:
                     break;
             }
-
         }
     }
 
     @FXML
     private void handleUpSettingClick(ActionEvent actionEvent) throws IOException {
         log.info("Clicked 'Up");
+        UpSettingBtn.setText("...");
         UpSettingBtn.setOnKeyPressed(this::handleKeyEvent);
     }
 
     @FXML
     private void handleDownSettingClick(ActionEvent actionEvent) throws IOException {
         log.info("Clicked 'Down'");
-        DownSettingBtn.setText("whatever");
+        DownSettingBtn.setText("...");
         DownSettingBtn.setOnKeyPressed(this::handleKeyEvent);
 
     }
 
-
     @FXML
     private void handleLeftSettingClick(ActionEvent actionEvent) throws IOException {
-        LeftSettingBtn.setOnKeyPressed(this::handleKeyEvent);
         log.info("Clicked 'Left'");
+        LeftSettingBtn.setOnKeyPressed(this::handleKeyEvent);
+        LeftSettingBtn.setText("...");
     }
 
     @FXML
     private void handleRightSettingClick(ActionEvent actionEvent) throws IOException {
-        RightSettingBtn.setOnKeyPressed(this::handleKeyEvent);
         log.info("Clicked 'Right'");
-
+        RightSettingBtn.setOnKeyPressed(this::handleKeyEvent);
+        RightSettingBtn.setText("...");
     }
 
     @FXML
     private void handleSetBombSettingClick(ActionEvent actionEvent) throws IOException {
-        SetBombSettingBtn.setOnKeyPressed(this::handleKeyEvent);
         log.info("Clicked 'Bomb'");
+        SetBombSettingBtn.setOnKeyPressed(this::handleKeyEvent);
+        SetBombSettingBtn.setText("...");
     }
 
     @FXML
     private void handleRestoreDefaultSettingClick(ActionEvent actionEvent) throws IOException {
-        // restores default keyboard layout
         log.info("Clicked 'Default");
+        UpSettingBtn.setText("UP");
+        DownSettingBtn.setText("DOWN");
+        LeftSettingBtn.setText("LEFT");
+        RightSettingBtn.setText("RIGHT");
+        SetBombSettingBtn.setText("Z");
+        PauseSettingBtn.setText("P");
     }
 
     @FXML
     private void handlePauseSettingClick(ActionEvent actionEvent) throws IOException {
-        PauseSettingBtn.setOnKeyPressed(this::handleKeyEvent);
         log.info("Clicked 'Pause'");
+        PauseSettingBtn.setOnKeyPressed(this::handleKeyEvent);
     }
 }

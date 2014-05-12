@@ -12,9 +12,6 @@
     </padding>
     <columnConstraints>
         <ColumnConstraints minWidth="10.0" prefWidth="150.0" />
-        <ColumnConstraints />
-        <ColumnConstraints />
-        <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
@@ -23,42 +20,42 @@
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
-        <RowConstraints />
         <RowConstraints minHeight="10.0" prefHeight="60.0" />
-<RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
     </rowConstraints>
+
     <children>
-        <Button fx:id="UpSettingBtn" id="UpSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleUpSettingClick" prefHeight="33.0" prefWidth="75.0" text="Up" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Button id="UpSettingBtn" fx:id="UpSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleUpSettingClick" prefHeight="33.0" prefWidth="75.0" text="UP" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button fx:id="DownSettingBtn" id="DownSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleDownSettingClick" prefHeight="33.0" prefWidth="75.0" text="Down" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Button id="DownSettingBtn" fx:id="DownSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleDownSettingClick" prefHeight="33.0" prefWidth="75.0" text="DOWN" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button fx:id="LeftSettingBtn" id="LeftSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLeftSettingClick" prefHeight="33.0" prefWidth="75.0" text="Left" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Button id="LeftSettingBtn" fx:id="LeftSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLeftSettingClick" prefHeight="33.0" prefWidth="75.0" text="LEFT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button fx:id="RightSettingBtn" id="RightSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRightSettingClick" prefHeight="33.0" prefWidth="75.0" text="Right" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button id="RightSettingBtn" fx:id="RightSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRightSettingClick" prefHeight="33.0" prefWidth="75.0" text="RIGHT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button fx:id="SetBombSettingBtn" id="SetBombSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleSetBombSettingClick" prefHeight="33.0" prefWidth="75.0" text="Bomb" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button id="SetBombSettingBtn" fx:id="SetBombSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleSetBombSettingClick" prefHeight="33.0" prefWidth="75.0" text="Z" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button fx:id="PauseSettingBtn" id="PauseSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handlePauseSettingClick" prefHeight="33.0" prefWidth="75.0" text="Pause" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+        <Button id="PauseSettingBtn" fx:id="PauseSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handlePauseSettingClick" prefHeight="33.0" prefWidth="75.0" text="P" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button fx:id="RestoreDefaultSettingBtn" id="RestoreDefaultSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRestoreDefaultSettingClick" prefHeight="33.0" prefWidth="75.0" text="Default" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
+        <Button id="RestoreDefaultSettingBtn" fx:id="RestoreDefaultSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRestoreDefaultSettingClick" prefHeight="33.0" prefWidth="75.0" text="Default" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
             <font>
                 <Font size="12.0" />
             </font>
@@ -68,12 +65,12 @@
         <Label prefHeight="30.0" prefWidth="100.0" text="Move Left" textAlignment="CENTER" GridPane.rowIndex="3" />
         <Label prefHeight="30.0" prefWidth="100.0" text="Move Right" textAlignment="CENTER" GridPane.rowIndex="4" />
         <Label prefHeight="30.0" prefWidth="100.0" text="Set Bomb" textAlignment="CENTER" GridPane.rowIndex="5" />
-        <Label prefHeight="30.0" prefWidth="100.0" text="Restore default" textAlignment="CENTER" GridPane.rowIndex="8" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Pause" textAlignment="CENTER" GridPane.rowIndex="6" />
+        <Label prefHeight="30.0" prefWidth="100.0" text="Restore default" textAlignment="CENTER" GridPane.rowIndex="7" />
         <Label alignment="CENTER" prefHeight="60.0" prefWidth="254.0" text="SETTINGS">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-<Label prefHeight="30.0" prefWidth="100.0" text="Pause" textAlignment="CENTER" GridPane.rowIndex="7" />
     </children>
 </GridPane>
