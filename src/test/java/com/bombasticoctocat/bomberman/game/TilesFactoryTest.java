@@ -19,17 +19,17 @@ public class TilesFactoryTest {
 
     @Test
     public void testCreateForCoordinates() throws Exception {
-        TilesFactory subject = new TilesFactory(timer, 10, 10, 0.0);
+        TilesFactory subject = new TilesFactory(10, 10, 0.0);
 
-        assertEquals(Tile.CONCRETE, subject.createForCoordinates(boardMap, 0, 7).getType());
-        assertEquals(Tile.CONCRETE, subject.createForCoordinates(boardMap, 3, 9).getType());
-        assertEquals(Tile.CONCRETE, subject.createForCoordinates(boardMap, 2, 2).getType());
-        assertEquals(Tile.EMPTY, subject.createForCoordinates(boardMap, 5, 5).getType());
-        assertEquals(Tile.EMPTY, subject.createForCoordinates(boardMap, 6, 3).getType());
+        assertEquals(Tile.CONCRETE, subject.createForCoordinates(0, 7).getType());
+        assertEquals(Tile.CONCRETE, subject.createForCoordinates(3, 9).getType());
+        assertEquals(Tile.CONCRETE, subject.createForCoordinates(2, 2).getType());
+        assertEquals(Tile.EMPTY, subject.createForCoordinates(5, 5).getType());
+        assertEquals(Tile.EMPTY, subject.createForCoordinates(6, 3).getType());
 
-        subject = new TilesFactory(timer, 10, 10, 1.0);
+        subject = new TilesFactory(10, 10, 1.0);
 
-        assertEquals(Tile.BRICKS, subject.createForCoordinates(boardMap, 5, 5).getType());
-        assertEquals(Tile.BRICKS, subject.createForCoordinates(boardMap, 6, 3).getType());
+        assertEquals(Tile.BRICKS, subject.createForCoordinates(5, 5).getType());
+        assertEquals(Tile.BRICKS, subject.createForCoordinates(6, 3).getType());
     }
 }

@@ -23,8 +23,8 @@ public class Board {
 
     public Board() {
         this.timer = new Timer();
-        this.hero = new Hero();
-        this.boardMap = new BoardMap(new TilesFactory(timer, TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
+        this.boardMap = new BoardMap(new TilesFactory(TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
+        this.hero = new Hero(new Detonator(boardMap, timer));
         this.collisionDetector = new CollisionDetector(boardMap);
     }
 
@@ -60,7 +60,7 @@ public class Board {
         timer.tick(timeDelta);
 
         if (plantBomb) {
-            hero.plantBomb(boardMap);
+            hero.plantBomb();
         }
 
         hero.move(timeDelta, directions, collisionDetector);

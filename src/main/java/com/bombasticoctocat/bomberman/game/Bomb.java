@@ -1,26 +1,34 @@
 package com.bombasticoctocat.bomberman.game;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class Bomb {
-    private final Tile tile;
-    private boolean detonated = false;
+    private Detonator detonator;
+    private Tile tile;
+    private boolean isDetonated = false;
 
-    public Bomb(Tile tile) {
-        this.tile = tile;
+    public Bomb(Detonator detonator) {
+        this.detonator = detonator;
     }
 
-    public List<Flames> detonate() {
-        if (detonated) {
-            return new LinkedList<>();
+    public void detonate() {
+        if ( ! isDetonated) {
+            detonator.detonate(this);
         }
+    }
 
-        detonated = true;
-        return tile.detonate();
+    public void markAsDetonated()
+    {
+        isDetonated = true;
     }
 
     public int range() {
         return 1;
+    }
+
+    public Tile getTile() {
+        return tile;
+    }
+
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 }

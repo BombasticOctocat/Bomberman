@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.*;
 
 public class HeroTest {
-
+    private @Mock Detonator detonator;
     private @Mock Directions directions;
     private @Mock CollisionDetector collisionDetector;
     private Hero subject;
@@ -19,7 +19,7 @@ public class HeroTest {
     @Before
     public void setUp() {
         initMocks(this);
-        subject = new Hero();
+        subject = new Hero(detonator);
         initialX = subject.getX();
         initialY = subject.getY();
         when(collisionDetector.blockDisplacement(eq(subject), isA(Displacement.class))).
