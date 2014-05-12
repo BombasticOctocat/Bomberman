@@ -78,7 +78,7 @@ public class Tile extends Particle {
         return null;
     }
 
-    public boolean isInFire() {
+    public boolean isOnFire() {
         return (flamesList.size() > 0);
     }
 

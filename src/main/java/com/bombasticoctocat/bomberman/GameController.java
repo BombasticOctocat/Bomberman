@@ -187,7 +187,7 @@ public class GameController implements ViewController {
                         gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
                                 Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
                     }
-                    if (tile.isInFire()) {
+                    if (tile.isOnFire()) {
                         gc.setFill(Color.ORANGE);
                         gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
                                 Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
@@ -224,7 +224,7 @@ public class GameController implements ViewController {
                     Tile tile = board.getTileAt(i, j);
                     // TODO: bomb, bonus, flames etc rendering
 
-                    if (tile.isInFire()) {
+                    if (tile.isOnFire()) {
                         gc.setFill(Color.ORANGE);
                         gc.fillRect(i * Tile.WIDTH * boardToCanvasScale - wpx, j * Tile.HEIGHT * boardToCanvasScale - wpy,
                                 Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
