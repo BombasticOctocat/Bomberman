@@ -14,16 +14,18 @@ public class Board {
     private BoardMap boardMap;
     private CollisionDetector collisionDetector;
     private DeathDetector deathDetector;
+    private GoombaTouchDetector goombaTouchDetector;
     private Timer timer;
     private List<Goomba> goombas;
 
 
     public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
-                 DeathDetector deathDetector, List<Goomba> goombas) {
+                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
         this.collisionDetector = collisionDetector;
+        this.goombaTouchDetector = goombaTouchDetector;
         this.deathDetector = deathDetector;
         this.goombas = goombas;
     }
@@ -38,6 +40,7 @@ public class Board {
         for (int i = 0; i < 7; i++) {
             this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
         }
+        this.goombaTouchDetector = new GoombaTouchDetector(goombas);
     }
 
     public Timer getTimer() {
@@ -83,7 +86,7 @@ public class Board {
             hero.plantBomb();
         }
 
-        hero.move(timeDelta, directions, collisionDetector, deathDetector);
+        hero.move(timeDelta, directions, collisionDetector, deathDetector, goombaTouchDetector);
         for (Goomba goomba : getGoombas()) {
             goomba.move(timeDelta, collisionDetector, deathDetector);
         }
