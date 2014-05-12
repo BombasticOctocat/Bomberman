@@ -82,8 +82,9 @@ public class GameController implements ViewController {
 
     private class MapImageManager {
         WritableImage mapImage;
-        List<List<Tile>> map;
+        List<List<Tile.Type>> map;
         EnumMap<Tile.Type, String> tileMaper = new EnumMap<>(Tile.Type.class);
+        Tile anyTile = null;
 
         MapImageManager() {
             tileMaper.put(Tile.CONCRETE, "concrete");
@@ -98,13 +99,14 @@ public class GameController implements ViewController {
         public void initialize() {
             boardLock.lock();
             try {
+                anyTile = board.getTileAt(0, 0);
                 mapImage = null;
                 map = new ArrayList<>();
-                for (int i = 0; i < board.tilesHorizontal(); ++i) {
-                    List<Tile> row = new ArrayList<>();
-                    for (int j = 0; j < board.tilesVertical(); ++j) {
-                        Tile tile = board.getTileAt(i, j);
-                        row.add(tile);
+                for (int i = 0; i < board.tilesVertical(); ++i) {
+                    List<Tile.Type> row = new ArrayList<>();
+                    for (int j = 0; j < board.tilesHorizontal(); ++j) {
+                        Tile tile = board.getTileAt(j, i);
+                        row.add(tile.getType());
                     }
                     map.add(row);
                 }
@@ -114,13 +116,13 @@ public class GameController implements ViewController {
             refreshMapImage();
         }
 
-        public void renderTileOnImage(PixelWriter pixelWriter, Tile tile) {
+        public void renderTileOnImage(PixelWriter pixelWriter, double x, double y, Tile.Type tileType) {
             if (pixelWriter == null) return;
-            WritableImage img = particlesImagesManager.getParticleImage(tileMaper.get(tile.getType()), tile);
+            WritableImage img = particlesImagesManager.getParticleImage(tileMaper.get(tileType), anyTile);
             if (img != null) {
                 pixelWriter.setPixels(
-                        (int)(tile.getX() * boardToCanvasScale),
-                        (int)(tile.getY() * boardToCanvasScale),
+                        (int)(x * anyTile.width() * boardToCanvasScale),
+                        (int)(y * anyTile.height() * boardToCanvasScale),
                         (int)img.getWidth(),
                         (int)img.getHeight(),
                         img.getPixelReader(), 0, 0);
@@ -134,13 +136,13 @@ public class GameController implements ViewController {
             }
             boardLock.lock();
             try {
-                for (int i = 0; i < board.tilesHorizontal(); ++i) {
-                    List<Tile> row = map.get(i);
-                    for (int j = 0; j < board.tilesVertical(); ++j) {
-                        Tile tile = board.getTileAt(i, j);
-                        if (tile.getType() != row.get(j).getType()) {
-                            row.set(j, tile);
-                            renderTileOnImage(pixelWriter, tile);
+                for (int i = 0; i < board.tilesVertical(); ++i) {
+                    List<Tile.Type> row = map.get(i);
+                    for (int j = 0; j < board.tilesHorizontal(); ++j) {
+                        Tile tile = board.getTileAt(j, i);
+                        if (tile.getType() != row.get(j)) {
+                            row.set(j, tile.getType());
+                            renderTileOnImage(pixelWriter, j, i, tile.getType());
                         }
                     }
                 }
@@ -155,12 +157,12 @@ public class GameController implements ViewController {
             }
 
             mapImage = new WritableImage((int)(board.width() * boardToCanvasScale) + 1,
-                                         (int)(board.height() * boardToCanvasScale) + 1);
+                    (int)(board.height() * boardToCanvasScale) + 1);
             PixelWriter pixelWriter = mapImage.getPixelWriter();
-            for (int i = 0; i < board.tilesHorizontal(); ++i) {
-                List<Tile> row = map.get(i);
-                for (int j = 0; j < board.tilesVertical(); ++j) {
-                    renderTileOnImage(pixelWriter, row.get(j));
+            for (int i = 0; i < board.tilesVertical(); ++i) {
+                List<Tile.Type> row = map.get(i);
+                for (int j = 0; j < board.tilesHorizontal(); ++j) {
+                    renderTileOnImage(pixelWriter, j, i, row.get(j));
                 }
             }
         }
@@ -196,7 +198,7 @@ public class GameController implements ViewController {
             WritableImage mapImage = mapImageManager.getMapImage();
             if (mapImage != null) {
                 gc.drawImage(mapImage, wpx, wpy, canvasWidth, canvasHeight,
-                                       0, 0, canvasWidth, canvasHeight);
+                        0, 0, canvasWidth, canvasHeight);
             }
 
             for (int i = 0; i < board.tilesHorizontal(); ++i) {
