@@ -1,5 +1,6 @@
 package com.bombasticoctocat.bomberman.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
@@ -14,13 +15,17 @@ public class Board {
     private CollisionDetector collisionDetector;
     private DeathDetector deathDetector;
     private Timer timer;
+    private List<Goomba> goombas;
 
-    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector, DeathDetector deathDetector) {
+
+    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
+                 DeathDetector deathDetector, List<Goomba> goombas) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
         this.collisionDetector = collisionDetector;
         this.deathDetector = deathDetector;
+        this.goombas = goombas;
     }
 
     public Board() {
@@ -29,6 +34,10 @@ public class Board {
         this.hero = new Hero(new Detonator(boardMap, timer));
         this.collisionDetector = new CollisionDetector(boardMap);
         this.deathDetector = new DeathDetector(boardMap);
+        this.goombas = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0));
+        }
     }
 
     public int tilesHorizontal() {
@@ -56,7 +65,7 @@ public class Board {
     }
 
     public List<Goomba> getGoombas() {
-        return null;
+        return goombas;
     }
 
     public void tick(long timeDelta, Directions directions, boolean plantBomb) {
@@ -67,6 +76,10 @@ public class Board {
         }
 
         hero.move(timeDelta, directions, collisionDetector, deathDetector);
+        for (Goomba goomba : getGoombas()) {
+            goomba.move(timeDelta, collisionDetector);
+        }
+
     }
 
 }

@@ -6,6 +6,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+
 public class BoardTest {
     private @Mock Timer timer;
     private @Mock Hero hero;
@@ -18,7 +20,7 @@ public class BoardTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector);
+        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector, new ArrayList<Goomba>());
     }
 
     @Test
