@@ -178,26 +178,6 @@ public class GameController implements ViewController {
             gc.setFill(Color.rgb(22, 45, 80));
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
- /*
-            for (int x = 0; x < board.tilesHorizontal(); x++) {
-                for (int y = 0; y < board.tilesVertical(); y++) {
-                    Tile tile = board.getTileAt(x, y);
-                    if (tile.getType() != Tile.EMPTY) {
-                        gc.setFill((tile.getType() == Tile.CONCRETE) ? Color.BLACK : Color.GRAY);
-                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
-                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
-                    }
-                    if (tile.isOnFire()) {
-                        gc.setFill(Color.ORANGE);
-                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
-                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
-                    }
-                    if (tile.isBombPlanted()) {
-                        gc.setFill(Color.RED);
-                        gc.fillRect(x * Tile.WIDTH * boardToCanvasScale, y * Tile.HEIGHT * boardToCanvasScale,
-                                Tile.WIDTH * boardToCanvasScale, Tile.HEIGHT * boardToCanvasScale);
-                    }
-                */
             Hero hero = board.getHero();
             double wpx, wpy; //rendering window pos {x,y}
             {
