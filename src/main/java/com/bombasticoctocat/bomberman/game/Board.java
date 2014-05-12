@@ -36,8 +36,16 @@ public class Board {
         this.deathDetector = new DeathDetector(boardMap);
         this.goombas = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0));
+            this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
         }
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void removeGoomba(Goomba goomba) {
+        goombas.remove(goomba);
     }
 
     public int tilesHorizontal() {
@@ -77,9 +85,10 @@ public class Board {
 
         hero.move(timeDelta, directions, collisionDetector, deathDetector);
         for (Goomba goomba : getGoombas()) {
-            goomba.move(timeDelta, collisionDetector);
+            goomba.move(timeDelta, collisionDetector, deathDetector);
         }
 
     }
+
 
 }

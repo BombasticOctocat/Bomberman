@@ -72,13 +72,13 @@ public class BoardMap {
 
         return result;
     }
-    public Goomba placeGoombaAtRandom(Goomba.Type type) {
+    public Goomba placeGoombaAtRandom(Goomba.Type type, Board board) {
         Random rg = new Random();
         while (true) {
             int col = rg.nextInt(tilesHorizontal());
             int row = rg.nextInt(tilesVertical());
             if (row > 3 && col > 3 && getTileAt(col, row).getType() == Tile.Type.EMPTY) {
-                return new Goomba(type, row, col);
+                return new Goomba(board, type, row, col);
             }
         }
     }

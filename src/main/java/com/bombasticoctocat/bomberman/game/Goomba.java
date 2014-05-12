@@ -5,6 +5,7 @@ import java.util.EnumSet;
 public class Goomba extends Particle {
     private static final int WIDTH = 40;
     private static final int HEIGHT = 40;
+    private static final long DEAD_TIMEOUT = 1000;
     private static final int TRACK_WIDTH = 2;
 
     public enum Type {
@@ -36,16 +37,21 @@ public class Goomba extends Particle {
     private Type type;
     private double x;
     private double y;
+    private boolean alive;
+    private Board board;
 
-    public Goomba(Type level, int row, int column) {
+    public Goomba(Board board, Type level, int row, int column) {
+        this.board = board;
+        this.alive = true;
         this.type = level;
         this.x = column * Tile.WIDTH + (Tile.WIDTH - width()) / 2;
         this.y = row * Tile.HEIGHT + (Tile.HEIGHT - height()) / 2;
         this.directions = new Directions(EnumSet.of(Directions.Direction.RIGHT));
-
     }
 
-    public void move(long timeDelta, CollisionDetector collisionDetector) {
+    public void move(long timeDelta, CollisionDetector collisionDetector, DeathDetector deathDetector) {
+        if (!isAlive()) return;
+
         if (isInTileCenter()) {
             randomTurn(collisionDetector);
         }
@@ -62,6 +68,10 @@ public class Goomba extends Particle {
 
         this.x += corrected.getX();
         this.y += corrected.getY();
+
+        if (deathDetector.shouldDie(this)) {
+            die();
+        }
     }
 
     private void randomTurn(CollisionDetector detector) {
@@ -110,6 +120,11 @@ public class Goomba extends Particle {
                 getColumn() + dirs.getHorizontalDirection());
     }
 
+    private void die() {
+        board.getTimer().schedule(DEAD_TIMEOUT, () -> board.removeGoomba(this));
+        this.alive = false;
+    }
+
     private double turnProbability() {
         return getType().getTurnProbability();
     }
@@ -127,7 +142,7 @@ public class Goomba extends Particle {
     }
 
     public boolean isAlive() {
-        return true;
+        return alive;
     }
 
     @Override
