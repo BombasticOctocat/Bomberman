@@ -18,7 +18,7 @@ public class TilesFactory {
     private Tile.Type getTypeForCoordinates(int row, int col) {
         if (tileIsConcrete(row, col))
             return Tile.CONCRETE;
-        else if (Math.random() < density)
+        else if (Math.random() < density && ! isEntryPoint(row, col))
             return Tile.BRICKS;
         else
             return Tile.EMPTY;
@@ -27,6 +27,10 @@ public class TilesFactory {
     private boolean tileIsConcrete(int row, int col) {
         return row == 0 || col == 0 || row == rows - 1 || col == cols - 1 ||
                 (row % 2 == 0 && col % 2 == 0);
+    }
+
+    private boolean isEntryPoint(int row, int col) {
+        return (row <= 2 && col <= 2);
     }
 
 }
