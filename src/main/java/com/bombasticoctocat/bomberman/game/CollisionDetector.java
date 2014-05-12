@@ -1,13 +1,10 @@
 package com.bombasticoctocat.bomberman.game;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CollisionDetector {
-    private final BoardMap map;
-
+public class CollisionDetector extends AbstractDetector {
     public CollisionDetector(BoardMap map) {
-        this.map = map;
+        super(map);
     }
 
     public Displacement blockDisplacement(Particle particle, Displacement move) {
@@ -49,20 +46,8 @@ public class CollisionDetector {
         return new Displacement(toX1 - fromX1, toY1 - fromY1);
     }
 
-    public List<Tile> adjacentTiles(Particle particle) {
-        int col = particle.getColumn();
-        int row = particle.getRow();
-
-        List<Tile> result = new ArrayList<>();
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                Tile tile = map.getTileAt(col+i, row+j);
-                if (tile != null && particle.shouldCollideWith(tile)) {
-                    result.add(tile);
-                }
-            }
-        }
-
-        return result;
+    @Override
+    protected boolean shouldDetect(Particle particle, Tile tile) {
+        return particle.shouldCollideWith(tile);
     }
 }

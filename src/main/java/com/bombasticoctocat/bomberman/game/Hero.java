@@ -8,6 +8,7 @@ public class Hero extends Particle {
     private static final double SPEED = 0.3;
 
     private final Detonator detonator;
+    private boolean isAlive = true;
 
     private double positionX;
     private double positionY;
@@ -19,7 +20,7 @@ public class Hero extends Particle {
         this.detonator = detonator;
     }
 
-    public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector) {
+    public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector, DeathDetector deathDetector) {
         Displacement displacement = new Displacement(
             directions.getHorizontalDirection() * axisMovement(timeDelta, directions),
             directions.getVerticalDirection() * axisMovement(timeDelta, directions)
@@ -28,6 +29,10 @@ public class Hero extends Particle {
         displacement = collisionDetector.blockDisplacement(this, displacement);
 
         move(displacement);
+
+        if (deathDetector.shouldDie(this)) {
+            die();
+        }
     }
 
     private void move(Displacement displacement) {
@@ -43,6 +48,13 @@ public class Hero extends Particle {
         }
     }
 
+    public void die() {
+        isAlive = false;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
 
     public void plantBomb() {
         detonator.plantBomb(getColumn(), getRow());

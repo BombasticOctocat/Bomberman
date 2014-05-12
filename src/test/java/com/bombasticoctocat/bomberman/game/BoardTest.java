@@ -12,17 +12,18 @@ public class BoardTest {
     private @Mock Directions directions;
     private @Mock BoardMap boardMap;
     private @Mock CollisionDetector collisionDetector;
+    private @Mock DeathDetector deathDetector;
     private Board subject;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = new Board(timer, hero, boardMap, collisionDetector);
+        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector);
     }
 
     @Test
     public void testTick() {
         subject.tick(245, directions, false);
-        Mockito.verify(hero).move(245, directions, collisionDetector);
+        Mockito.verify(hero).move(245, directions, collisionDetector, deathDetector);
     }
 }

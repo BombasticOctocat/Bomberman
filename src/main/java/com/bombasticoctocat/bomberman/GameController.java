@@ -231,7 +231,7 @@ public class GameController implements ViewController {
                 }
             }
 
-            WritableImage img = particlesImagesManager.getParticleImage("character", hero);
+            WritableImage img = particlesImagesManager.getParticleImage(hero.isAlive() ? "character" : "killed", hero);
             if (img != null) {
                 gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
             }

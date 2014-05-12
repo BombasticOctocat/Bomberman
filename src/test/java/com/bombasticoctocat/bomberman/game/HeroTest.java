@@ -12,6 +12,7 @@ public class HeroTest {
     private @Mock Detonator detonator;
     private @Mock Directions directions;
     private @Mock CollisionDetector collisionDetector;
+    private @Mock DeathDetector deathDetector;
     private Hero subject;
     private double initialX;
     private double initialY;
@@ -32,7 +33,7 @@ public class HeroTest {
         when(directions.getVerticalDirection()).thenReturn(0);
         long timeDelta = 17;
 
-        subject.move(timeDelta, directions, collisionDetector);
+        subject.move(timeDelta, directions, collisionDetector, deathDetector);
 
         assertEquals(initialY, subject.getY(), 1e-7);
         assertEquals(initialX + timeDelta * subject.speed(), subject.getX(), 1e-7);
@@ -44,7 +45,7 @@ public class HeroTest {
         when(directions.getVerticalDirection()).thenReturn(1);
         long timeDelta = 17;
 
-        subject.move(timeDelta, directions, collisionDetector);
+        subject.move(timeDelta, directions, collisionDetector, deathDetector);
 
         assertEquals(initialY + timeDelta * subject.speed() / Math.sqrt(2), subject.getY(), 1e-7);
         assertEquals(initialX - timeDelta * subject.speed() / Math.sqrt(2), subject.getX(), 1e-7);
