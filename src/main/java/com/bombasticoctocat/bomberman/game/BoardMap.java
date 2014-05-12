@@ -14,7 +14,7 @@ public class BoardMap {
             List<Tile> row = new ArrayList<>();
             tiles.add(row);
             for (int j = 0; j < tilesHorizontal(); j++) {
-                row.add(factory.createForCoordinates(this, i, j));
+                row.add(factory.createForCoordinates(i, j));
             }
         }
     }
@@ -43,12 +43,12 @@ public class BoardMap {
         return result;
     }
 
-    public Bomb plantBomb(int col, int row) {
-        return getTileAt(col, row).plantBomb();
-    }
+    public List<Tile> tilesInRange(Tile tile, int range) {
+        int column = tile.getColumn();
+        int row = tile.getRow();
 
-    public List<Tile> tilesInRange(int column, int row, int range) {
         LinkedList<Tile> result = new LinkedList<>();
+
         for (int x = column - range; x <= column + range; x++) {
             result.add(getTileAt(x, row));
         }

@@ -7,12 +7,16 @@ public class Hero extends Particle {
     private static final int INITIAL_Y_POSITION = 70;
     private static final double SPEED = 0.3;
 
+    private final Detonator detonator;
+
     private double positionX;
     private double positionY;
 
-    public Hero() {
+    public Hero(Detonator detonator) {
         positionX = INITIAL_X_POSITION;
         positionY = INITIAL_Y_POSITION;
+
+        this.detonator = detonator;
     }
 
     public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector) {
@@ -40,8 +44,8 @@ public class Hero extends Particle {
     }
 
 
-    public void plantBomb(BoardMap boardMap) {
-        boardMap.plantBomb(getColumn(), getRow());
+    public void plantBomb() {
+        detonator.plantBomb(getColumn(), getRow());
     }
 
     public double speed() {
