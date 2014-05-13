@@ -257,10 +257,11 @@ public class GameController implements ViewController {
                 }
 
                 EnumSet<Directions.Direction> directions = EnumSet.noneOf(Directions.Direction.class);
-                if (keyboardState.contains(KeyCode.UP)) directions.add(Directions.UP);
-                if (keyboardState.contains(KeyCode.LEFT)) directions.add(Directions.LEFT);
-                if (keyboardState.contains(KeyCode.RIGHT)) directions.add(Directions.RIGHT);
-                if (keyboardState.contains(KeyCode.DOWN)) directions.add(Directions.DOWN);
+                for (Settings.DirectionKey dir: Settings.DirectionKey.values()) {
+                    if (keyboardState.contains(dir.getSetting())) {
+                        directions.add(dir.getDirection());
+                    }
+                }
 
                 long currentFrameTime = System.currentTimeMillis();
                 if (previousFrameTime == 0) {
@@ -292,14 +293,12 @@ public class GameController implements ViewController {
     private void handleKeyEvent(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             keyboardState.add(event.getCode());
-            switch (event.getCode()) {
-                case P:
-                    isPaused = !isPaused;
-                    log.info(isPaused ? "Paused game" : "Unpaused game");
-                    break;
-                case Z:
-                    placedBomb = true;
-                    log.info("Placed bomb");
+            if (Settings.Key.PAUSE.getSetting() == event.getCode()) {
+                isPaused = !isPaused;
+                log.info(isPaused ? "Paused game" : "Unpaused game");
+            } else if (Settings.Key.BOMB.getSetting() == event.getCode()) {
+                placedBomb = true;
+                log.info("Placed bomb");
             }
         } else {
             keyboardState.remove(event.getCode());
