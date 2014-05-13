@@ -7,6 +7,10 @@ public class CollisionDetector extends AbstractDetector {
         super(map);
     }
 
+    public boolean isObstacle(Particle particle, int row, int col) {
+        return particle.shouldCollideWith(map.getTileAt(col, row));
+    }
+
     public Displacement blockDisplacement(Particle particle, Displacement move) {
         double fromX1 = particle.getX();
         double fromX2 = fromX1 + particle.width();

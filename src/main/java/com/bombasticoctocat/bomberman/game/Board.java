@@ -1,5 +1,6 @@
 package com.bombasticoctocat.bomberman.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
@@ -13,14 +14,20 @@ public class Board {
     private BoardMap boardMap;
     private CollisionDetector collisionDetector;
     private DeathDetector deathDetector;
+    private GoombaTouchDetector goombaTouchDetector;
     private Timer timer;
+    private List<Goomba> goombas;
 
-    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector, DeathDetector deathDetector) {
+
+    public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
+                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
         this.collisionDetector = collisionDetector;
+        this.goombaTouchDetector = goombaTouchDetector;
         this.deathDetector = deathDetector;
+        this.goombas = goombas;
     }
 
     public Board() {
@@ -29,6 +36,19 @@ public class Board {
         this.hero = new Hero(new Detonator(boardMap, timer));
         this.collisionDetector = new CollisionDetector(boardMap);
         this.deathDetector = new DeathDetector(boardMap);
+        this.goombas = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
+        }
+        this.goombaTouchDetector = new GoombaTouchDetector(goombas);
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void removeGoomba(Goomba goomba) {
+        goombas.remove(goomba);
     }
 
     public int tilesHorizontal() {
@@ -56,7 +76,7 @@ public class Board {
     }
 
     public List<Goomba> getGoombas() {
-        return null;
+        return goombas;
     }
 
     public void tick(long timeDelta, Directions directions, boolean plantBomb) {
@@ -66,7 +86,12 @@ public class Board {
             hero.plantBomb();
         }
 
-        hero.move(timeDelta, directions, collisionDetector, deathDetector);
+        hero.move(timeDelta, directions, collisionDetector, deathDetector, goombaTouchDetector);
+        for (Goomba goomba : getGoombas()) {
+            goomba.move(timeDelta, collisionDetector, deathDetector);
+        }
+
     }
+
 
 }

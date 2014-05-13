@@ -20,7 +20,8 @@ public class Hero extends Particle {
         this.detonator = detonator;
     }
 
-    public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector, DeathDetector deathDetector) {
+    public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector, DeathDetector deathDetector,
+                     GoombaTouchDetector goombaTouchDetector) {
         Displacement displacement = new Displacement(
             directions.getHorizontalDirection() * axisMovement(timeDelta, directions),
             directions.getVerticalDirection() * axisMovement(timeDelta, directions)
@@ -30,7 +31,7 @@ public class Hero extends Particle {
 
         move(displacement);
 
-        if (deathDetector.shouldDie(this)) {
+        if (deathDetector.shouldDie(this) || goombaTouchDetector.isTouched(this)) {
             die();
         }
     }
