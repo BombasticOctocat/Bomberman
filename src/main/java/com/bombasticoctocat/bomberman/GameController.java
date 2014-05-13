@@ -30,7 +30,6 @@ public class GameController implements ViewController {
     @FXML private Canvas gameCanvas;
     @FXML private Pane gamePane;
     @Inject private ParticlesImagesManager particlesImagesManager;
-    @Inject private SettingsManager settingsManager;
 
     private Board board;
     private boolean isPaused = true, placedBomb = false;
@@ -259,7 +258,7 @@ public class GameController implements ViewController {
 
                 EnumSet<Directions.Direction> directions = EnumSet.noneOf(Directions.Direction.class);
                 for (Settings.DirectionKey dir: Settings.DirectionKey.values()) {
-                    if (keyboardState.contains(settingsManager.getSetting(dir))) {
+                    if (keyboardState.contains(dir.getSetting())) {
                         directions.add(dir.getDirection());
                     }
                 }
@@ -294,10 +293,10 @@ public class GameController implements ViewController {
     private void handleKeyEvent(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             keyboardState.add(event.getCode());
-            if (settingsManager.getSetting(Settings.Key.PAUSE) == event.getCode()) {
+            if (Settings.Key.PAUSE.getSetting() == event.getCode()) {
                 isPaused = !isPaused;
                 log.info(isPaused ? "Paused game" : "Unpaused game");
-            } else if (settingsManager.getSetting(Settings.Key.BOMB) == event.getCode()) {
+            } else if (Settings.Key.BOMB.getSetting() == event.getCode()) {
                 placedBomb = true;
                 log.info("Placed bomb");
             }

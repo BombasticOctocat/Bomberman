@@ -55,42 +55,26 @@ public class SettingsManager {
         }
     }
 
+    private String getSetting(String name) {
+        return settings.get(name);
+    }
+
+    private void setSetting(String name, String value) {
+        settings.put(name, value);
+        preferences.put(name, value);
+    }
+
     public <T extends Enum<T>> T getSetting(Settings.EnumField<T> key) {
         try {
             Class<? extends Enum<T>> enumClass = key.getEnumClass();
             Method valueOFMethod = enumClass.getDeclaredMethod("valueOf", String.class);
-            return (T) valueOFMethod.invoke(null, settings.get(key.stringValue()));
+            return (T) valueOFMethod.invoke(null, getSetting(key.stringValue()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String getSetting(String name) {
-        return settings.get(name);
-    }
-
     public <T extends Enum<T>> void setSetting(Settings.EnumField<T> key, Enum<T> value) {
         setSetting(key.stringValue(), value.toString());
-    }
-
-    public void setSetting(String name, String value) {
-        settings.put(name, value);
-        preferences.put(name, value);
-    }
-
-    public Map<String, String> getSettings(String pattern) {
-        Map<String, String> res = new HashMap<>();
-        for (Map.Entry<String, String> entry: settings.entrySet()) {
-            if (entry.getKey().matches(pattern)) {
-                res.put(entry.getKey(), entry.getValue());
-            }
-        }
-        return res;
-    }
-
-    public void setSettings(Map<String, String> values) {
-        for (Map.Entry<String, String> entry: values.entrySet()) {
-            setSetting(entry.getKey(), entry.getValue());
-        }
     }
 }
