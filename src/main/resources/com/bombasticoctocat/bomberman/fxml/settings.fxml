@@ -25,37 +25,37 @@
     </rowConstraints>
 
     <children>
-        <Button id="UpSettingBtn" fx:id="UpSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleUpSettingClick" prefHeight="33.0" prefWidth="75.0" text="UP" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Button id="upSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="UP" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button id="DownSettingBtn" fx:id="DownSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleDownSettingClick" prefHeight="33.0" prefWidth="75.0" text="DOWN" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Button id="downSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="DOWN" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button id="LeftSettingBtn" fx:id="LeftSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLeftSettingClick" prefHeight="33.0" prefWidth="75.0" text="LEFT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Button id="leftSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="LEFT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button id="RightSettingBtn" fx:id="RightSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRightSettingClick" prefHeight="33.0" prefWidth="75.0" text="RIGHT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button id="rightSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="RIGHT" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button id="SetBombSettingBtn" fx:id="SetBombSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleSetBombSettingClick" prefHeight="33.0" prefWidth="75.0" text="Z" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button id="bombSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="Z" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button id="PauseSettingBtn" fx:id="PauseSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handlePauseSettingClick" prefHeight="33.0" prefWidth="75.0" text="P" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button id="pauseSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="P" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
             <font>
                 <Font size="12.0" />
             </font>
         </Button>
-        <Button id="RestoreDefaultSettingBtn" fx:id="RestoreDefaultSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleRestoreDefaultSettingClick" prefHeight="33.0" prefWidth="75.0" text="Default" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+        <Button id="RestoreDefaultSettingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="33.0" prefWidth="75.0" text="Default" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
             <font>
                 <Font size="12.0" />
             </font>
