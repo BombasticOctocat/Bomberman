@@ -30,6 +30,7 @@ public class GameController implements ViewController {
     @FXML private Canvas gameCanvas;
     @FXML private Pane gamePane;
     @Inject private ParticlesImagesManager particlesImagesManager;
+    @Inject private SettingsManager settingsManager;
 
     private Board board;
     private boolean isPaused = true, placedBomb = false;
@@ -257,10 +258,12 @@ public class GameController implements ViewController {
                 }
 
                 EnumSet<Directions.Direction> directions = EnumSet.noneOf(Directions.Direction.class);
-                if (keyboardState.contains(KeyCode.UP)) directions.add(Directions.UP);
-                if (keyboardState.contains(KeyCode.LEFT)) directions.add(Directions.LEFT);
-                if (keyboardState.contains(KeyCode.RIGHT)) directions.add(Directions.RIGHT);
-                if (keyboardState.contains(KeyCode.DOWN)) directions.add(Directions.DOWN);
+                String[] dirs = {"up", "left", "right", "down"};
+                for (String dir: dirs) {
+                    if (keyboardState.contains(KeyCode.valueOf(settingsManager.getSetting("controls." + dir)))) {
+                        directions.add(Directions.Direction.valueOf(dir.toUpperCase()));
+                    }
+                }
 
                 long currentFrameTime = System.currentTimeMillis();
                 if (previousFrameTime == 0) {
@@ -292,14 +295,12 @@ public class GameController implements ViewController {
     private void handleKeyEvent(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             keyboardState.add(event.getCode());
-            switch (event.getCode()) {
-                case P:
-                    isPaused = !isPaused;
-                    log.info(isPaused ? "Paused game" : "Unpaused game");
-                    break;
-                case Z:
-                    placedBomb = true;
-                    log.info("Placed bomb");
+            if (KeyCode.valueOf(settingsManager.getSetting("controls.pause")) == event.getCode()) {
+                isPaused = !isPaused;
+                log.info(isPaused ? "Paused game" : "Unpaused game");
+            } else if (KeyCode.valueOf(settingsManager.getSetting("controls.bomb")) == event.getCode()) {
+                placedBomb = true;
+                log.info("Placed bomb");
             }
         } else {
             keyboardState.remove(event.getCode());
