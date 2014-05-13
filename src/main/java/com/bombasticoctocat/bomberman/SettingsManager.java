@@ -7,12 +7,53 @@ import java.util.prefs.Preferences;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.bombasticoctocat.bomberman.game.Directions;
+import javafx.scene.input.KeyCode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public class SettingsManager {
+    public interface Field {
+        public String stringValue();
+    }
+
+    public enum DirectionKey implements Field {
+        UP("controls.up", Directions.Direction.UP),
+        DOWN("controls.down", Directions.Direction.DOWN),
+        LEFT("controls.left", Directions.Direction.LEFT),
+        RIGHT("controls.right", Directions.Direction.RIGHT);
+
+        private String name;
+        private Directions.Direction direction;
+        private DirectionKey(String name, Directions.Direction dir) {
+            this.direction = dir;
+            this.name = name;
+        }
+
+        public String stringValue() {
+            return name;
+        }
+
+        public Directions.Direction getDirection() {
+            return direction;
+        }
+    }
+
+    public enum Key implements Field {
+        PAUSE("controls.pause"),
+        BOMB("controls.bomb");
+
+        private String name;
+        private Key(String name) {
+            this.name = name;
+        }
+        public String stringValue() {
+            return name;
+        }
+    }
+
     private final Preferences preferences = Preferences.userNodeForPackage(SettingsManager.class);
     private final Map<String, String> settings = new HashMap<>();
 
@@ -54,8 +95,8 @@ public class SettingsManager {
         }
     }
 
-    public String getSetting(String name) {
-        return settings.get(name);
+    public KeyCode getKeySetting(Field key) {
+        return KeyCode.valueOf(settings.get(key.stringValue()));
     }
 
     public void setSetting(String name, String value) {

@@ -258,10 +258,9 @@ public class GameController implements ViewController {
                 }
 
                 EnumSet<Directions.Direction> directions = EnumSet.noneOf(Directions.Direction.class);
-                String[] dirs = {"up", "left", "right", "down"};
-                for (String dir: dirs) {
-                    if (keyboardState.contains(KeyCode.valueOf(settingsManager.getSetting("controls." + dir)))) {
-                        directions.add(Directions.Direction.valueOf(dir.toUpperCase()));
+                for (SettingsManager.DirectionKey dir: SettingsManager.DirectionKey.values()) {
+                    if (keyboardState.contains(settingsManager.getKeySetting(dir))) {
+                        directions.add(dir.getDirection());
                     }
                 }
 
@@ -295,10 +294,10 @@ public class GameController implements ViewController {
     private void handleKeyEvent(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             keyboardState.add(event.getCode());
-            if (KeyCode.valueOf(settingsManager.getSetting("controls.pause")) == event.getCode()) {
+            if (settingsManager.getKeySetting(SettingsManager.Key.PAUSE) == event.getCode()) {
                 isPaused = !isPaused;
                 log.info(isPaused ? "Paused game" : "Unpaused game");
-            } else if (KeyCode.valueOf(settingsManager.getSetting("controls.bomb")) == event.getCode()) {
+            } else if (settingsManager.getKeySetting(SettingsManager.Key.BOMB) == event.getCode()) {
                 placedBomb = true;
                 log.info("Placed bomb");
             }
