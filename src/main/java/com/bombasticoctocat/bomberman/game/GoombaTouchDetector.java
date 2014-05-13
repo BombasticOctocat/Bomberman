@@ -16,7 +16,7 @@ public class GoombaTouchDetector {
 
     public boolean isTouched(Hero hero) {
         for (Goomba goomba : goombas) {
-            if (touching(hero, goomba)) {
+            if (goomba.isAlive() && touching(hero, goomba)) {
                 return true;
             }
         }
