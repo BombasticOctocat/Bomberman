@@ -224,7 +224,7 @@ public class GameController implements ViewController {
             List<Goomba> goombas = board.getGoombas();
             if (goombas != null) {
                 for (Goomba goomba: goombas) {
-                    WritableImage img = particlesImagesManager.getParticleImage("goomba", goomba);
+                    WritableImage img = particlesImagesManager.getParticleImage(goomba.isAlive() ? "goomba" : "killed", goomba);
                     if (img != null) {
                         gc.drawImage(img, goomba.getX() * boardToCanvasScale - wpx, goomba.getY() * boardToCanvasScale - wpy);
                     }
