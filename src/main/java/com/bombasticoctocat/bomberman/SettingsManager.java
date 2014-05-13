@@ -13,8 +13,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public class SettingsManager {
-    Preferences preferences = Preferences.userNodeForPackage(SettingsManager.class);
-    Map<String, String> setings = new HashMap<>();
+    private final Preferences preferences = Preferences.userNodeForPackage(SettingsManager.class);
+    private final Map<String, String> settings = new HashMap<>();
 
     private void buildSettings(Node node, String prefix) {
         prefix = prefix.replaceAll("^settings\\.", "") + node.getNodeName();
@@ -25,7 +25,7 @@ public class SettingsManager {
                 Text text = (Text) child;
                 String content = text.getTextContent().trim();
                 if (content.length() > 0) {
-                    setings.put(prefix, content);
+                    settings.put(prefix, content);
                 }
             }
             if (child.getNodeType() == Node.ELEMENT_NODE) {
@@ -34,7 +34,7 @@ public class SettingsManager {
         }
     }
 
-    SettingsManager() {
+    public SettingsManager() {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -46,7 +46,7 @@ public class SettingsManager {
 
             buildSettings(document.getDocumentElement(), "");
 
-            for (Map.Entry<String, String> setting: setings.entrySet()) {
+            for (Map.Entry<String, String> setting: settings.entrySet()) {
                 setting.setValue(preferences.get(setting.getKey(), setting.getValue()));
             }
         } catch (Exception e) {
@@ -54,18 +54,18 @@ public class SettingsManager {
         }
     }
 
-    String getSetting(String name) {
-        return setings.get(name);
+    public String getSetting(String name) {
+        return settings.get(name);
     }
 
-    void setSetting(String name, String value) {
-        setings.put(name, value);
+    public void setSetting(String name, String value) {
+        settings.put(name, value);
         preferences.put(name, value);
     }
 
-    Map<String, String> getSettings(String pattern) {
+    public Map<String, String> getSettings(String pattern) {
         Map<String, String> res = new HashMap<>();
-        for (Map.Entry<String, String> entry: setings.entrySet()) {
+        for (Map.Entry<String, String> entry: settings.entrySet()) {
             if (entry.getKey().matches(pattern)) {
                 res.put(entry.getKey(), entry.getValue());
             }
@@ -73,7 +73,7 @@ public class SettingsManager {
         return res;
     }
 
-    void setSetings(Map<String, String> values) {
+    public void setSettings(Map<String, String> values) {
         for (Map.Entry<String, String> entry: values.entrySet()) {
             setSetting(entry.getKey(), entry.getValue());
         }
