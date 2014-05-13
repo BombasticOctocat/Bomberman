@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings>
+  <controls>
+    <up>UP</up>
+    <down>DOWN</down>
+    <left>LEFT</left>
+    <right>RIGHT</right>
+    <pause>P</pause>
+    <bomb>Z</bomb>
+  </controls>
+</settings>

@@ -95,5 +95,6 @@ class BombermanModule extends AbstractModule {
     @Override
     protected void configure() {
         bindListener(Matchers.any(), new Slf4jLoggerTypeListener());
+        bind(SettingsManager.class).toInstance(new SettingsManager());
     }
 }
