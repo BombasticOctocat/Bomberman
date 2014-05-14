@@ -14,8 +14,13 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public class SettingsManager {
+    public enum SettingType {
+        CURRENT, DEFAULT
+    }
+
     private final Preferences preferences = Preferences.userNodeForPackage(SettingsManager.class);
     private final Map<String, String> settings = new HashMap<>();
+    private final Map<String, String> settingsDefault = new HashMap<>();
 
     private void buildSettings(Node node, String prefix) {
         prefix = prefix.replaceAll("^settings\\.", "") + node.getNodeName();
@@ -26,6 +31,7 @@ public class SettingsManager {
                 Text text = (Text) child;
                 String content = text.getTextContent().trim();
                 if (content.length() > 0) {
+                    settingsDefault.put(prefix, content);
                     settings.put(prefix, content);
                 }
             }
@@ -55,8 +61,12 @@ public class SettingsManager {
         }
     }
 
-    private String getSetting(String name) {
-        return settings.get(name);
+    private String getSetting(String name, SettingType type) {
+        if (type == SettingType.CURRENT) {
+            return settings.get(name);
+        } else {
+            return settingsDefault.get(name);
+        }
     }
 
     private void setSetting(String name, String value) {
@@ -64,11 +74,11 @@ public class SettingsManager {
         preferences.put(name, value);
     }
 
-    public <T extends Enum<T>> T getSetting(Settings.EnumField<T> key) {
+    public <T extends Enum<T>> T getSetting(Settings.EnumField<T> key, SettingType type) {
         try {
             Class<? extends Enum<T>> enumClass = key.getEnumClass();
             Method valueOFMethod = enumClass.getDeclaredMethod("valueOf", String.class);
-            return (T) valueOFMethod.invoke(null, getSetting(key.stringValue()));
+            return (T) valueOFMethod.invoke(null, getSetting(key.stringValue(), type));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

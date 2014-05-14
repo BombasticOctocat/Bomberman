@@ -10,6 +10,7 @@ public class Settings {
     public interface  Field<T> {
         public void setSetting(T value);
         public T getSetting();
+        public T getDefaultSetting();
     }
 
     public interface EnumField<T extends Enum<T>> extends Field<T> {
@@ -48,7 +49,12 @@ public class Settings {
 
         @Override
         public KeyCode getSetting() {
-            return settingsManager.getSetting(this);
+            return settingsManager.getSetting(this, SettingsManager.SettingType.CURRENT);
+        }
+
+        @Override
+        public KeyCode getDefaultSetting() {
+            return settingsManager.getSetting(this, SettingsManager.SettingType.DEFAULT);
         }
     }
 
@@ -87,7 +93,12 @@ public class Settings {
 
         @Override
         public KeyCode getSetting() {
-            return settingsManager.getSetting(this);
+            return settingsManager.getSetting(this, SettingsManager.SettingType.CURRENT);
+        }
+
+        @Override
+        public KeyCode getDefaultSetting() {
+            return settingsManager.getSetting(this, SettingsManager.SettingType.DEFAULT);
         }
     }
 }
