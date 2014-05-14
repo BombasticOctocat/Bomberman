@@ -7,14 +7,25 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import org.slf4j.Logger;
 
 public class SettingsController implements ViewController {
-    @InjectLog Logger log;
-    @FXML GridPane settingsPane;
+    private @InjectLog Logger log;
+    private @FXML GridPane settingsPane;
     private String nameCurrentWaitingSetting;
+    private final String BTN_ID_SUFFIX = "SettingBtn";
+
+    private Settings.Key getKey(Button btn) {
+        String id = btn.getId();
+        if (!id.matches("^[a-z]+" + BTN_ID_SUFFIX + "$")) {
+            throw new RuntimeException("Incorrect button id");
+        }
+        String name = id.replaceAll(BTN_ID_SUFFIX + "$", "").toUpperCase();
+        return Settings.Key.valueOf(name);
+    }
 
     @Override
     public void enteredView() {
@@ -39,7 +50,11 @@ public class SettingsController implements ViewController {
 
         Button button = (Button) settingsPane.lookup("#" + nameCurrentWaitingSetting);
         nameCurrentWaitingSetting = null;
-        button.setText(event.getCode().toString());
+        Settings.Key key = getKey(button);
+        if (event.getCode() != KeyCode.ESCAPE) {
+            key.setSetting(event.getCode());
+        }
+        button.setText(key.getSetting().toString());
     }
 
     @FXML void handleButtonClick(ActionEvent actionEvent) {
@@ -50,13 +65,12 @@ public class SettingsController implements ViewController {
     }
 
     @FXML
-    private void handleRestoreDefaultSettingClick(ActionEvent actionEvent) throws IOException {
+    private void handleRestoreDefaultSettingClick(ActionEvent actionEvent) {
         log.info("Clicked 'Default");
-        /*UpSettingBtn.setText("UP");
-        DownSettingBtn.setText("DOWN");
-        LeftSettingBtn.setText("LEFT");
-        RightSettingBtn.setText("RIGHT");
-        SetBombSettingBtn.setText("Z");
-        PauseSettingBtn.setText("P");*/
+        for (Settings.Key key: Settings.Key.values()) {
+            Button button = (Button) settingsPane.lookup("#" + key.toString().toLowerCase() + BTN_ID_SUFFIX);
+            key.setSetting(key.getDefaultSetting());
+            button.setText(key.getSetting().toString());
+        }
     }
 }
