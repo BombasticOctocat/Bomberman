@@ -11,13 +11,14 @@
 
 .button {
     -fx-pref-width: 90.0;
-    -fx-pref-height: 30.0
+    -fx-pref-height: 30.0;
+    -fx-text-alignment: center;
 }
 
 #title {
     -fx-font-size: 230%;
 }
 
-.button {
-    -fx-text-alignment: center;
+#restore-defaults-btn {
+    -fx-pref-width: 180.0;
 }
