@@ -1,0 +1,23 @@
+.settings-root {
+    -fx-hgap: 10.0;
+    -fx-vgap: 10.0;
+    -fx-alignment: center;
+    -fx-padding: 10.0;
+}
+
+.label {
+    -fx-text-alignment: left;
+}
+
+.button {
+    -fx-pref-width: 90.0;
+    -fx-pref-height: 30.0
+}
+
+#title {
+    -fx-font-size: 230%;
+}
+
+.button {
+    -fx-text-alignment: center;
+}
