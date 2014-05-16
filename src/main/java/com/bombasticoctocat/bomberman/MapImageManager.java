@@ -16,16 +16,16 @@ public class MapImageManager {
     private double scale;
     WritableImage mapImage;
     List<List<Tile.Type>> map;
-    EnumMap<Tile.Type, String> tileMaper = new EnumMap<>(Tile.Type.class);
+    EnumMap<Tile.Type, ParticleImage> tileMaper = new EnumMap<>(Tile.Type.class);
     Tile anyTile = null;
 
     @Inject private ParticlesImagesManager particlesImagesManager;
     @Inject GameObjectsManager gameObjectsManager;
 
     MapImageManager() {
-        tileMaper.put(Tile.CONCRETE, "concrete");
-        tileMaper.put(Tile.EMPTY, "empty");
-        tileMaper.put(Tile.BRICKS, "bricks");
+        tileMaper.put(Tile.CONCRETE, ParticleImage.CONCRETE);
+        tileMaper.put(Tile.EMPTY, ParticleImage.EMPTY);
+        tileMaper.put(Tile.BRICKS, ParticleImage.BRICKS);
     }
 
     public void registerOnRefreshParticlesImagesHandler(ParticlesImagesManager particlesImagesManager) {

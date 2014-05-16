@@ -99,7 +99,8 @@ public class ParticlesImagesManager {
         }
     }
 
-    public WritableImage getParticleImage(String particleName, Particle particle) {
+    public WritableImage getParticleImage(ParticleImage image, Particle particle) {
+        String particleName = image.getName();
         if (!loadedParticles.containsKey(particleName)) {
             Group particleNode = loadFxmlParticle(particleName).getRoot();
             ParticleInformation particleInfo = new ParticleInformation(particleNode, particle.width(), particle.height());

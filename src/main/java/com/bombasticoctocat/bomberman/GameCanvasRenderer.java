@@ -35,7 +35,7 @@ public class GameCanvasRenderer {
     public void resetState() {
         // quite dirty hack to preaload flames fxml (they don't show up on first explosion without it)
         Board board = gameObjectsManager.getBoard();
-        particlesImagesManager.getParticleImage("flames", board.getTileAt(0, 0));
+        particlesImagesManager.getParticleImage(ParticleImage.FLAMES, board.getTileAt(0, 0));
         mapImageManager.resetState();
     }
 
@@ -94,14 +94,14 @@ public class GameCanvasRenderer {
                     Tile tile = board.getTileAt(i, j);
 
                     if (tile.isOnFire()) {
-                        WritableImage img = particlesImagesManager.getParticleImage("flames", tile);
+                        WritableImage img = particlesImagesManager.getParticleImage(ParticleImage.FLAMES, tile);
                         if (img != null) {
                             gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
                         }
                     }
 
                     if (tile.isBombPlanted()) {
-                        WritableImage img = particlesImagesManager.getParticleImage("bomb", tile);
+                        WritableImage img = particlesImagesManager.getParticleImage(ParticleImage.BOMB, tile);
                         if (img != null) {
                             gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
                         }
@@ -112,14 +112,14 @@ public class GameCanvasRenderer {
             List<Goomba> goombas = board.getGoombas();
             if (goombas != null) {
                 for (Goomba goomba: goombas) {
-                    WritableImage img = particlesImagesManager.getParticleImage(goomba.isAlive() ? "goomba" : "killed", goomba);
+                    WritableImage img = particlesImagesManager.getParticleImage(goomba.isAlive() ? ParticleImage.GOOMBA : ParticleImage.KILLED, goomba);
                     if (img != null) {
                         gc.drawImage(img, goomba.getX() * boardToCanvasScale - wpx, goomba.getY() * boardToCanvasScale - wpy);
                     }
                 }
             }
 
-            WritableImage img = particlesImagesManager.getParticleImage(hero.isAlive() ? "character" : "killed", hero);
+            WritableImage img = particlesImagesManager.getParticleImage(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
             if (img != null) {
                 gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
             }
