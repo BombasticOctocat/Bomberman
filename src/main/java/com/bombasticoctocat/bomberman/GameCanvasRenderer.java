@@ -13,6 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import com.google.inject.Inject;
+import javafx.util.Callback;
 import org.slf4j.Logger;
 
 public class GameCanvasRenderer {
@@ -60,76 +61,96 @@ public class GameCanvasRenderer {
         particlesImagesManager.refreshParticlesImages(boardToCanvasScale);
     }
 
-    public void redraw() {
-        gameObjectsManager.getBoardLock().lock();
-        try {
-            Board board = gameObjectsManager.getBoard();
-            GraphicsContext gc = canvas.getGraphicsContext2D();
+    private class RedrawManager {
+        double wpx, wpy;
+        double width, height;
+        Board board;
+        GraphicsContext gc;
+
+        public RedrawManager() {
+            board = gameObjectsManager.getBoard();
+            gc = canvas.getGraphicsContext2D();
+
+            Hero hero = board.getHero();;
+            double heroCenterX = hero.getX() + hero.width() / 2.0;
+            double heroCenterY = hero.getY() + hero.height() / 2.0;
+            double windowWidth = canvas.getWidth() / boardToCanvasScale;
+            double windowHeight = canvas.getHeight() / boardToCanvasScale;
+            double windowX = Math.min(Math.max(heroCenterX - windowWidth / 2.0, 0.0), board.width() - windowWidth);
+            double windowY = Math.min(Math.max(heroCenterY - windowHeight / 2.0, 0.0), board.height() - windowHeight);
+            wpx = windowX * boardToCanvasScale;
+            wpy = windowY * boardToCanvasScale;
+        }
+
+        public void drawBackground(WritableImage backgroungImage) {
             gc.setFill(Color.rgb(22, 45, 80));
             gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-            Hero hero = board.getHero();
-            double wpx, wpy; //rendering window pos {x,y}
-            {
-                double heroCenterX = hero.getX() + hero.width() / 2.0;
-                double heroCenterY = hero.getY() + hero.height() / 2.0;
-                double windowWidth = canvas.getWidth() / boardToCanvasScale;
-                double windowHeight = canvas.getHeight() / boardToCanvasScale;
-                double windowX = Math.min(Math.max(heroCenterX - windowWidth / 2.0, 0.0), board.width() - windowWidth);
-                double windowY = Math.min(Math.max(heroCenterY - windowHeight / 2.0, 0.0), board.height() - windowHeight);
-                wpx = windowX * boardToCanvasScale;
-                wpy = windowY * boardToCanvasScale;
+            gc.drawImage(backgroungImage, wpx, wpy, canvas.getWidth(), canvas.getHeight(),
+                                          0, 0, canvas.getWidth(), canvas.getHeight());
+        }
+
+        public void forEveryTile(Callback<Tile, Void> callback) {
+            for (int i = 0; i < board.tilesHorizontal(); ++i) {
+                for (int j = 0; j < board.tilesVertical(); ++j) {
+                    Tile tile = board.getTileAt(i, j);
+                    callback.call(tile);
+                }
             }
+        }
+
+        public void drawParticle(ParticleImage image, Particle particle) {
+            WritableImage img = particlesImagesManager.getParticleImage(image, particle);
+            if (img != null) {
+                gc.drawImage(img, particle.getX() * boardToCanvasScale - wpx, particle.getY() * boardToCanvasScale - wpy);
+            }
+        }
+
+        public void drawPausedIndicator() {
+            gc.setFill(Color.color(0.0, 0.0, 0.0, 0.6));
+            gc.fillRect(canvas.getWidth() - 94, 0, canvas.getWidth() - 94, 28);
+            gc.setFill(Color.color(0.9, 0.1, 0.1, 1.0));
+            gc.setFont(Font.font("System", FontWeight.BOLD, 20));
+            gc.fillText("paused", canvas.getWidth() - 87, 20);
+        }
+    }
+
+    public void redraw() {
+        gameObjectsManager.getBoardLock().lock();
+        try {
+            RedrawManager redrawManager = new RedrawManager();
 
             mapImageManager.refreshMapImageTiles();
 
             WritableImage mapImage = mapImageManager.getMapImage();
             if (mapImage != null) {
-                gc.drawImage(mapImage, wpx, wpy, canvas.getWidth(), canvas.getHeight(),
-                        0, 0, canvas.getWidth(), canvas.getHeight());
+                redrawManager.drawBackground(mapImage);
             }
 
-            for (int i = 0; i < board.tilesHorizontal(); ++i) {
-                for (int j = 0; j < board.tilesVertical(); ++j) {
-                    Tile tile = board.getTileAt(i, j);
-
-                    if (tile.isOnFire()) {
-                        WritableImage img = particlesImagesManager.getParticleImage(ParticleImage.FLAMES, tile);
-                        if (img != null) {
-                            gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
-                        }
-                    }
-
-                    if (tile.isBombPlanted()) {
-                        WritableImage img = particlesImagesManager.getParticleImage(ParticleImage.BOMB, tile);
-                        if (img != null) {
-                            gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
-                        }
-                    }
+            redrawManager.forEveryTile(tile -> {
+                if (tile.isOnFire()) {
+                    redrawManager.drawParticle(ParticleImage.FLAMES, tile);
                 }
-            }
+                if (tile.isBombPlanted()) {
+                    redrawManager.drawParticle(ParticleImage.BOMB, tile);
+                }
+                return null;
+            });
+
+            Board board = gameObjectsManager.getBoard();
 
             List<Goomba> goombas = board.getGoombas();
             if (goombas != null) {
                 for (Goomba goomba: goombas) {
-                    WritableImage img = particlesImagesManager.getParticleImage(goomba.isAlive() ? ParticleImage.GOOMBA : ParticleImage.KILLED, goomba);
-                    if (img != null) {
-                        gc.drawImage(img, goomba.getX() * boardToCanvasScale - wpx, goomba.getY() * boardToCanvasScale - wpy);
-                    }
+                    redrawManager.drawParticle(goomba.isAlive() ? ParticleImage.GOOMBA : ParticleImage.KILLED, goomba);
                 }
             }
 
-            WritableImage img = particlesImagesManager.getParticleImage(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
-            if (img != null) {
-                gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
-            }
+            Hero hero = board.getHero();
+            redrawManager.drawParticle(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
 
             if (isPaused) {
-                gc.setFill(Color.color(0.0, 0.0, 0.0, 0.6));
-                gc.fillRect(canvas.getWidth() - 94, 0, canvas.getWidth() - 94, 28);
-                gc.setFill(Color.color(0.9, 0.1, 0.1, 1.0));
-                gc.setFont(Font.font("System", FontWeight.BOLD, 20));
-                gc.fillText("paused", canvas.getWidth() - 87, 20);
+                redrawManager.drawPausedIndicator();
             }
         } finally {
             gameObjectsManager.getBoardLock().unlock();
