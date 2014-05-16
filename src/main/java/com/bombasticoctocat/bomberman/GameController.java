@@ -7,7 +7,6 @@ import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,7 +29,7 @@ public class GameController implements ViewController {
     private long previousFrameTime;
     private Timeline gameTimeline;
 
-    private void handleClockTick(ActionEvent event) {
+    private void handleClockTick() {
         if (gameObjectsManager.getBoardLock().tryLock()) {
             try {
                 gameCanvasRenderer.redraw();
@@ -113,7 +112,15 @@ public class GameController implements ViewController {
         gamePane.heightProperty().addListener(geometryChangeListener);
         gamePane.widthProperty().addListener(geometryChangeListener);
 
-        gameTimeline = new Timeline(new KeyFrame(Duration.millis(18.0), this::handleClockTick));
+        gameTimeline = new Timeline(new KeyFrame(Duration.millis(18.0), event -> {
+            try {
+                handleClockTick();
+            } catch (Throwable e) {
+                gameTimeline.stop();
+                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+            }
+        }));
+
         gameTimeline.setCycleCount(Timeline.INDEFINITE);
 
         final ChangeListener<Boolean> lostFocusWindowListener = (ob, ov, focused) -> {
