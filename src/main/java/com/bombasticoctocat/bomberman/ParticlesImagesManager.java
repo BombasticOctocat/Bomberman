@@ -9,6 +9,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import javafx.util.Callback;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -23,13 +24,12 @@ public class ParticlesImagesManager {
     private int imagesLeftToRender = 0;
     private double scale = 0.0;
     private double refreshToScale = 0.0;
-    private Runnable onRefreshcCompleteCallback;
+    private Callback<Double, Void> onRefreshcCompleteCallback;
 
     private class ParticleInformation {
         private final Group node;
         private final int width, height;
         private WritableImage image;
-
 
         public WritableImage getImage() {
             return image;
@@ -55,7 +55,7 @@ public class ParticlesImagesManager {
                 --imagesLeftToRender;
                 if (imagesLeftToRender == 0) {
                     if (onRefreshcCompleteCallback != null) {
-                        Platform.runLater(onRefreshcCompleteCallback);
+                        Platform.runLater(() -> onRefreshcCompleteCallback.call(scale));
                     }
                     if (refreshToScale != 0.0) {
                         double newScale = refreshToScale;
@@ -108,7 +108,7 @@ public class ParticlesImagesManager {
         return loadedParticles.get(particleName).getImage();
     }
 
-    public void setOnRefreshCompleteHandler(Runnable callback) {
+    public void setOnRefreshCompleteHandler(Callback<Double, Void> callback) {
         onRefreshcCompleteCallback = callback;
     }
 
