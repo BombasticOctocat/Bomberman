@@ -47,7 +47,7 @@ public class GameController implements ViewController {
                     previousFrameTime = currentFrameTime;
                 }
                 if (!isPaused.get()) {
-                    gameLogicUpdater.update(currentFrameTime - previousFrameTime, new Directions(directions), placedBomb);
+                    gameLogicUpdater.update(Math.min(70, currentFrameTime - previousFrameTime), new Directions(directions), placedBomb);
                 }
                 previousFrameTime = currentFrameTime;
                 placedBomb = false;
