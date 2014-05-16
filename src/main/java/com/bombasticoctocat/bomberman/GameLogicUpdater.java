@@ -1,10 +1,12 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.Directions;
-import com.google.inject.Inject;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import org.slf4j.Logger;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import com.google.inject.Inject;
+
+import com.bombasticoctocat.bomberman.game.Directions;
 
 public class GameLogicUpdater {
     @InjectLog private static Logger log;

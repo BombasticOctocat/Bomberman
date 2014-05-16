@@ -1,7 +1,8 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.*;
-import com.google.inject.Inject;
+import java.net.URL;
+import java.util.*;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -12,10 +13,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+
 import org.slf4j.Logger;
 
-import java.net.URL;
-import java.util.*;
+import com.google.inject.Inject;
+
+import com.bombasticoctocat.bomberman.game.*;
 
 public class GameController implements ViewController {
     @InjectLog private static Logger log;

@@ -1,15 +1,18 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.Board;
-import com.bombasticoctocat.bomberman.game.Tile;
-import com.google.inject.Inject;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import org.slf4j.Logger;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+
+import org.slf4j.Logger;
+
+import com.google.inject.Inject;
+
+import com.bombasticoctocat.bomberman.game.Board;
+import com.bombasticoctocat.bomberman.game.Tile;
 
 public class MapImageManager {
     @InjectLog private static Logger log;

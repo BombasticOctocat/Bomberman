@@ -1,7 +1,5 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.*;
-
 import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
@@ -12,10 +10,13 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Callback;
+
+import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import javafx.util.Callback;
-import org.slf4j.Logger;
+
+import com.bombasticoctocat.bomberman.game.*;
 
 public class GameCanvasRenderer {
     @InjectLog private static Logger log;

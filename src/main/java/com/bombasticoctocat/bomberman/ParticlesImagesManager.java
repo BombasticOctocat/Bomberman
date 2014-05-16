@@ -1,8 +1,10 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.Particle;
-import com.cathive.fx.guice.GuiceFXMLLoader;
-import com.google.inject.Inject;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
@@ -10,12 +12,14 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Callback;
+
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.inject.Inject;
+
+import com.cathive.fx.guice.GuiceFXMLLoader;
+
+import com.bombasticoctocat.bomberman.game.Particle;
 
 public class ParticlesImagesManager {
     @Inject private GuiceFXMLLoader fxmlLoader;
