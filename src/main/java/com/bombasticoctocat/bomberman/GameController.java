@@ -4,6 +4,8 @@ import com.bombasticoctocat.bomberman.game.*;
 import com.google.inject.Inject;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +24,8 @@ public class GameController implements ViewController {
     @Inject GameCanvasRenderer gameCanvasRenderer;
     @Inject GameObjectsManager gameObjectsManager;
     @Inject GameLogicUpdater gameLogicUpdater;
-
-    private boolean isPaused = true, placedBomb = false;
+    private BooleanProperty isPaused = new SimpleBooleanProperty(true);
+    private boolean placedBomb = false;
     private final EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
     private long previousFrameTime;
     private Timeline gameTimeline;
@@ -44,7 +46,7 @@ public class GameController implements ViewController {
                 if (previousFrameTime == 0) {
                     previousFrameTime = currentFrameTime;
                 }
-                if (!isPaused) {
+                if (!isPaused.get()) {
                     gameLogicUpdater.update(currentFrameTime - previousFrameTime, new Directions(directions), placedBomb);
                 }
                 previousFrameTime = currentFrameTime;
@@ -61,8 +63,8 @@ public class GameController implements ViewController {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             keyboardState.add(event.getCode());
             if (Settings.Key.PAUSE.getSetting() == event.getCode()) {
-                isPaused = !isPaused;
-                log.info(isPaused ? "Paused game" : "Unpaused game");
+                isPaused.set(!isPaused.get());
+                log.info(isPaused.get() ? "Paused game" : "Unpaused game");
             } else if (Settings.Key.BOMB.getSetting() == event.getCode()) {
                 placedBomb = true;
                 log.info("Placed bomb");
@@ -78,7 +80,7 @@ public class GameController implements ViewController {
         gameCanvasRenderer.resetState();
         gameLogicUpdater.start();
         placedBomb = false;
-        isPaused = false;
+        isPaused.set(false);
     }
 
     public void stopGame() {
@@ -98,8 +100,8 @@ public class GameController implements ViewController {
     public void leavedView() {
         log.info("Leaved view");
         gameTimeline.stop();
-        if (!isPaused) log.info("Paused game");
-        isPaused = true;
+        if (!isPaused.get()) log.info("Paused game");
+        isPaused.set(true);
     }
 
     @Override
@@ -133,7 +135,7 @@ public class GameController implements ViewController {
             }
         });
 
-        gameCanvasRenderer.initialize();
+        gameCanvasRenderer.initialize(isPaused);
 
         gamePane.getChildren().setAll(gameCanvasRenderer.getCanvasNode());
 

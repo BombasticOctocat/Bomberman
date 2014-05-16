@@ -4,6 +4,7 @@ import com.bombasticoctocat.bomberman.game.*;
 
 import java.util.List;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,7 +21,7 @@ public class GameCanvasRenderer {
     @InjectLog private static Logger log;
     private double boardToCanvasScale;
     private Canvas canvas;
-    private boolean isPaused;
+    private BooleanProperty isPaused;
     @Inject private ParticlesImagesManager particlesImagesManager;
     @Inject private MapImageManager mapImageManager;
     @Inject private GameObjectsManager gameObjectsManager;
@@ -29,8 +30,9 @@ public class GameCanvasRenderer {
         canvas = new Canvas(200, 200);
     }
 
-    public void initialize() {
+    public void initialize(BooleanProperty isPaused) {
         mapImageManager.registerOnRefreshParticlesImagesHandler(particlesImagesManager);
+        this.isPaused = isPaused;
     }
 
     public void resetState() {
@@ -38,10 +40,6 @@ public class GameCanvasRenderer {
         Board board = gameObjectsManager.getBoard();
         particlesImagesManager.getParticleImage(ParticleImage.FLAMES, board.getTileAt(0, 0));
         mapImageManager.resetState();
-    }
-
-    public void setPaused(boolean isPaused) {
-        this.isPaused = isPaused;
     }
 
     public Node getCanvasNode() {
@@ -70,7 +68,10 @@ public class GameCanvasRenderer {
         public RedrawManager() {
             board = gameObjectsManager.getBoard();
             gc = canvas.getGraphicsContext2D();
+            computeRenderingWindowPosition();
+        }
 
+        private void computeRenderingWindowPosition() {
             Hero hero = board.getHero();;
             double heroCenterX = hero.getX() + hero.width() / 2.0;
             double heroCenterY = hero.getY() + hero.height() / 2.0;
@@ -149,7 +150,7 @@ public class GameCanvasRenderer {
             Hero hero = board.getHero();
             redrawManager.drawParticle(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
 
-            if (isPaused) {
+            if (isPaused.get()) {
                 redrawManager.drawPausedIndicator();
             }
         } finally {
