@@ -96,6 +96,9 @@ class BombermanModule extends AbstractModule {
     protected void configure() {
         bindListener(Matchers.any(), new Slf4jLoggerTypeListener());
         bind(SettingsManager.class).toInstance(new SettingsManager());
+        bind(ParticlesImagesManager.class).toInstance(new ParticlesImagesManager());
+        bind(MapImageManager.class).toInstance(new MapImageManager());
+        bind(GameObjectsManager.class).toInstance(new GameObjectsManager());
         requestStaticInjection(Settings.class);
     }
 }

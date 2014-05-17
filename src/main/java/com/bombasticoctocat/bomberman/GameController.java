@@ -1,260 +1,41 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.*;
-import com.google.inject.Inject;
+import java.net.URL;
+import java.util.*;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+
 import org.slf4j.Logger;
 
-import java.net.URL;
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
+import com.google.inject.Inject;
+
+import com.bombasticoctocat.bomberman.game.*;
 
 public class GameController implements ViewController {
     @InjectLog private static Logger log;
-    @FXML private Canvas gameCanvas;
     @FXML private Pane gamePane;
-    @Inject private ParticlesImagesManager particlesImagesManager;
-
-    private Board board;
-    private boolean isPaused = true, placedBomb = false;
-    private boolean rerenderCanvas;
-    private double canvasWidth, canvasHeight, boardToCanvasScale;
+    @Inject GameCanvasRenderer gameCanvasRenderer;
+    @Inject GameObjectsManager gameObjectsManager;
+    @Inject GameLogicUpdater gameLogicUpdater;
+    private BooleanProperty isPaused = new SimpleBooleanProperty(true);
+    private boolean placedBomb = false;
     private final EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
     private long previousFrameTime;
-    private final ReentrantLock boardLock = new ReentrantLock();
-    private Thread boardUpdaterThread;
-    private final LinkedBlockingQueue<BoardUpdate> boardUpdatesQueue = new LinkedBlockingQueue<>();
     private Timeline gameTimeline;
 
-    private static class BoardUpdate {
-        public long delta;
-        public Directions directions;
-        public boolean placedBomb;
-    }
-
-    private void handleGeometryChange() {
-        canvasWidth = gamePane.getWidth();
-        canvasHeight = gamePane.getHeight();
-
-        if (canvasWidth <= 0 || canvasHeight <= 0) return;
-
-        gameCanvas.setWidth(canvasWidth);
-        gameCanvas.setHeight(canvasHeight);
-
-        boardToCanvasScale = Math.max(canvasHeight / (board.height() * 0.8), canvasWidth / board.width());
-
-        particlesImagesManager.refreshParticlesImages(boardToCanvasScale);
-    }
-
-    private void boardUpdater() {
-        log.info("Started board updater thread");
-        try {
-            while (!Thread.currentThread().isInterrupted()) {
-                BoardUpdate update = boardUpdatesQueue.take();
-                boardLock.lockInterruptibly();
-                try {
-                    board.tick(update.delta, update.directions, update.placedBomb);
-                    rerenderCanvas = true;
-                } finally {
-                    boardLock.unlock();
-                }
-            }
-        } catch (InterruptedException e) {
-            log.info("Exiting board updater thread");
-        }
-    }
-
-    private class MapImageManager {
-        WritableImage mapImage;
-        List<List<Tile.Type>> map;
-        EnumMap<Tile.Type, String> tileMaper = new EnumMap<>(Tile.Type.class);
-        Tile anyTile = null;
-
-        MapImageManager() {
-            tileMaper.put(Tile.CONCRETE, "concrete");
-            tileMaper.put(Tile.EMPTY, "empty");
-            tileMaper.put(Tile.BRICKS, "bricks");
-        }
-
-        public void registerOnRefreshParticlesImagesHandler(ParticlesImagesManager particlesImagesManager) {
-            particlesImagesManager.setOnRefreshCompleteHandler(this::refreshMapImage);
-        }
-
-        public void initialize() {
-            boardLock.lock();
+    private void handleClockTick() {
+        if (gameObjectsManager.getBoardLock().tryLock()) {
             try {
-                anyTile = board.getTileAt(0, 0);
-                mapImage = null;
-                map = new ArrayList<>();
-                for (int i = 0; i < board.tilesVertical(); ++i) {
-                    List<Tile.Type> row = new ArrayList<>();
-                    for (int j = 0; j < board.tilesHorizontal(); ++j) {
-                        Tile tile = board.getTileAt(j, i);
-                        row.add(tile.getType());
-                    }
-                    map.add(row);
-                }
-            } finally {
-                boardLock.unlock();
-            }
-            refreshMapImage();
-        }
-
-        public void renderTileOnImage(PixelWriter pixelWriter, double x, double y, Tile.Type tileType) {
-            if (pixelWriter == null) return;
-            WritableImage img = particlesImagesManager.getParticleImage(tileMaper.get(tileType), anyTile);
-            if (img != null) {
-                pixelWriter.setPixels(
-                        (int)(x * anyTile.width() * boardToCanvasScale),
-                        (int)(y * anyTile.height() * boardToCanvasScale),
-                        (int)img.getWidth(),
-                        (int)img.getHeight(),
-                        img.getPixelReader(), 0, 0);
-            }
-        }
-
-        public void refreshMapImageTiles() {
-            PixelWriter pixelWriter = null;
-            if (mapImage != null) {
-                pixelWriter = mapImage.getPixelWriter();
-            }
-            boardLock.lock();
-            try {
-                for (int i = 0; i < board.tilesVertical(); ++i) {
-                    List<Tile.Type> row = map.get(i);
-                    for (int j = 0; j < board.tilesHorizontal(); ++j) {
-                        Tile tile = board.getTileAt(j, i);
-                        if (tile.getType() != row.get(j)) {
-                            row.set(j, tile.getType());
-                            renderTileOnImage(pixelWriter, j, i, tile.getType());
-                        }
-                    }
-                }
-            } finally {
-                boardLock.unlock();
-            }
-        }
-
-        public void refreshMapImage() {
-            if (board == null || boardToCanvasScale == 0.0) {
-                return;
-            }
-
-            mapImage = new WritableImage((int)(board.width() * boardToCanvasScale) + 1,
-                    (int)(board.height() * boardToCanvasScale) + 1);
-            PixelWriter pixelWriter = mapImage.getPixelWriter();
-            for (int i = 0; i < board.tilesVertical(); ++i) {
-                List<Tile.Type> row = map.get(i);
-                for (int j = 0; j < board.tilesHorizontal(); ++j) {
-                    renderTileOnImage(pixelWriter, j, i, row.get(j));
-                }
-            }
-        }
-
-        WritableImage getMapImage() {
-            return mapImage;
-        }
-    }
-    private MapImageManager mapImageManager = new MapImageManager();
-
-    private void canvasRenderer() {
-        boardLock.lock();
-        try {
-            GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-            gc.setFill(Color.rgb(22, 45, 80));
-            gc.fillRect(0, 0, canvasWidth, canvasHeight);
-
-            Hero hero = board.getHero();
-            double wpx, wpy; //rendering window pos {x,y}
-            {
-                double heroCenterX = hero.getX() + hero.width() / 2.0;
-                double heroCenterY = hero.getY() + hero.height() / 2.0;
-                double windowWidth = canvasWidth / boardToCanvasScale;
-                double windowHeight = canvasHeight / boardToCanvasScale;
-                double windowX = Math.min(Math.max(heroCenterX - windowWidth / 2.0, 0.0), board.width() - windowWidth);
-                double windowY = Math.min(Math.max(heroCenterY - windowHeight / 2.0, 0.0), board.height() - windowHeight);
-                wpx = windowX * boardToCanvasScale;
-                wpy = windowY * boardToCanvasScale;
-            }
-
-            mapImageManager.refreshMapImageTiles();
-
-            WritableImage mapImage = mapImageManager.getMapImage();
-            if (mapImage != null) {
-                gc.drawImage(mapImage, wpx, wpy, canvasWidth, canvasHeight,
-                        0, 0, canvasWidth, canvasHeight);
-            }
-
-            for (int i = 0; i < board.tilesHorizontal(); ++i) {
-                for (int j = 0; j < board.tilesVertical(); ++j) {
-                    Tile tile = board.getTileAt(i, j);
-
-                    if (tile.isOnFire()) {
-                        WritableImage img = particlesImagesManager.getParticleImage("flames", tile);
-                        if (img != null) {
-                            gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
-                        }
-                    }
-
-                    if (tile.isBombPlanted()) {
-                        WritableImage img = particlesImagesManager.getParticleImage("bomb", tile);
-                        if (img != null) {
-                            gc.drawImage(img, tile.getX() * boardToCanvasScale - wpx, tile.getY() * boardToCanvasScale - wpy);
-                        }
-                    }
-                }
-            }
-
-            List<Goomba> goombas = board.getGoombas();
-            if (goombas != null) {
-                for (Goomba goomba: goombas) {
-                    WritableImage img = particlesImagesManager.getParticleImage(goomba.isAlive() ? "goomba" : "killed", goomba);
-                    if (img != null) {
-                        gc.drawImage(img, goomba.getX() * boardToCanvasScale - wpx, goomba.getY() * boardToCanvasScale - wpy);
-                    }
-                }
-            }
-
-            WritableImage img = particlesImagesManager.getParticleImage(hero.isAlive() ? "character" : "killed", hero);
-            if (img != null) {
-                gc.drawImage(img, hero.getX() * boardToCanvasScale - wpx, hero.getY() * boardToCanvasScale - wpy);
-            }
-
-            if (isPaused) {
-                gc.setFill(Color.color(0.0, 0.0, 0.0, 0.6));
-                gc.fillRect(canvasWidth - 94, 0, canvasWidth - 94, 28);
-                gc.setFill(Color.color(0.9, 0.1, 0.1, 1.0));
-                gc.setFont(Font.font("System", FontWeight.BOLD, 20));
-                gc.fillText("paused", canvasWidth - 87, 20);
-            }
-        } finally {
-            boardLock.unlock();
-        }
-    }
-
-    private void handleClockTick(ActionEvent event) {
-        if (boardLock.tryLock()) {
-            try {
-                if (rerenderCanvas) {
-                    rerenderCanvas = false;
-                    canvasRenderer();
-                }
+                gameCanvasRenderer.redraw();
 
                 EnumSet<Directions.Direction> directions = EnumSet.noneOf(Directions.Direction.class);
                 for (Settings.DirectionKey dir: Settings.DirectionKey.values()) {
@@ -267,23 +48,13 @@ public class GameController implements ViewController {
                 if (previousFrameTime == 0) {
                     previousFrameTime = currentFrameTime;
                 }
-                if (!isPaused) {
-                    BoardUpdate update = new BoardUpdate();
-                    update.delta = currentFrameTime - previousFrameTime;
-                    update.placedBomb = placedBomb;
-                    update.directions = new Directions(directions);
-                    try {
-                        boardUpdatesQueue.put(update);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else {
-                    rerenderCanvas = true;
+                if (!isPaused.get()) {
+                    gameLogicUpdater.update(Math.min(70, currentFrameTime - previousFrameTime), new Directions(directions), placedBomb);
                 }
                 previousFrameTime = currentFrameTime;
                 placedBomb = false;
             } finally {
-                boardLock.unlock();
+                gameObjectsManager.getBoardLock().unlock();
             }
         } else {
             log.warn("Dropped frame");
@@ -294,8 +65,8 @@ public class GameController implements ViewController {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             keyboardState.add(event.getCode());
             if (Settings.Key.PAUSE.getSetting() == event.getCode()) {
-                isPaused = !isPaused;
-                log.info(isPaused ? "Paused game" : "Unpaused game");
+                isPaused.set(!isPaused.get());
+                log.info(isPaused.get() ? "Paused game" : "Unpaused game");
             } else if (Settings.Key.BOMB.getSetting() == event.getCode()) {
                 placedBomb = true;
                 log.info("Placed bomb");
@@ -307,29 +78,23 @@ public class GameController implements ViewController {
 
     public void startGame() {
         log.info("Start game");
-        board = new Board();
-        // quite dirty hack to preaload flames fxml (they don't show up on first explosion without it)
-        particlesImagesManager.getParticleImage("flames", board.getTileAt(0, 0));
-        mapImageManager.initialize();
-        boardUpdatesQueue.clear();
-        boardUpdaterThread = new Thread(this::boardUpdater);
-        boardUpdaterThread.start();
+        gameObjectsManager.setBoard(new Board());
+        gameCanvasRenderer.resetState();
+        gameLogicUpdater.start();
         placedBomb = false;
-        isPaused = false;
+        isPaused.set(false);
     }
 
     public void stopGame() {
         log.info("Stop game");
-        boardUpdaterThread.interrupt();
-        boardUpdaterThread = null;
-        board = null;
+        gameLogicUpdater.stop();
+        gameObjectsManager.setBoard(null);
     }
 
     @Override
     public void enteredView() {
         log.info("Entered view");
         previousFrameTime = 0;
-        rerenderCanvas = false;
         gameTimeline.play();
     }
 
@@ -337,18 +102,28 @@ public class GameController implements ViewController {
     public void leavedView() {
         log.info("Leaved view");
         gameTimeline.stop();
-        if (!isPaused) log.info("Paused game");
-        isPaused = true;
+        if (!isPaused.get()) log.info("Paused game");
+        isPaused.set(true);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        gamePane.heightProperty().addListener((o, ov, nv) -> handleGeometryChange());
-        gamePane.widthProperty().addListener((o, ov, nv) -> handleGeometryChange());
+        final ChangeListener<Number> geometryChangeListener = (observable, oldValue, newValue) -> {
+            gameCanvasRenderer.refreshCanvasSize(gamePane.getWidth(), gamePane.getHeight());
+        };
 
-        mapImageManager.registerOnRefreshParticlesImagesHandler(particlesImagesManager);
+        gamePane.heightProperty().addListener(geometryChangeListener);
+        gamePane.widthProperty().addListener(geometryChangeListener);
 
-        gameTimeline = new Timeline(new KeyFrame(Duration.millis(18.0), this::handleClockTick));
+        gameTimeline = new Timeline(new KeyFrame(Duration.millis(18.0), event -> {
+            try {
+                handleClockTick();
+            } catch (Throwable e) {
+                gameTimeline.stop();
+                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+            }
+        }));
+
         gameTimeline.setCycleCount(Timeline.INDEFINITE);
 
         final ChangeListener<Boolean> lostFocusWindowListener = (ob, ov, focused) -> {
@@ -369,6 +144,10 @@ public class GameController implements ViewController {
                 newScene.getWindow().focusedProperty().addListener(lostFocusWindowListener);
             }
         });
+
+        gameCanvasRenderer.initialize(isPaused);
+
+        gamePane.getChildren().setAll(gameCanvasRenderer.getCanvasNode());
 
         log.info("Initialized game controller");
     }

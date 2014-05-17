@@ -9,7 +9,4 @@
       AnchorPane.leftAnchor="0.0"
       AnchorPane.rightAnchor="0.0"
       AnchorPane.bottomAnchor="0.0">
-  <children>
-    <Canvas fx:id="gameCanvas" height="600.0" width="400.0" xmlns="http://javafx.com/javafx/8" />
-  </children>
 </Pane>

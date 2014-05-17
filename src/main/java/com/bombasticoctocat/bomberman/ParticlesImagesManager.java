@@ -1,20 +1,25 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.Particle;
-import com.cathive.fx.guice.GuiceFXMLLoader;
-import com.google.inject.Inject;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import javafx.util.Callback;
+
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.inject.Inject;
+
+import com.cathive.fx.guice.GuiceFXMLLoader;
+
+import com.bombasticoctocat.bomberman.game.Particle;
 
 public class ParticlesImagesManager {
     @Inject private GuiceFXMLLoader fxmlLoader;
@@ -23,13 +28,12 @@ public class ParticlesImagesManager {
     private int imagesLeftToRender = 0;
     private double scale = 0.0;
     private double refreshToScale = 0.0;
-    private Runnable onRefreshcCompleteCallback;
+    private Callback<Double, Void> onRefreshcCompleteCallback;
 
     private class ParticleInformation {
         private final Group node;
         private final int width, height;
         private WritableImage image;
-
 
         public WritableImage getImage() {
             return image;
@@ -55,7 +59,7 @@ public class ParticlesImagesManager {
                 --imagesLeftToRender;
                 if (imagesLeftToRender == 0) {
                     if (onRefreshcCompleteCallback != null) {
-                        Platform.runLater(onRefreshcCompleteCallback);
+                        Platform.runLater(() -> onRefreshcCompleteCallback.call(scale));
                     }
                     if (refreshToScale != 0.0) {
                         double newScale = refreshToScale;
@@ -99,7 +103,8 @@ public class ParticlesImagesManager {
         }
     }
 
-    public WritableImage getParticleImage(String particleName, Particle particle) {
+    public WritableImage getParticleImage(ParticleImage image, Particle particle) {
+        String particleName = image.getName();
         if (!loadedParticles.containsKey(particleName)) {
             Group particleNode = loadFxmlParticle(particleName).getRoot();
             ParticleInformation particleInfo = new ParticleInformation(particleNode, particle.width(), particle.height());
@@ -108,7 +113,7 @@ public class ParticlesImagesManager {
         return loadedParticles.get(particleName).getImage();
     }
 
-    public void setOnRefreshCompleteHandler(Runnable callback) {
+    public void setOnRefreshCompleteHandler(Callback<Double, Void> callback) {
         onRefreshcCompleteCallback = callback;
     }
 
