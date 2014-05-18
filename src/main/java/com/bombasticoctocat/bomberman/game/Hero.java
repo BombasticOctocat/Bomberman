@@ -5,20 +5,34 @@ public class Hero extends Particle {
     private static final int WIDTH = 40;
     private static final int INITIAL_X_POSITION = 70;
     private static final int INITIAL_Y_POSITION = 70;
+    private static final int INITIAL_LIVES = 2;
     private static final double SPEED = 0.3;
 
     private boolean isAlive = true;
 
     private double positionX;
     private double positionY;
+    private int lives;
 
     public Hero() {
         positionX = INITIAL_X_POSITION;
         positionY = INITIAL_Y_POSITION;
+        lives = INITIAL_LIVES;
+    }
+
+    public void revive() {
+        positionY = INITIAL_Y_POSITION;
+        positionX = INITIAL_X_POSITION;
+        lives--;
+        isAlive = true;
     }
 
     public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector, DeathDetector deathDetector,
                      GoombaTouchDetector goombaTouchDetector) {
+
+        if (!isAlive())
+            return;
+
         Displacement displacement = new Displacement(
             directions.getHorizontalDirection() * axisMovement(timeDelta, directions),
             directions.getVerticalDirection() * axisMovement(timeDelta, directions)
@@ -47,6 +61,7 @@ public class Hero extends Particle {
     }
 
     public void die() {
+        lives--;
         isAlive = false;
     }
 
@@ -82,4 +97,7 @@ public class Hero extends Particle {
         return HEIGHT;
     }
 
+    public int getLives() {
+        return lives;
+    }
 }

@@ -16,11 +16,31 @@ public class Game {
     }
 
     public void tick(long timeDelta, Directions directions, boolean plantBomb) {
-        board.tick(timeDelta, directions, plantBomb);
+        Board.State state = board.tick(timeDelta, directions, plantBomb);
+        if (state == Board.State.LOST) {
+            hero.revive();
+            board = new Board(timer, hero);
+        }
     }
 
     public Board getBoard() {
         return board;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getLives() {
+        return hero.getLives();
+    }
+
+    public boolean isLevelInProgress() {
+        return true;
+    }
+
+    public boolean isOver() {
+        return false;
     }
 
 }

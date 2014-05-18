@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Board {
     public static final int FUSE_TIME = 1000;
+    public static final int DEAD_TIMEOUT = 1000;
     public static final int FLAMES_DURATION = 100;
     public static final int TILES_HORIZONTAL = 31;
     public static final int TILES_VERTICAL = 13;
@@ -18,7 +19,11 @@ public class Board {
     private Timer timer;
     private List<Goomba> goombas;
     private Detonator detonator;
+    private State state = State.IN_PROGRESS;
 
+    public enum State {
+        IN_PROGRESS, LOST, WON;
+    }
 
     public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
                  DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector, Detonator detonator) {
@@ -86,7 +91,7 @@ public class Board {
         return goombas;
     }
 
-    public void tick(long timeDelta, Directions directions, boolean plantBomb) {
+    public State tick(long timeDelta, Directions directions, boolean plantBomb) {
         timer.tick(timeDelta);
 
         if (plantBomb) {
@@ -98,6 +103,11 @@ public class Board {
             goomba.move(timeDelta, collisionDetector, deathDetector);
         }
 
+        if (!hero.isAlive()) {
+            timer.schedule(DEAD_TIMEOUT, () -> state = State.LOST);
+        }
+
+        return state;
     }
 
 
