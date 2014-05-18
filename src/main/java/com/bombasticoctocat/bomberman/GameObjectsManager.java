@@ -3,20 +3,21 @@ package com.bombasticoctocat.bomberman;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.bombasticoctocat.bomberman.game.Board;
+import com.bombasticoctocat.bomberman.game.Game;
 
 public class GameObjectsManager {
-    private Board board;
+    private Game game;
     private final ReentrantLock boardLock = new ReentrantLock();
 
     public ReentrantLock getBoardLock() {
         return boardLock;
     }
 
-    public Board getBoard() {
-        return board;
+    public Game getGame() {
+        return game;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

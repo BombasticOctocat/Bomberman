@@ -38,7 +38,7 @@ public class GameCanvasRenderer {
 
     public void resetState() {
         // quite dirty hack to preaload flames fxml (they don't show up on first explosion without it)
-        Board board = gameObjectsManager.getBoard();
+        Board board = gameObjectsManager.getGame().getBoard();
         particlesImagesManager.getParticleImage(ParticleImage.FLAMES, board.getTileAt(0, 0));
         mapImageManager.resetState();
     }
@@ -53,7 +53,7 @@ public class GameCanvasRenderer {
         canvas.setWidth(width);
         canvas.setHeight(height);
 
-        Board board = gameObjectsManager.getBoard();
+        Board board = gameObjectsManager.getGame().getBoard();
 
         boardToCanvasScale = Math.max(canvas.getHeight() / (board.height() * 0.8), canvas.getWidth() / board.width());
 
@@ -67,13 +67,13 @@ public class GameCanvasRenderer {
         GraphicsContext gc;
 
         public RedrawManager() {
-            board = gameObjectsManager.getBoard();
+            board = gameObjectsManager.getGame().getBoard();
             gc = canvas.getGraphicsContext2D();
             computeRenderingWindowPosition();
         }
 
         private void computeRenderingWindowPosition() {
-            Hero hero = board.getHero();;
+            Hero hero = board.getHero();
             double heroCenterX = hero.getX() + hero.width() / 2.0;
             double heroCenterY = hero.getY() + hero.height() / 2.0;
             double windowWidth = canvas.getWidth() / boardToCanvasScale;
@@ -139,7 +139,7 @@ public class GameCanvasRenderer {
                 return null;
             });
 
-            Board board = gameObjectsManager.getBoard();
+            Board board = gameObjectsManager.getGame().getBoard();
 
             List<Goomba> goombas = board.getGoombas();
             if (goombas != null) {

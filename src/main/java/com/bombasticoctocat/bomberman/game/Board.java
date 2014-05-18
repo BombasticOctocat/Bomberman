@@ -17,10 +17,11 @@ public class Board {
     private GoombaTouchDetector goombaTouchDetector;
     private Timer timer;
     private List<Goomba> goombas;
+    private Detonator detonator;
 
 
     public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
-                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector) {
+                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector, Detonator detonator) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
@@ -28,12 +29,14 @@ public class Board {
         this.goombaTouchDetector = goombaTouchDetector;
         this.deathDetector = deathDetector;
         this.goombas = goombas;
+        this.detonator = detonator;
     }
 
-    public Board() {
-        this.timer = new Timer();
+    public Board(Timer timer, Hero hero) {
+        this.timer = timer;
+        this.hero = hero;
         this.boardMap = new BoardMap(new TilesFactory(TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
-        this.hero = new Hero(new Detonator(boardMap, timer));
+        this.detonator = new Detonator(boardMap, timer);
         this.collisionDetector = new CollisionDetector(boardMap);
         this.deathDetector = new DeathDetector(boardMap);
         this.goombas = new ArrayList<>();
@@ -41,6 +44,10 @@ public class Board {
             this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
         }
         this.goombaTouchDetector = new GoombaTouchDetector(goombas);
+    }
+
+    public Board() {
+        this(new Timer(), new Hero());
     }
 
     public Timer getTimer() {
@@ -83,7 +90,7 @@ public class Board {
         timer.tick(timeDelta);
 
         if (plantBomb) {
-            hero.plantBomb();
+            hero.plantBomb(detonator);
         }
 
         hero.move(timeDelta, directions, collisionDetector, deathDetector, goombaTouchDetector);

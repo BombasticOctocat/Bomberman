@@ -78,7 +78,7 @@ public class GameController implements ViewController {
 
     public void startGame() {
         log.info("Start game");
-        gameObjectsManager.setBoard(new Board());
+        gameObjectsManager.setGame(new Game());
         gameCanvasRenderer.resetState();
         gameLogicUpdater.start();
         placedBomb = false;
@@ -88,7 +88,7 @@ public class GameController implements ViewController {
     public void stopGame() {
         log.info("Stop game");
         gameLogicUpdater.stop();
-        gameObjectsManager.setBoard(null);
+        gameObjectsManager.setGame(null);
     }
 
     @Override
