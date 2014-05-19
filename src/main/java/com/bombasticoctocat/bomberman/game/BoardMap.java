@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class BoardMap {
     private List<List<Tile>> tiles;
+    private Door door;
 
     public BoardMap(TilesFactory factory) {
         tiles = new ArrayList<>();
@@ -18,6 +19,17 @@ public class BoardMap {
                 row.add(factory.createForCoordinates(i, j));
             }
         }
+        setUpDoor();
+    }
+
+    private void setUpDoor() {
+        Random rg = new Random();
+        int x, y;
+        do {
+            x = rg.nextInt(tilesHorizontal());
+            y = rg.nextInt(tilesVertical());
+        } while (getTileAt(x, y).getType() != Tile.Type.BRICKS);
+        door = new Door(getTileAt(x, y));
     }
 
     public int tilesHorizontal() {
@@ -81,5 +93,9 @@ public class BoardMap {
                 return new Goomba(board, type, row, col);
             }
         }
+    }
+
+    public Door getDoor() {
+        return door;
     }
 }

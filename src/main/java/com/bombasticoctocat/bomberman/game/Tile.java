@@ -16,6 +16,10 @@ public class Tile extends Particle {
     public static final int WIDTH = 60;
     public static final int HEIGHT = 60;
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     private Type type;
     private int row;
     private int col;

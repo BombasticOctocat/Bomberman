@@ -20,6 +20,7 @@ public class Board {
     private List<Goomba> goombas;
     private Detonator detonator;
     private State state = State.IN_PROGRESS;
+    private boolean heroDead = false;
 
     public enum State {
         IN_PROGRESS, LOST, WON;
@@ -103,12 +104,21 @@ public class Board {
             goomba.move(timeDelta, collisionDetector, deathDetector);
         }
 
-        if (!hero.isAlive()) {
+        getDoor().update(allGoombasKilled());
+
+        if (!heroDead && !hero.isAlive()) {
+            heroDead = true;
             timer.schedule(DEAD_TIMEOUT, () -> state = State.LOST);
         }
 
         return state;
     }
 
+    private boolean allGoombasKilled() {
+        return goombas.size() == 0;
+    }
 
+    private Door getDoor() {
+        return boardMap.getDoor();
+    }
 }

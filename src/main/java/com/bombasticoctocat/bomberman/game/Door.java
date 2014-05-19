@@ -11,4 +11,10 @@ public class Door {
         this.tile = tile;
     }
 
+    public void update(boolean shouldOpen) {
+        if (tile.getType() != Tile.Type.BRICKS && tile.getType() != Tile.Type.CONCRETE) {
+            tile.setType(shouldOpen ? Tile.Type.DOOR_OPEN : Tile.Type.DOOR_CLOSED);
+        }
+    }
+
 }
