@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Board {
     public static final int FUSE_TIME = 1000;
-    public static final int DEAD_TIMEOUT = 1000;
+    public static final int END_TIMEOUT = 1000;
+    public static final long LEVEL_DURATION = 300 * 1000;
     public static final int FLAMES_DURATION = 100;
     public static final int TILES_HORIZONTAL = 31;
     public static final int TILES_VERTICAL = 13;
@@ -20,6 +21,14 @@ public class Board {
     private List<Goomba> goombas;
     private Detonator detonator;
     private State state = State.IN_PROGRESS;
+    private boolean heroDead = false;
+    private boolean won = false;
+
+    public long getTimeLeft() {
+        return timeLeft;
+    }
+
+    private long timeLeft = LEVEL_DURATION;
 
     public enum State {
         IN_PROGRESS, LOST, WON;
@@ -48,7 +57,7 @@ public class Board {
         for (int i = 0; i < 7; i++) {
             this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
         }
-        this.goombaTouchDetector = new GoombaTouchDetector(goombas);
+        this.goombaTouchDetector = new GoombaTouchDetector(goombas, collisionDetector);
     }
 
     public Board() {
@@ -92,6 +101,10 @@ public class Board {
     }
 
     public State tick(long timeDelta, Directions directions, boolean plantBomb) {
+        timeLeft -= timeDelta;
+        if (timeLeft <= 0)
+            hero.die();
+
         timer.tick(timeDelta);
 
         if (plantBomb) {
@@ -103,12 +116,26 @@ public class Board {
             goomba.move(timeDelta, collisionDetector, deathDetector);
         }
 
-        if (!hero.isAlive()) {
-            timer.schedule(DEAD_TIMEOUT, () -> state = State.LOST);
+        getDoor().update(allGoombasKilled());
+
+        if (!heroDead && !hero.isAlive()) {
+            heroDead = true;
+            timer.schedule(END_TIMEOUT, () -> state = State.LOST);
+        }
+
+        if (!won && allGoombasKilled() && collisionDetector.areOverlapping(getDoor().getTile(), getHero())) {
+            won = true;
+            timer.schedule(END_TIMEOUT, () -> state = State.WON);
         }
 
         return state;
     }
 
+    private boolean allGoombasKilled() {
+        return goombas.size() == 0;
+    }
 
+    private Door getDoor() {
+        return boardMap.getDoor();
+    }
 }

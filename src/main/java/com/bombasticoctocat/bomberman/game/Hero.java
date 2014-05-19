@@ -10,6 +10,12 @@ public class Hero extends Particle {
 
     private boolean isAlive = true;
 
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    private boolean isMobile = true;
+
     private double positionX;
     private double positionY;
     private int lives;
@@ -27,10 +33,18 @@ public class Hero extends Particle {
         isAlive = true;
     }
 
+    public void nextLevel() {
+        positionY = INITIAL_Y_POSITION;
+        positionX = INITIAL_X_POSITION;
+        lives++;
+        isAlive = true;
+        isMobile = true;
+    }
+
     public void move(long timeDelta, Directions directions, CollisionDetector collisionDetector, DeathDetector deathDetector,
                      GoombaTouchDetector goombaTouchDetector) {
 
-        if (!isAlive())
+        if (!isAlive() || !isMobile())
             return;
 
         Displacement displacement = new Displacement(
