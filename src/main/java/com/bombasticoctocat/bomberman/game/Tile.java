@@ -4,12 +4,14 @@ import java.util.LinkedList;
 
 public class Tile extends Particle {
     public enum Type {
-        EMPTY, BRICKS, CONCRETE;
+        EMPTY, BRICKS, CONCRETE, DOOR_OPEN, DOOR_CLOSED;
     }
 
     public static final Type EMPTY = Type.EMPTY;
     public static final Type BRICKS = Type.BRICKS;
     public static final Type CONCRETE = Type.CONCRETE;
+    public static final Type DOOR_OPEN = Type.DOOR_OPEN;
+    public static final Type DOOR_CLOSED = Type.DOOR_CLOSED;
 
     public static final int WIDTH = 60;
     public static final int HEIGHT = 60;

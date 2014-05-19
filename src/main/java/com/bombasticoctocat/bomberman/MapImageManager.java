@@ -38,7 +38,7 @@ public class MapImageManager {
     public void resetState() {
         gameObjectsManager.getBoardLock().lock();
         try {
-            Board board = gameObjectsManager.getBoard();
+            Board board = gameObjectsManager.getGame().getBoard();
             anyTile = board.getTileAt(0, 0);
             mapImage = null;
             map = new ArrayList<>();
@@ -76,7 +76,7 @@ public class MapImageManager {
         }
         gameObjectsManager.getBoardLock().lock();
         try {
-            Board board = gameObjectsManager.getBoard();
+            Board board = gameObjectsManager.getGame().getBoard();
             for (int i = 0; i < board.tilesVertical(); ++i) {
                 List<Tile.Type> row = map.get(i);
                 for (int j = 0; j < board.tilesHorizontal(); ++j) {
@@ -94,7 +94,7 @@ public class MapImageManager {
 
     public Void refreshMapImage(Double newScale) {
         scale = newScale;
-        Board board = gameObjectsManager.getBoard();
+        Board board = gameObjectsManager.getGame().getBoard();
         if (board == null || scale == 0.0) {
             return null;
         }

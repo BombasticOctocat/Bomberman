@@ -27,7 +27,7 @@ public class GameLogicUpdater {
                 BoardUpdate update = boardUpdatesQueue.take();
                 gameObjectsManager.getBoardLock().lockInterruptibly();
                 try {
-                    gameObjectsManager.getBoard().tick(update.delta, update.directions, update.placedBomb);
+                    gameObjectsManager.getGame().tick(update.delta, update.directions, update.placedBomb);
                 } finally {
                     gameObjectsManager.getBoardLock().unlock();
                 }

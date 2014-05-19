@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Board {
     public static final int FUSE_TIME = 1000;
+    public static final int DEAD_TIMEOUT = 1000;
     public static final int FLAMES_DURATION = 100;
     public static final int TILES_HORIZONTAL = 31;
     public static final int TILES_VERTICAL = 13;
@@ -17,10 +18,15 @@ public class Board {
     private GoombaTouchDetector goombaTouchDetector;
     private Timer timer;
     private List<Goomba> goombas;
+    private Detonator detonator;
+    private State state = State.IN_PROGRESS;
 
+    public enum State {
+        IN_PROGRESS, LOST, WON;
+    }
 
     public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
-                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector) {
+                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector, Detonator detonator) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
@@ -28,12 +34,14 @@ public class Board {
         this.goombaTouchDetector = goombaTouchDetector;
         this.deathDetector = deathDetector;
         this.goombas = goombas;
+        this.detonator = detonator;
     }
 
-    public Board() {
-        this.timer = new Timer();
+    public Board(Timer timer, Hero hero) {
+        this.timer = timer;
+        this.hero = hero;
         this.boardMap = new BoardMap(new TilesFactory(TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
-        this.hero = new Hero(new Detonator(boardMap, timer));
+        this.detonator = new Detonator(boardMap, timer);
         this.collisionDetector = new CollisionDetector(boardMap);
         this.deathDetector = new DeathDetector(boardMap);
         this.goombas = new ArrayList<>();
@@ -41,6 +49,10 @@ public class Board {
             this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
         }
         this.goombaTouchDetector = new GoombaTouchDetector(goombas);
+    }
+
+    public Board() {
+        this(new Timer(), new Hero());
     }
 
     public Timer getTimer() {
@@ -79,11 +91,11 @@ public class Board {
         return goombas;
     }
 
-    public void tick(long timeDelta, Directions directions, boolean plantBomb) {
+    public State tick(long timeDelta, Directions directions, boolean plantBomb) {
         timer.tick(timeDelta);
 
         if (plantBomb) {
-            hero.plantBomb();
+            hero.plantBomb(detonator);
         }
 
         hero.move(timeDelta, directions, collisionDetector, deathDetector, goombaTouchDetector);
@@ -91,6 +103,11 @@ public class Board {
             goomba.move(timeDelta, collisionDetector, deathDetector);
         }
 
+        if (!hero.isAlive()) {
+            timer.schedule(DEAD_TIMEOUT, () -> state = State.LOST);
+        }
+
+        return state;
     }
 
 
