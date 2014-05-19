@@ -56,7 +56,17 @@ public class SettingsController implements ViewController {
 
         Settings.Key key = currentWaitingButton.getSettingKey();
         if (event.getCode() != KeyCode.ESCAPE) {
-            key.setSetting(event.getCode());
+            boolean isInUse = false;
+            for (SettingButton btn: getSettingButtons()) {
+                Settings.Key settingKey = btn.getSettingKey();
+                KeyCode keyCode = settingKey.getSetting();
+                if(keyCode == event.getCode()){
+                    isInUse = true;
+                    break;
+                }
+            }
+            if(! isInUse)
+                key.setSetting(event.getCode());
         }
         currentWaitingButton.setText(key.getSetting().toString());
         currentWaitingButton = null;
