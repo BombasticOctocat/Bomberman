@@ -65,7 +65,7 @@ public class SettingsController implements ViewController {
                     break;
                 }
             }
-            if(! isInUse)
+            if(!isInUse)
                 key.setSetting(event.getCode());
         }
         currentWaitingButton.setText(key.getSetting().toString());
@@ -74,8 +74,14 @@ public class SettingsController implements ViewController {
 
     @FXML
     void handleButtonClick(ActionEvent actionEvent) {
+
         SettingButton button = (SettingButton) actionEvent.getSource();
+        if(currentWaitingButton != null)
+            return;
         currentWaitingButton = button;
+        //Button button = (Button) actionEvent.getSource();
+        //nameCurrentWaitingSetting = button.getId();
+        //SettingsController last improvement.
         button.setText("...");
         settingsPane.requestFocus();
     }
