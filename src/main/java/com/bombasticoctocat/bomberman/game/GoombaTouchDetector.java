@@ -9,27 +9,19 @@ import java.util.List;
 public class GoombaTouchDetector {
 
     private List<Goomba> goombas;
+    private CollisionDetector collisionDetector;
 
-    public GoombaTouchDetector(List<Goomba> goombas) {
+    public GoombaTouchDetector(List<Goomba> goombas, CollisionDetector collisionDetector) {
         this.goombas = goombas;
+        this.collisionDetector = collisionDetector;
     }
 
     public boolean isTouched(Hero hero) {
         for (Goomba goomba : goombas) {
-            if (goomba.isAlive() && touching(hero, goomba)) {
+            if (goomba.isAlive() && collisionDetector.areOverlapping(hero, goomba)) {
                 return true;
             }
         }
         return false;
-    }
-
-    private boolean touching(Particle p1, Particle p2) {
-        if (Math.max(p1.getX() + p1.width(), p2.getX() + p2.width()) - Math.min(p1.getX(), p2.getX()) >=
-                p1.width() + p2.width())
-            return false;
-        if (Math.max(p1.getY() + p1.height(), p2.getY() + p2.height()) - Math.min(p1.getY(), p2.getY()) >=
-                p1.height() + p2.height())
-            return false;
-        return true;
     }
 }

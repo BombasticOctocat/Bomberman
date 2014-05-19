@@ -5,6 +5,10 @@ package com.bombasticoctocat.bomberman.game;
  */
 public class Door {
 
+    public Tile getTile() {
+        return tile;
+    }
+
     private Tile tile;
 
     public Door(Tile tile) {

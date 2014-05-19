@@ -11,6 +11,16 @@ public class CollisionDetector extends AbstractDetector {
         return particle.shouldCollideWith(map.getTileAt(col, row));
     }
 
+    public boolean areOverlapping(Particle p1, Particle p2) {
+        if (Math.max(p1.getX() + p1.width(), p2.getX() + p2.width()) - Math.min(p1.getX(), p2.getX()) >=
+                p1.width() + p2.width())
+            return false;
+        if (Math.max(p1.getY() + p1.height(), p2.getY() + p2.height()) - Math.min(p1.getY(), p2.getY()) >=
+                p1.height() + p2.height())
+            return false;
+        return true;
+    }
+
     public Displacement blockDisplacement(Particle particle, Displacement move) {
         double fromX1 = particle.getX();
         double fromX2 = fromX1 + particle.width();

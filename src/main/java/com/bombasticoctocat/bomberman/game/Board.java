@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Board {
     public static final int FUSE_TIME = 1000;
-    public static final int DEAD_TIMEOUT = 1000;
+    public static final int END_TIMEOUT = 1000;
     public static final int FLAMES_DURATION = 100;
     public static final int TILES_HORIZONTAL = 31;
     public static final int TILES_VERTICAL = 13;
@@ -21,6 +21,7 @@ public class Board {
     private Detonator detonator;
     private State state = State.IN_PROGRESS;
     private boolean heroDead = false;
+    private boolean won = false;
 
     public enum State {
         IN_PROGRESS, LOST, WON;
@@ -49,7 +50,7 @@ public class Board {
         for (int i = 0; i < 7; i++) {
             this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
         }
-        this.goombaTouchDetector = new GoombaTouchDetector(goombas);
+        this.goombaTouchDetector = new GoombaTouchDetector(goombas, collisionDetector);
     }
 
     public Board() {
@@ -108,7 +109,12 @@ public class Board {
 
         if (!heroDead && !hero.isAlive()) {
             heroDead = true;
-            timer.schedule(DEAD_TIMEOUT, () -> state = State.LOST);
+            timer.schedule(END_TIMEOUT, () -> state = State.LOST);
+        }
+
+        if (!won && allGoombasKilled() && collisionDetector.areOverlapping(getDoor().getTile(), getHero())) {
+            won = true;
+            timer.schedule(END_TIMEOUT, () -> state = State.WON);
         }
 
         return state;

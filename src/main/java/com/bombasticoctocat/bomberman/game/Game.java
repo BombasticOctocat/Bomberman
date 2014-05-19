@@ -21,6 +21,12 @@ public class Game {
             hero.revive();
             board = new Board(timer, hero);
         }
+
+        if (state == Board.State.WON) {
+            hero.nextLevel();
+            level++;
+            board = new Board(timer, hero);
+        }
     }
 
     public Board getBoard() {
