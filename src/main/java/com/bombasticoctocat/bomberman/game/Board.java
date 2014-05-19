@@ -6,6 +6,7 @@ import java.util.List;
 public class Board {
     public static final int FUSE_TIME = 1000;
     public static final int END_TIMEOUT = 1000;
+    public static final long LEVEL_DURATION = 300 * 1000;
     public static final int FLAMES_DURATION = 100;
     public static final int TILES_HORIZONTAL = 31;
     public static final int TILES_VERTICAL = 13;
@@ -22,6 +23,12 @@ public class Board {
     private State state = State.IN_PROGRESS;
     private boolean heroDead = false;
     private boolean won = false;
+
+    public long getTimeLeft() {
+        return timeLeft;
+    }
+
+    private long timeLeft = LEVEL_DURATION;
 
     public enum State {
         IN_PROGRESS, LOST, WON;
@@ -94,6 +101,10 @@ public class Board {
     }
 
     public State tick(long timeDelta, Directions directions, boolean plantBomb) {
+        timeLeft -= timeDelta;
+        if (timeLeft <= 0)
+            hero.die();
+
         timer.tick(timeDelta);
 
         if (plantBomb) {
