@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import javafx.geometry.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
-          AnchorPane.topAnchor="0.0"
+<?import com.bombasticoctocat.bomberman.SettingButton?>
+
+<?import javafx.scene.text.Text?>
+<GridPane styleClass="settings-root" fx:id="settingsPane" fx:controller="com.bombasticoctocat.bomberman.SettingsController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
           AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0"
-          AnchorPane.rightAnchor="0.0">
-  <padding>
-    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-  </padding>
+          AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+  <stylesheets>
+    <URL value="@../css/settings.css"/>
+  </stylesheets>
+  <columnConstraints>
+    <ColumnConstraints prefWidth="230" hgrow="NEVER" />
+    <ColumnConstraints hgrow="NEVER" />
+  </columnConstraints>
   <children>
-    <Text text="Settings" GridPane.columnSpan="2" />
+    <SettingButton settingKey="UP" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <SettingButton settingKey="DOWN" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <SettingButton settingKey="LEFT" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <SettingButton settingKey="RIGHT" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <SettingButton settingKey="BOMB" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+    <SettingButton settingKey="PAUSE" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <Button id="restore-defaults-btn" text="Restore defaults" onAction="#handleRestoreDefaultSettingClick" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+    <Label text="Move Up" GridPane.rowIndex="1" />
+    <Label text="Move Down"  GridPane.rowIndex="2" />
+    <Label text="Move Left"  GridPane.rowIndex="3" />
+    <Label text="Move Right" GridPane.rowIndex="4" />
+    <Label text="Set Bomb" textAlignment="LEFT" GridPane.rowIndex="5" />
+    <Label text="Pause" GridPane.rowIndex="6" />
+    <Text id="title" text="Settings" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
   </children>
 </GridPane>
