@@ -26,9 +26,13 @@ public class MapImageManager {
     @Inject GameObjectsManager gameObjectsManager;
 
     MapImageManager() {
-        tileMaper.put(Tile.CONCRETE, ParticleImage.CONCRETE);
-        tileMaper.put(Tile.EMPTY, ParticleImage.EMPTY);
-        tileMaper.put(Tile.BRICKS, ParticleImage.BRICKS);
+        for (Tile.Type type: Tile.Type.values()) {
+            try {
+                tileMaper.put(type, ParticleImage.valueOf(type.toString()));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Missing ParticleImage for tile: " + type.toString());
+            }
+        }
     }
 
     public void registerOnRefreshParticlesImagesHandler(ParticlesImagesManager particlesImagesManager) {
@@ -58,6 +62,9 @@ public class MapImageManager {
 
     public void renderTileOnImage(PixelWriter pixelWriter, double x, double y, Tile.Type tileType) {
         if (pixelWriter == null) return;
+        if (!tileMaper.containsKey(tileType)) {
+            throw new RuntimeException("Unknown tile type in MapImageManager");
+        }
         WritableImage img = particlesImagesManager.getParticleImage(tileMaper.get(tileType), anyTile);
         if (img != null) {
             pixelWriter.setPixels(

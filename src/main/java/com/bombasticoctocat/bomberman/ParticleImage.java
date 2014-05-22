@@ -8,7 +8,9 @@ public enum ParticleImage {
     EMPTY("empty"),
     FLAMES("flames"),
     GOOMBA("goomba"),
-    KILLED("killed");
+    KILLED("killed"),
+    DOOR_OPEN("door_open"),
+    DOOR_CLOSED("door_closed");
 
     private String name;
 
