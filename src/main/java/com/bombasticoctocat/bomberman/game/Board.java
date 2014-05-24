@@ -10,7 +10,6 @@ public class Board {
     public static final int FLAMES_DURATION = 100;
     public static final int TILES_HORIZONTAL = 31;
     public static final int TILES_VERTICAL = 13;
-    public static final double DENSITY = 0.3;
 
     private Hero hero;
     private BoardMap boardMap;
@@ -23,6 +22,7 @@ public class Board {
     private State state = State.IN_PROGRESS;
     private boolean heroDead = false;
     private boolean won = false;
+    public final LevelConfiguration configuration;
 
     public long getTimeLeft() {
         return timeLeft;
@@ -35,7 +35,8 @@ public class Board {
     }
 
     public Board(Timer timer, Hero hero, BoardMap boardMap, CollisionDetector collisionDetector,
-                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector, Detonator detonator) {
+                 DeathDetector deathDetector, List<Goomba> goombas, GoombaTouchDetector goombaTouchDetector,
+                 Detonator detonator, LevelConfiguration configuration) {
         this.timer = timer;
         this.hero = hero;
         this.boardMap = boardMap;
@@ -44,24 +45,26 @@ public class Board {
         this.deathDetector = deathDetector;
         this.goombas = goombas;
         this.detonator = detonator;
+        this.configuration = configuration;
     }
 
-    public Board(Timer timer, Hero hero) {
+    public Board(Timer timer, Hero hero, Detonator detonator, LevelConfiguration configuration) {
         this.timer = timer;
         this.hero = hero;
-        this.boardMap = new BoardMap(new TilesFactory(TILES_VERTICAL, TILES_HORIZONTAL, DENSITY));
-        this.detonator = new Detonator(boardMap, timer);
+        this.configuration = configuration;
+        this.boardMap = new BoardMap(new TilesFactory(TILES_VERTICAL, TILES_HORIZONTAL, configuration.bricksDensity), configuration.powerup);
+
+        this.detonator = detonator;
+        this.detonator.setBoardMap(boardMap);
+        this.detonator.clearBombs();
+
         this.collisionDetector = new CollisionDetector(boardMap);
         this.deathDetector = new DeathDetector(boardMap);
         this.goombas = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            this.goombas.add(boardMap.placeGoombaAtRandom(Goomba.Type.LEVEL0, this));
+        for (Goomba.Type goombaType : configuration.goombas) {
+            this.goombas.add(boardMap.placeGoombaAtRandom(goombaType, this));
         }
         this.goombaTouchDetector = new GoombaTouchDetector(goombas, collisionDetector);
-    }
-
-    public Board() {
-        this(new Timer(), new Hero());
     }
 
     public Timer getTimer() {
@@ -100,15 +103,19 @@ public class Board {
         return goombas;
     }
 
-    public State tick(long timeDelta, Directions directions, boolean plantBomb) {
+    public State tick(long timeDelta, Directions directions, boolean plantBomb, boolean detonateBomb) {
         timeLeft -= timeDelta;
         if (timeLeft <= 0)
             hero.die();
 
         timer.tick(timeDelta);
 
+        if (detonateBomb) {
+            detonator.detonateFirst();
+        }
+
         if (plantBomb) {
-            hero.plantBomb(detonator);
+            hero.plantBomb();
         }
 
         hero.move(timeDelta, directions, collisionDetector, deathDetector, goombaTouchDetector);
@@ -117,6 +124,8 @@ public class Board {
         }
 
         getDoor().update(allGoombasKilled());
+        getPowerup().update();
+
 
         if (!heroDead && !hero.isAlive()) {
             heroDead = true;
@@ -128,6 +137,10 @@ public class Board {
             timer.schedule(END_TIMEOUT, () -> state = State.WON);
         }
 
+        if (collisionDetector.areOverlapping(getPowerup().getTile(), getHero())) {
+            getPowerup().apply(getHero());
+        }
+
         return state;
     }
 
@@ -137,5 +150,9 @@ public class Board {
 
     private Door getDoor() {
         return boardMap.getDoor();
+    }
+
+    private Powerup getPowerup() {
+        return boardMap.getPowerup();
     }
 }

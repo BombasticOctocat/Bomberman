@@ -21,6 +21,7 @@ public class Settings {
     public static enum Key implements EnumField<KeyCode> {
         PAUSE("controls.pause"),
         BOMB("controls.bomb"),
+        DETONATE("controls.detonate"),
         UP("controls.up"),
         DOWN("controls.down"),
         LEFT("controls.left"),

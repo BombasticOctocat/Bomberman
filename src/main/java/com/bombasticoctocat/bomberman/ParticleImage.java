@@ -10,7 +10,8 @@ public enum ParticleImage {
     GOOMBA("goomba"),
     KILLED("killed"),
     DOOR_OPEN("door_open"),
-    DOOR_CLOSED("door_closed");
+    DOOR_CLOSED("door_closed"),
+    POWERUP("powerup");
 
     private String name;
 

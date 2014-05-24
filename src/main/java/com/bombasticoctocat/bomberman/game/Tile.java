@@ -3,8 +3,9 @@ package com.bombasticoctocat.bomberman.game;
 import java.util.LinkedList;
 
 public class Tile extends Particle {
+
     public enum Type {
-        EMPTY, BRICKS, CONCRETE, DOOR_OPEN, DOOR_CLOSED;
+        EMPTY, BRICKS, CONCRETE, DOOR_OPEN, DOOR_CLOSED, POWERUP;
     }
 
     public static final Type EMPTY = Type.EMPTY;
@@ -12,6 +13,7 @@ public class Tile extends Particle {
     public static final Type CONCRETE = Type.CONCRETE;
     public static final Type DOOR_OPEN = Type.DOOR_OPEN;
     public static final Type DOOR_CLOSED = Type.DOOR_CLOSED;
+    public static final Type POWERUP = Type.POWERUP;
 
     public static final int WIDTH = 60;
     public static final int HEIGHT = 60;
@@ -25,6 +27,7 @@ public class Tile extends Particle {
     private int col;
     private Bomb bomb;
     private LinkedList<Flames> flamesList;
+    private Powerup powerup;
 
     public Tile(Type type, int row, int col) {
         this.type = type;
@@ -35,6 +38,11 @@ public class Tile extends Particle {
 
     public Type getType() {
         return type;
+    }
+
+
+    public void setPowerup(Powerup powerup) {
+        this.powerup = powerup;
     }
 
     public void plantBomb(Bomb bomb) {

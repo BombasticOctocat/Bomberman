@@ -1,8 +1,8 @@
 package com.bombasticoctocat.bomberman;
 
-import java.net.URL;
-import java.util.*;
-
+import com.bombasticoctocat.bomberman.game.Directions;
+import com.bombasticoctocat.bomberman.game.Game;
+import com.google.inject.Inject;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -13,12 +13,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
 import org.slf4j.Logger;
 
-import com.google.inject.Inject;
-
-import com.bombasticoctocat.bomberman.game.*;
+import java.net.URL;
+import java.util.EnumSet;
+import java.util.ResourceBundle;
 
 public class GameController implements ViewController {
     @InjectLog private static Logger log;
@@ -28,6 +27,7 @@ public class GameController implements ViewController {
     @Inject GameLogicUpdater gameLogicUpdater;
     private BooleanProperty isPaused = new SimpleBooleanProperty(true);
     private boolean placedBomb = false;
+    private boolean detonateBomb = false;
     private final EnumSet<KeyCode> keyboardState = EnumSet.noneOf(KeyCode.class);
     private long previousFrameTime;
     private Timeline gameTimeline;
@@ -49,10 +49,11 @@ public class GameController implements ViewController {
                     previousFrameTime = currentFrameTime;
                 }
                 if (!isPaused.get()) {
-                    gameLogicUpdater.update(Math.min(70, currentFrameTime - previousFrameTime), new Directions(directions), placedBomb);
+                    gameLogicUpdater.update(Math.min(70, currentFrameTime - previousFrameTime), new Directions(directions), placedBomb, detonateBomb);
                 }
                 previousFrameTime = currentFrameTime;
                 placedBomb = false;
+                detonateBomb = false;
             } finally {
                 gameObjectsManager.getBoardLock().unlock();
             }
@@ -70,6 +71,9 @@ public class GameController implements ViewController {
             } else if (Settings.Key.BOMB.getSetting() == event.getCode()) {
                 placedBomb = true;
                 log.info("Placed bomb");
+            } else if (Settings.Key.DETONATE.getSetting() == event.getCode()) {
+                detonateBomb = true;
+                log.info("Detonate bomb");
             }
         } else {
             keyboardState.remove(event.getCode());
@@ -82,6 +86,7 @@ public class GameController implements ViewController {
         gameCanvasRenderer.resetState();
         gameLogicUpdater.start();
         placedBomb = false;
+        detonateBomb = false;
         isPaused.set(false);
     }
 

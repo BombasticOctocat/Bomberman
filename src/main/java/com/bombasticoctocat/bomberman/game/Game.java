@@ -1,31 +1,30 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by marcin on 18/05/14.
- */
 public class Game {
     private Hero hero;
     private Board board;
     private int level = 1;
     private Timer timer;
+    private Detonator detonator;
 
     public Game() {
         this.timer = new Timer();
-        this.hero = new Hero();
-        this.board = new Board(timer, hero);
+        this.detonator = new Detonator(timer);
+        this.hero = new Hero(detonator);
+        this.board = new Board(timer, hero, detonator, Configuration.forLevel(level));
     }
 
-    public void tick(long timeDelta, Directions directions, boolean plantBomb) {
-        Board.State state = board.tick(timeDelta, directions, plantBomb);
+    public void tick(long timeDelta, Directions directions, boolean plantBomb, boolean detonateBomb) {
+        Board.State state = board.tick(timeDelta, directions, plantBomb, detonateBomb);
         if (state == Board.State.LOST) {
             hero.revive();
-            board = new Board(timer, hero);
+            board = new Board(timer, hero, detonator, Configuration.forLevel(level));
         }
 
         if (state == Board.State.WON) {
             hero.nextLevel();
             level++;
-            board = new Board(timer, hero);
+            board = new Board(timer, hero, detonator, Configuration.forLevel(level));
         }
     }
 

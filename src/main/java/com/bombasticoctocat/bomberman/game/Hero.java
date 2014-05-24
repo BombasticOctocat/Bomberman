@@ -6,7 +6,7 @@ public class Hero extends Particle {
     private static final int INITIAL_X_POSITION = 70;
     private static final int INITIAL_Y_POSITION = 70;
     private static final int INITIAL_LIVES = 2;
-    private static final double SPEED = 0.3;
+    private static final double INITIAL_SPEED = 0.3;
 
     private boolean isAlive = true;
 
@@ -19,11 +19,21 @@ public class Hero extends Particle {
     private double positionX;
     private double positionY;
     private int lives;
+    private Detonator detonator;
+    private double speed;
+    private boolean bombpass;
+    private boolean wallpass;
+    private boolean flamepass;
 
-    public Hero() {
+    public Hero(Detonator detonator) {
         positionX = INITIAL_X_POSITION;
         positionY = INITIAL_Y_POSITION;
         lives = INITIAL_LIVES;
+        speed = INITIAL_SPEED;
+        bombpass = false;
+        wallpass = false;
+        flamepass = false;
+        this.detonator = detonator;
     }
 
     public void revive() {
@@ -77,18 +87,27 @@ public class Hero extends Particle {
     public void die() {
         lives--;
         isAlive = false;
+        getDetonator().reset();
+        bombpass = false;
+        wallpass = false;
+        flamepass = false;
+        speed = INITIAL_SPEED;
     }
 
     public boolean isAlive() {
         return isAlive;
     }
 
-    public void plantBomb(Detonator detonator) {
+    public void plantBomb() {
         detonator.plantBomb(getColumn(), getRow());
     }
 
+    public Detonator getDetonator() {
+        return detonator;
+    }
+
     public double speed() {
-        return SPEED;
+        return speed;
     }
 
     @Override
@@ -111,7 +130,38 @@ public class Hero extends Particle {
         return HEIGHT;
     }
 
+    @Override
+    public boolean hasBombpass() {
+        return bombpass;
+    }
+
+    @Override
+    public boolean hasWallpass() {
+        return wallpass;
+    }
+
+    @Override
+    public boolean hasFlamepass() {
+        return flamepass;
+    }
+
     public int getLives() {
         return lives;
+    }
+
+    public void increaseSpeed() {
+        speed += 0.1;
+    }
+
+    public void setBombpass() {
+        bombpass = true;
+    }
+
+    public void setWallpass() {
+        wallpass = true;
+    }
+
+    public void setFlamepass() {
+        flamepass = true;
     }
 }

@@ -25,6 +25,20 @@ public abstract class Particle {
     }
 
     public boolean shouldCollideWith(Tile tile) {
-        return (tile.getType() == Tile.CONCRETE || tile.getType() == Tile.BRICKS || tile.isBombPlanted());
+        return (tile.getType() == Tile.CONCRETE ||
+                (tile.getType() == Tile.BRICKS && ! this.hasWallpass()) ||
+                (tile.isBombPlanted() && ! this.hasBombpass()));
+    }
+
+    public boolean hasBombpass() {
+        return false;
+    }
+
+    public boolean hasWallpass() {
+        return false;
+    }
+
+    public boolean hasFlamepass() {
+        return false;
     }
 }

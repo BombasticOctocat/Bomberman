@@ -9,15 +9,26 @@ public class Goomba extends Particle {
     private static final int TRACK_WIDTH = 2;
 
     public enum Type {
-        LEVEL0(0.2, 0.5, 0.1);
+        LEVEL0(0.2, 0.5, 0.1, false),
+        LEVEL1(0.3, 0.5, 0.1, false),
+        LEVEL2(0.3, 0.2, 0.01, false),
+        LEVEL3(0.5, 0.5, 0.1, false),
+        LEVEL4(0.1, 0.6, 0.1, true),
+        LEVEL5(0.2, 0.5, 0.1, true),
+        LEVEL6(0.5, 0.7, 0.1, false),
+        LEVEL7(0.5, 0.7, 0.1, true);
+
 
         private double speed;
         private double turnProbability;
         private double turnBackProbability;
-        private Type(double speed, double turnProbability, double turnBackProbability) {
+        private boolean wallpass;
+
+        private Type(double speed, double turnProbability, double turnBackProbability, boolean wallpass) {
             this.turnProbability = turnProbability;
             this.speed = speed;
             this.turnBackProbability = turnBackProbability;
+            this.wallpass = wallpass;
         }
 
         public double getTurnBackProbability() {
@@ -31,6 +42,8 @@ public class Goomba extends Particle {
         public double getSpeed() {
             return speed;
         }
+
+        public boolean hasWallpass() { return wallpass; }
     }
 
     private Directions directions;
@@ -163,5 +176,10 @@ public class Goomba extends Particle {
     @Override
     public int height() {
         return HEIGHT;
+    }
+
+    @Override
+    public boolean hasWallpass() {
+        return type.hasWallpass();
     }
 }

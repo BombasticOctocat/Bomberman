@@ -1,8 +1,5 @@
 package com.bombasticoctocat.bomberman.game;
 
-/**
- * Created by kustosz on 18/05/14.
- */
 public class Door {
 
     public Tile getTile() {

@@ -8,5 +8,6 @@
     <right>RIGHT</right>
     <pause>P</pause>
     <bomb>Z</bomb>
+    <detonate>X</detonate>
   </controls>
 </settings>

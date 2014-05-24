@@ -10,18 +10,18 @@ public class Bomb {
     }
 
     public void detonate() {
-        if ( ! isDetonated) {
+        if ( ! isDetonated && ! detonator.hasManualDetonator()) {
             detonator.detonate(this);
         }
+    }
+
+    public boolean isDetonated() {
+        return isDetonated;
     }
 
     public void markAsDetonated()
     {
         isDetonated = true;
-    }
-
-    public int range() {
-        return 1;
     }
 
     public Tile getTile() {

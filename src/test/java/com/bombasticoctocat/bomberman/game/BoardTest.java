@@ -17,17 +17,19 @@ public class BoardTest {
     private @Mock DeathDetector deathDetector;
     private @Mock GoombaTouchDetector goombaTouchDetector;
     private @Mock Detonator detonator;
+    private @Mock LevelConfiguration configuration;
     private Board subject;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector, new ArrayList<Goomba>(), goombaTouchDetector, detonator);
+        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector, new ArrayList<Goomba>(),
+                goombaTouchDetector, detonator, configuration);
     }
 
     @Test
     public void testTick() {
-        subject.tick(245, directions, false);
+        subject.tick(245, directions, false, false);
         Mockito.verify(hero).move(245, directions, collisionDetector, deathDetector, goombaTouchDetector);
     }
 }

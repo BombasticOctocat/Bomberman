@@ -26,14 +26,16 @@
     <SettingButton settingKey="LEFT" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     <SettingButton settingKey="RIGHT" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <SettingButton settingKey="BOMB" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-    <SettingButton settingKey="PAUSE" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-    <Button id="restore-defaults-btn" text="Restore defaults" onAction="#handleRestoreDefaultSettingClick" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+    <SettingButton settingKey="DETONATE" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <SettingButton settingKey="PAUSE" onAction="#handleButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+    <Button id="restore-defaults-btn" text="Restore defaults" onAction="#handleRestoreDefaultSettingClick" GridPane.columnIndex="0" GridPane.rowIndex="8" />
     <Label text="Move Up" GridPane.rowIndex="1" />
     <Label text="Move Down"  GridPane.rowIndex="2" />
     <Label text="Move Left"  GridPane.rowIndex="3" />
     <Label text="Move Right" GridPane.rowIndex="4" />
     <Label text="Set Bomb" textAlignment="LEFT" GridPane.rowIndex="5" />
-    <Label text="Pause" GridPane.rowIndex="6" />
+    <Label text="Detonate" textAlignment="LEFT" GridPane.rowIndex="6" />
+    <Label text="Pause" GridPane.rowIndex="7" />
     <Text id="title" text="Settings" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
   </children>
 </GridPane>
