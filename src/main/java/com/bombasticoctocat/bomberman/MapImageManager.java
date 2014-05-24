@@ -103,8 +103,8 @@ public class MapImageManager {
             return null;
         }
 
-        mapImage = new WritableImage((int)(board.width() * scale) + 1,
-                (int)(board.height() * scale) + 1);
+        mapImage = new WritableImage((int)(board.width() * scale) + 2,
+                (int)(board.height() * scale) + 2);
         PixelWriter pixelWriter = mapImage.getPixelWriter();
         for (int i = 0; i < board.tilesVertical(); ++i) {
             List<Tile.Type> row = map.get(i);
