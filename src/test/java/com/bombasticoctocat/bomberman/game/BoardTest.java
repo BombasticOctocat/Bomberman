@@ -16,12 +16,13 @@ public class BoardTest {
     private @Mock CollisionDetector collisionDetector;
     private @Mock DeathDetector deathDetector;
     private @Mock GoombaTouchDetector goombaTouchDetector;
+    private @Mock Detonator detonator;
     private Board subject;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector, new ArrayList<Goomba>(), goombaTouchDetector);
+        subject = new Board(timer, hero, boardMap, collisionDetector, deathDetector, new ArrayList<Goomba>(), goombaTouchDetector, detonator);
     }
 
     @Test
