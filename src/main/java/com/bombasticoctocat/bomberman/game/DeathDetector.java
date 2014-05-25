@@ -22,7 +22,7 @@ public class DeathDetector extends AbstractDetector {
 
     @Override
     protected boolean shouldDetect(Particle particle, Tile tile) {
-        return tile.isOnFire();
+        return (tile.isOnFire() && ! particle.hasFlamepass());
     }
 
 }

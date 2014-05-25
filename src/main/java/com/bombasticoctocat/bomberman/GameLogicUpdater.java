@@ -1,12 +1,10 @@
 package com.bombasticoctocat.bomberman;
 
-import java.util.concurrent.LinkedBlockingQueue;
-
+import com.bombasticoctocat.bomberman.game.Directions;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 
-import com.google.inject.Inject;
-
-import com.bombasticoctocat.bomberman.game.Directions;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameLogicUpdater {
     @InjectLog private static Logger log;
@@ -18,6 +16,7 @@ public class GameLogicUpdater {
         public long delta;
         public Directions directions;
         public boolean placedBomb;
+        public boolean detonateBomb;
     }
 
     private void boardUpdater() {
@@ -27,7 +26,7 @@ public class GameLogicUpdater {
                 BoardUpdate update = boardUpdatesQueue.take();
                 gameObjectsManager.getBoardLock().lockInterruptibly();
                 try {
-                    gameObjectsManager.getGame().tick(update.delta, update.directions, update.placedBomb);
+                    gameObjectsManager.getGame().tick(update.delta, update.directions, update.placedBomb, update.detonateBomb);
                 } finally {
                     gameObjectsManager.getBoardLock().unlock();
                 }
@@ -37,13 +36,14 @@ public class GameLogicUpdater {
         }
     }
 
-    public void update(long timeDelta, Directions directions, boolean placedBomb) {
+    public void update(long timeDelta, Directions directions, boolean placedBomb, boolean detonateBomb) {
         if (boardUpdaterThread == null) {
             throw new IllegalStateException("Cannot update logic when thread is stopped");
         }
         BoardUpdate update = new BoardUpdate();
         update.delta = timeDelta;
         update.placedBomb = placedBomb;
+        update.detonateBomb = detonateBomb;
         update.directions = directions;
         try {
             boardUpdatesQueue.put(update);

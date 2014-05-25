@@ -8,8 +8,9 @@ import java.util.Random;
 public class BoardMap {
     private List<List<Tile>> tiles;
     private Door door;
+    private Powerup powerup;
 
-    public BoardMap(TilesFactory factory) {
+    public BoardMap(TilesFactory factory, Powerup powerup) {
         tiles = new ArrayList<>();
 
         for (int i = 0; i < tilesVertical(); i++) {
@@ -20,6 +21,7 @@ public class BoardMap {
             }
         }
         setUpDoor();
+        setUpPowerup(powerup);
     }
 
     private void setUpDoor() {
@@ -30,6 +32,17 @@ public class BoardMap {
             y = rg.nextInt(tilesVertical());
         } while (getTileAt(x, y).getType() != Tile.Type.BRICKS);
         door = new Door(getTileAt(x, y));
+    }
+
+    private void setUpPowerup(Powerup powerup) {
+        Random rg = new Random();
+        int x, y;
+        do {
+            x = rg.nextInt(tilesHorizontal());
+            y = rg.nextInt(tilesVertical());
+        } while (getTileAt(x, y).getType() != Tile.Type.BRICKS || getTileAt(x, y) == door.getTile());
+        powerup.setTile(getTileAt(x, y));
+        this.powerup = powerup;
     }
 
     public int tilesHorizontal() {
@@ -62,12 +75,26 @@ public class BoardMap {
 
         LinkedList<Tile> result = new LinkedList<>();
 
-        for (int x = column - range; x <= column + range; x++) {
-            result.add(getTileAt(x, row));
+        Tile t;
+
+        t = getTileAt(column, row);
+        result.add(t);
+        if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
+            return result;
         }
-        for (int y = row - range; y <= row + range; y++) {
-            result.add(getTileAt(column, y));
+
+        int xDiff[] = {-1, 1, 0, 0};
+        int yDiff[] = {0, 0, -1, 1};
+        for (int i = 0; i < 4; ++i) {
+            for (int r = 1; r <= range; ++r) {
+                t = getTileAt(column + r * xDiff[i], row + r * yDiff[i]);
+                result.add(t);
+                if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
+                    break;
+                }
+            }
         }
+
         return result;
     }
 
@@ -98,4 +125,6 @@ public class BoardMap {
     public Door getDoor() {
         return door;
     }
+
+    public Powerup getPowerup() { return powerup; }
 }

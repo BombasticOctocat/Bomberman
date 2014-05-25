@@ -3,8 +3,12 @@ package com.bombasticoctocat.bomberman.game;
 import java.util.LinkedList;
 
 public class Tile extends Particle {
+
     public enum Type {
-        EMPTY, BRICKS, CONCRETE, DOOR_OPEN, DOOR_CLOSED;
+        EMPTY, BRICKS, CONCRETE, DOOR_OPEN, DOOR_CLOSED,
+        POWERUP_RANGE, POWERUP_BOMB, POWERUP_DETONATOR,
+        POWERUP_SPEED, POWERUP_BOMBPASS, POWERUP_WALLPASS,
+        POWERUP_FLAMEPASS, POWERUP_MYSTERY;
     }
 
     public static final Type EMPTY = Type.EMPTY;

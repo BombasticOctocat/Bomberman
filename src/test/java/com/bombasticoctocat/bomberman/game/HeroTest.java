@@ -9,11 +9,11 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.*;
 
 public class HeroTest {
-    private @Mock Detonator detonator;
     private @Mock Directions directions;
     private @Mock CollisionDetector collisionDetector;
     private @Mock DeathDetector deathDetector;
     private @Mock GoombaTouchDetector goombaTouchDetector;
+    private @Mock Detonator detonator;
     private Hero subject;
     private double initialX;
     private double initialY;
