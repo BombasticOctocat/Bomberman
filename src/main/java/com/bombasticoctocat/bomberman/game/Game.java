@@ -6,25 +6,47 @@ public class Game {
     private int level = 1;
     private Timer timer;
     private Detonator detonator;
+    private boolean over;
+    private boolean won;
+
+    private static final long LEVEL_DELAY = 1000;
 
     public Game() {
         this.timer = new Timer();
         this.detonator = new Detonator(timer);
         this.hero = new Hero(detonator);
-        this.board = new Board(timer, hero, detonator, Configuration.forLevel(level));
+        timer.schedule(LEVEL_DELAY, () -> board = new Board(timer, hero, detonator, Configuration.forLevel(level)));
+        this.over = false;
+        this.won = true;
     }
 
     public void tick(long timeDelta, Directions directions, boolean plantBomb, boolean detonateBomb) {
+        if (board == null) {
+            timer.tick(timeDelta);
+            return;
+        }
+
         Board.State state = board.tick(timeDelta, directions, plantBomb, detonateBomb);
         if (state == Board.State.LOST) {
+            board = null;
             hero.revive();
-            board = new Board(timer, hero, detonator, Configuration.forLevel(level));
+            if (hero.getLives() < 0) {
+                over = true;
+            } else {
+                timer.schedule(LEVEL_DELAY, () -> board = new Board(timer, hero, detonator, Configuration.forLevel(level)));
+            }
         }
 
         if (state == Board.State.WON) {
+            board = null;
             hero.nextLevel();
             level++;
-            board = new Board(timer, hero, detonator, Configuration.forLevel(level));
+            if (level > 50) {
+                board = null;
+                won = true;
+            } else {
+                timer.schedule(LEVEL_DELAY, () -> board = new Board(timer, hero, detonator, Configuration.forLevel(level)));
+            }
         }
     }
 
@@ -41,11 +63,13 @@ public class Game {
     }
 
     public boolean isLevelInProgress() {
-        return true;
+        return board != null;
     }
 
     public boolean isOver() {
-        return false;
+        return over;
     }
+
+    public boolean isWon() { return won; }
 
 }
