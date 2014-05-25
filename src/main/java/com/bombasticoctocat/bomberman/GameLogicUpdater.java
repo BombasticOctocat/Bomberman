@@ -10,9 +10,9 @@ public class GameLogicUpdater {
     @InjectLog private static Logger log;
     @Inject GameObjectsManager gameObjectsManager;
     private Thread boardUpdaterThread;
-    private final LinkedBlockingQueue<BoardUpdate> boardUpdatesQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<GameUpdate> gameUpdatesQueue = new LinkedBlockingQueue<>();
 
-    private static class BoardUpdate {
+    private static class GameUpdate {
         public long delta;
         public Directions directions;
         public boolean placedBomb;
@@ -23,12 +23,12 @@ public class GameLogicUpdater {
         log.info("Started board updater thread");
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                BoardUpdate update = boardUpdatesQueue.take();
-                gameObjectsManager.getBoardLock().lockInterruptibly();
+                GameUpdate update = gameUpdatesQueue.take();
+                gameObjectsManager.getGameLock().lockInterruptibly();
                 try {
                     gameObjectsManager.getGame().tick(update.delta, update.directions, update.placedBomb, update.detonateBomb);
                 } finally {
-                    gameObjectsManager.getBoardLock().unlock();
+                    gameObjectsManager.getGameLock().unlock();
                 }
             }
         } catch (InterruptedException e) {
@@ -40,20 +40,20 @@ public class GameLogicUpdater {
         if (boardUpdaterThread == null) {
             throw new IllegalStateException("Cannot update logic when thread is stopped");
         }
-        BoardUpdate update = new BoardUpdate();
+        GameUpdate update = new GameUpdate();
         update.delta = timeDelta;
         update.placedBomb = placedBomb;
         update.detonateBomb = detonateBomb;
         update.directions = directions;
         try {
-            boardUpdatesQueue.put(update);
+            gameUpdatesQueue.put(update);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void start() {
-        boardUpdatesQueue.clear();
+        gameUpdatesQueue.clear();
         boardUpdaterThread = new Thread(this::boardUpdater);
         boardUpdaterThread.start();
     }

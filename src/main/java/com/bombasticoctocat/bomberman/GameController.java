@@ -33,7 +33,7 @@ public class GameController implements ViewController {
     private Timeline gameTimeline;
 
     private void handleClockTick() {
-        if (gameObjectsManager.getBoardLock().tryLock()) {
+        if (gameObjectsManager.getGameLock().tryLock()) {
             try {
                 gameCanvasRenderer.redraw();
 
@@ -55,7 +55,7 @@ public class GameController implements ViewController {
                 placedBomb = false;
                 detonateBomb = false;
             } finally {
-                gameObjectsManager.getBoardLock().unlock();
+                gameObjectsManager.getGameLock().unlock();
             }
         } else {
             log.warn("Dropped frame");
