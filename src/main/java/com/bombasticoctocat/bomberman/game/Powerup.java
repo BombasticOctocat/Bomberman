@@ -63,7 +63,6 @@ public enum Powerup {
     public void setTile(Tile tile) {
         this.tile = tile;
         used = false;
-        tile.setPowerup(this);
     }
 
     public Tile getTile() {
@@ -72,7 +71,7 @@ public enum Powerup {
 
     public void update() {
         if (tile.getType() != Tile.Type.BRICKS && tile.getType() != Tile.Type.CONCRETE && used == false) {
-            tile.setType(Tile.POWERUP);
+            tile.setType(Tile.Type.valueOf("POWERUP_" + name()));
         }
     }
     public void apply(Hero hero) {

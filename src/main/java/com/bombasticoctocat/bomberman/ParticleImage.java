@@ -11,7 +11,14 @@ public enum ParticleImage {
     KILLED("killed"),
     DOOR_OPEN("door_open"),
     DOOR_CLOSED("door_closed"),
-    POWERUP("powerup");
+    POWERUP_RANGE("powerup_range"),
+    POWERUP_BOMB("powerup_bomb"),
+    POWERUP_SPEED("powerup_speed"),
+    POWERUP_DETONATOR("powerup_detonator"),
+    POWERUP_WALLPASS("powerup_wallpass"),
+    POWERUP_BOMBPASS("powerup_bombpass"),
+    POWERUP_FLAMEPASS("powerup_flamepass"),
+    POWERUP_MYSTERY("powerup_mystery");
 
     private String name;
 
