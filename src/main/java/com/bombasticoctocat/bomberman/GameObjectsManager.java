@@ -2,15 +2,14 @@ package com.bombasticoctocat.bomberman;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.bombasticoctocat.bomberman.game.Board;
 import com.bombasticoctocat.bomberman.game.Game;
 
 public class GameObjectsManager {
     private Game game;
-    private final ReentrantLock boardLock = new ReentrantLock();
+    private final ReentrantLock gameLock = new ReentrantLock();
 
-    public ReentrantLock getBoardLock() {
-        return boardLock;
+    public ReentrantLock getGameLock() {
+        return gameLock;
     }
 
     public Game getGame() {

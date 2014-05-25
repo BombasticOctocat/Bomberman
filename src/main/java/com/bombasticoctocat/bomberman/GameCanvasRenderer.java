@@ -3,15 +3,18 @@ package com.bombasticoctocat.bomberman;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.net.URL;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
 
 import org.slf4j.Logger;
@@ -30,16 +33,29 @@ public class GameCanvasRenderer {
     @Inject private MapImageManager mapImageManager;
     @Inject private GameObjectsManager gameObjectsManager;
     private final Map<Goomba.Type, ParticleImage> goombaParticleImageMaper = new HashMap<>();
-    private final static int HUD_HEIGHT = 45;
+    private static final int HUD_HEIGHT = 42;
+    private Font hudFont;
+    private Font bigHudFont;
+    private Image liveIcon;
 
     public GameCanvasRenderer() {
         canvas = new Canvas(200, 200);
-        for (Goomba.Type type: Goomba.Type.values()) {
+
+        for (Goomba.Type type : Goomba.Type.values()) {
             try {
                 goombaParticleImageMaper.put(type, ParticleImage.valueOf("GOOMBA_" + type.toString()));
             } catch (IllegalArgumentException e) {
                 throw new RuntimeException("Missing ParticleImage for goomba: " + type.toString(), e);
             }
+        }
+
+        try {
+            URL fontUrl = getClass().getResource("fonts/Peralta-Regular.ttf");
+            hudFont = Font.loadFont(fontUrl.openStream(), 27);
+            bigHudFont = Font.loadFont(fontUrl.openStream(), 40);
+            liveIcon = new Image(getClass().getResourceAsStream("images/live_icon.png"));
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't load font/image file", e);
         }
     }
 
@@ -77,10 +93,12 @@ public class GameCanvasRenderer {
     private class RedrawManager {
         double wpx, wpy;
         Board board;
+        Game game;
         GraphicsContext gc;
 
         public RedrawManager() {
-            board = gameObjectsManager.getGame().getBoard();
+            game = gameObjectsManager.getGame();
+            board = game.getBoard();
             gc = canvas.getGraphicsContext2D();
             computeRenderingWindowPosition();
         }
@@ -98,8 +116,6 @@ public class GameCanvasRenderer {
         }
 
         public void drawBackground(WritableImage backgroungImage) {
-            gc.setFill(Color.rgb(0, 0, 0));
-            gc.fillRect(0, 0, width, HUD_HEIGHT);
             gc.setFill(Color.rgb(22, 45, 80));
             gc.fillRect(0, HUD_HEIGHT, width, height);
 
@@ -123,17 +139,35 @@ public class GameCanvasRenderer {
             }
         }
 
+        public void drawHUD() {
+            gc.setFill(Color.color(0.0, 0.0, 0.0));
+            gc.fillRect(0, 0, width, HUD_HEIGHT);
+
+            gc.setFill(Color.color(1.0, 1.0, 1.0));
+            gc.setFont(hudFont);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.setTextAlign(TextAlignment.LEFT);
+
+            gc.fillText("Level " + game.getLevel(), 12, HUD_HEIGHT / 2);
+            gc.drawImage(liveIcon, width / 2 - 39, HUD_HEIGHT / 2 - liveIcon.getHeight() / 2);
+            gc.fillText("x " + game.getLives(), width / 2 - 5, HUD_HEIGHT / 2);
+            gc.fillText("Time: " + board.getTimeLeft() / 1000, width - 153, HUD_HEIGHT / 2);
+        }
+
         public void drawPausedIndicator() {
-            gc.setFill(Color.color(0.0, 0.0, 0.0, 0.6));
-            gc.fillRect(width - 94, HUD_HEIGHT, width - 94, 28);
-            gc.setFill(Color.color(0.9, 0.1, 0.1, 1.0));
-            gc.setFont(Font.font("System", FontWeight.BOLD, 20));
-            gc.fillText("paused", width - 87, 20 + HUD_HEIGHT);
+            gc.setFill(Color.color(0.0, 0.0, 0.0, 0.8));
+            gc.fillRoundRect(width / 2 - 130, height / 2 - 60 + HUD_HEIGHT, 260, 120, 17.0, 17.0);
+
+            gc.setTextAlign(TextAlignment.CENTER);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.setFill(Color.color(0.9, 0.13, 0.13, 0.9));
+            gc.setFont(bigHudFont);
+            gc.fillText("paused", width / 2, height / 2 + HUD_HEIGHT);
         }
     }
 
     public void redraw() {
-        gameObjectsManager.getBoardLock().lock();
+        gameObjectsManager.getGameLock().lock();
         try {
             RedrawManager redrawManager = new RedrawManager();
 
@@ -172,11 +206,13 @@ public class GameCanvasRenderer {
             Hero hero = board.getHero();
             redrawManager.drawParticle(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
 
+            redrawManager.drawHUD();
+
             if (isPaused.get()) {
                 redrawManager.drawPausedIndicator();
             }
         } finally {
-            gameObjectsManager.getBoardLock().unlock();
+            gameObjectsManager.getGameLock().unlock();
         }
     }
 }

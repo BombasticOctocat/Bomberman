@@ -1,7 +1,5 @@
 package com.bombasticoctocat.bomberman;
 
-import com.bombasticoctocat.bomberman.game.Board;
-import com.bombasticoctocat.bomberman.game.Tile;
 import com.google.inject.Inject;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -10,6 +8,9 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+
+import com.bombasticoctocat.bomberman.game.Board;
+import com.bombasticoctocat.bomberman.game.Tile;
 
 public class MapImageManager {
     @InjectLog private static Logger log;
@@ -37,7 +38,7 @@ public class MapImageManager {
     }
 
     public void resetState() {
-        gameObjectsManager.getBoardLock().lock();
+        gameObjectsManager.getGameLock().lock();
         try {
             Board board = gameObjectsManager.getGame().getBoard();
             anyTile = board.getTileAt(0, 0);
@@ -52,7 +53,7 @@ public class MapImageManager {
                 map.add(row);
             }
         } finally {
-            gameObjectsManager.getBoardLock().unlock();
+            gameObjectsManager.getGameLock().unlock();
         }
         refreshMapImage(scale);
     }
@@ -78,7 +79,7 @@ public class MapImageManager {
         if (mapImage != null) {
             pixelWriter = mapImage.getPixelWriter();
         }
-        gameObjectsManager.getBoardLock().lock();
+        gameObjectsManager.getGameLock().lock();
         try {
             Board board = gameObjectsManager.getGame().getBoard();
             for (int i = 0; i < board.tilesVertical(); ++i) {
@@ -92,7 +93,7 @@ public class MapImageManager {
                 }
             }
         } finally {
-            gameObjectsManager.getBoardLock().unlock();
+            gameObjectsManager.getGameLock().unlock();
         }
     }
 
