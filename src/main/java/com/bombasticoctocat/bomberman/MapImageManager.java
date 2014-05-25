@@ -22,12 +22,12 @@ public class MapImageManager {
     @Inject private ParticlesImagesManager particlesImagesManager;
     @Inject GameObjectsManager gameObjectsManager;
 
-    MapImageManager() {
+    public MapImageManager() {
         for (Tile.Type type: Tile.Type.values()) {
             try {
                 tileMaper.put(type, ParticleImage.valueOf(type.toString()));
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Missing ParticleImage for tile: " + type.toString());
+                throw new RuntimeException("Missing ParticleImage for tile: " + type.toString(), e);
             }
         }
     }

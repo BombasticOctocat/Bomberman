@@ -1,6 +1,8 @@
 package com.bombasticoctocat.bomberman;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.Node;
@@ -26,9 +28,17 @@ public class GameCanvasRenderer {
     @Inject private ParticlesImagesManager particlesImagesManager;
     @Inject private MapImageManager mapImageManager;
     @Inject private GameObjectsManager gameObjectsManager;
+    private final Map<Goomba.Type, ParticleImage> goombaParticleImageMaper = new HashMap<>();
 
     public GameCanvasRenderer() {
         canvas = new Canvas(200, 200);
+        for (Goomba.Type type: Goomba.Type.values()) {
+            try {
+                goombaParticleImageMaper.put(type, ParticleImage.valueOf("GOOMBA_" + type.toString()));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Missing ParticleImage for goomba: " + type.toString(), e);
+            }
+        }
     }
 
     public void initialize(BooleanProperty isPaused) {
@@ -144,7 +154,13 @@ public class GameCanvasRenderer {
             List<Goomba> goombas = board.getGoombas();
             if (goombas != null) {
                 for (Goomba goomba: goombas) {
-                    redrawManager.drawParticle(goomba.isAlive() ? ParticleImage.GOOMBA : ParticleImage.KILLED, goomba);
+                    ParticleImage image;
+                    if (goomba.isAlive()) {
+                        image = goombaParticleImageMaper.get(goomba.getType());
+                    } else {
+                        image = ParticleImage.KILLED;
+                    }
+                    redrawManager.drawParticle(image, goomba);
                 }
             }
 
