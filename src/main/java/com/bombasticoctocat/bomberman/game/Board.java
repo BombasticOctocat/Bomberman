@@ -105,7 +105,7 @@ public class Board {
 
     public State tick(long timeDelta, Directions directions, boolean plantBomb, boolean detonateBomb) {
         timeLeft -= timeDelta;
-        if (timeLeft <= 0)
+        if (!heroDead && timeLeft <= 0)
             hero.die();
 
         timer.tick(timeDelta);
