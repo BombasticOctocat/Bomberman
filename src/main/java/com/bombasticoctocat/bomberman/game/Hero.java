@@ -85,7 +85,6 @@ public class Hero extends Particle {
     }
 
     public void die() {
-        lives--;
         isAlive = false;
         getDetonator().reset();
         bombpass = false;
