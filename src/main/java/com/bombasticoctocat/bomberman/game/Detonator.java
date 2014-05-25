@@ -87,7 +87,6 @@ public class Detonator {
         bombs.remove(bomb);
         HashSet<Tile> affectedTiles = new HashSet<>();
 
-        System.out.println("RANGE: "+range);
         for (Tile tile : boardMap.tilesInRange(bomb.getTile(), range)) {
             affectedTiles.add(tile);
             if (tile.isBombPlanted()) {

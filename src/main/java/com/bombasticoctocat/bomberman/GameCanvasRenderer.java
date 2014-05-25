@@ -1,8 +1,6 @@
 package com.bombasticoctocat.bomberman;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.net.URL;
 
 import javafx.beans.property.BooleanProperty;
@@ -37,6 +35,7 @@ public class GameCanvasRenderer {
     private Font hudFont;
     private Font bigHudFont;
     private Image liveIcon;
+    private Set<Runnable> todoAfterGameStart = new HashSet<>();
 
     public GameCanvasRenderer() {
         canvas = new Canvas(200, 200);
@@ -65,10 +64,17 @@ public class GameCanvasRenderer {
     }
 
     public void resetState() {
-        // quite dirty hack to preaload flames fxml (they don't show up on first explosion without it)
-        Board board = gameObjectsManager.getGame().getBoard();
-        particlesImagesManager.getParticleImage(ParticleImage.FLAMES, board.getTileAt(0, 0));
-        mapImageManager.resetState();
+        Runnable todo = () -> {
+            // quite dirty hack to preaload flames fxml (they don't show up on first explosion without it)
+            Board board = gameObjectsManager.getGame().getBoard();
+            particlesImagesManager.getParticleImage(ParticleImage.FLAMES, board.getTileAt(0, 0));
+            mapImageManager.resetState();
+        };
+        if (gameObjectsManager.getGame().isLevelInProgress()) {
+            todo.run();
+        } else {
+            todoAfterGameStart.add(todo);
+        }
     }
 
     public Node getCanvasNode() {
@@ -83,11 +89,17 @@ public class GameCanvasRenderer {
         canvas.setWidth(newWidth);
         canvas.setHeight(newHeight);
 
-        Board board = gameObjectsManager.getGame().getBoard();
+        Runnable todo = () -> {
+            Board board = gameObjectsManager.getGame().getBoard();
+            boardToCanvasScale = Math.max(height / (board.height() * 0.8), width / board.width());
+            particlesImagesManager.refreshParticlesImages(boardToCanvasScale);
+        };
 
-        boardToCanvasScale = Math.max(height / (board.height() * 0.8), width / board.width());
-
-        particlesImagesManager.refreshParticlesImages(boardToCanvasScale);
+        if (gameObjectsManager.getGame().isLevelInProgress()) {
+            todo.run();
+        } else {
+            todoAfterGameStart.add(todo);
+        }
     }
 
     private class RedrawManager {
@@ -166,50 +178,90 @@ public class GameCanvasRenderer {
         }
     }
 
+    private class BlackScreen {
+        GraphicsContext gc;
+
+        public BlackScreen() {
+            gc = canvas.getGraphicsContext2D();
+        }
+
+        public void drawBackground() {
+            gc.setFill(Color.color(0.0, 0.0, 0.0));
+            gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        }
+
+        public void setText(String text) {
+            gc.setTextAlign(TextAlignment.CENTER);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.setFill(Color.color(0.9, 0.9, 0.9));
+            gc.setFont(bigHudFont);
+            gc.fillText(text, canvas.getWidth() / 2, canvas.getHeight() / 2);
+        }
+    }
+
     public void redraw() {
         gameObjectsManager.getGameLock().lock();
         try {
-            RedrawManager redrawManager = new RedrawManager();
-
-            mapImageManager.refreshMapImageTiles();
-
-            WritableImage mapImage = mapImageManager.getMapImage();
-            if (mapImage != null) {
-                redrawManager.drawBackground(mapImage);
-            }
-
-            redrawManager.forEveryTile(tile -> {
-                if (tile.isOnFire()) {
-                    redrawManager.drawParticle(ParticleImage.FLAMES, tile);
-                }
-                if (tile.isBombPlanted()) {
-                    redrawManager.drawParticle(ParticleImage.BOMB, tile);
-                }
-                return null;
-            });
-
-            Board board = gameObjectsManager.getGame().getBoard();
-
-            List<Goomba> goombas = board.getGoombas();
-            if (goombas != null) {
-                for (Goomba goomba: goombas) {
-                    ParticleImage image;
-                    if (goomba.isAlive()) {
-                        image = goombaParticleImageMaper.get(goomba.getType());
-                    } else {
-                        image = ParticleImage.KILLED;
+            Game game = gameObjectsManager.getGame();
+            if (game.isLevelInProgress()) {
+                if (!todoAfterGameStart.isEmpty()) {
+                    Iterator<Runnable> iterator = todoAfterGameStart.iterator();
+                    while (iterator.hasNext()) {
+                        iterator.next().run();
+                        iterator.remove();
                     }
-                    redrawManager.drawParticle(image, goomba);
                 }
-            }
 
-            Hero hero = board.getHero();
-            redrawManager.drawParticle(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
+                RedrawManager redrawManager = new RedrawManager();
 
-            redrawManager.drawHUD();
+                mapImageManager.refreshMapImageTiles();
 
-            if (isPaused.get()) {
-                redrawManager.drawPausedIndicator();
+                WritableImage mapImage = mapImageManager.getMapImage();
+                if (mapImage != null) {
+                    redrawManager.drawBackground(mapImage);
+                }
+
+                redrawManager.forEveryTile(tile -> {
+                    if (tile.isOnFire()) {
+                        redrawManager.drawParticle(ParticleImage.FLAMES, tile);
+                    }
+                    if (tile.isBombPlanted()) {
+                        redrawManager.drawParticle(ParticleImage.BOMB, tile);
+                    }
+                    return null;
+                });
+
+                Board board = gameObjectsManager.getGame().getBoard();
+
+                List<Goomba> goombas = board.getGoombas();
+                if (goombas != null) {
+                    for (Goomba goomba : goombas) {
+                        ParticleImage image;
+                        if (goomba.isAlive()) {
+                            image = goombaParticleImageMaper.get(goomba.getType());
+                        } else {
+                            image = ParticleImage.KILLED;
+                        }
+                        redrawManager.drawParticle(image, goomba);
+                    }
+                }
+
+                Hero hero = board.getHero();
+                redrawManager.drawParticle(hero.isAlive() ? ParticleImage.CHARACTER : ParticleImage.KILLED, hero);
+
+                redrawManager.drawHUD();
+
+                if (isPaused.get()) {
+                    redrawManager.drawPausedIndicator();
+                }
+            } else {
+                BlackScreen blackScreen = new BlackScreen();
+                blackScreen.drawBackground();
+                if (game.isOver()) {
+                    blackScreen.setText("Game Over");
+                } else {
+                    blackScreen.setText("Level " + game.getLevel());
+                }
             }
         } finally {
             gameObjectsManager.getGameLock().unlock();
