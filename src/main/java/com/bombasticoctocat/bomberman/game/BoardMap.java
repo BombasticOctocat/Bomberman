@@ -83,35 +83,18 @@ public class BoardMap {
             return result;
         }
 
-        for (int x = column - 1; x >= column - range; x--) {
-            t = getTileAt(x, row);
-            result.add(t);
-            if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
-                break;
-            }
-        }
-        for (int x = column + 1; x <= column + range; x++) {
-            t = getTileAt(x, row);
-            result.add(t);
-            if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
-                break;
+        int xDiff[] = {-1, 1, 0, 0};
+        int yDiff[] = {0, 0, -1, 1};
+        for (int i = 0; i < 4; ++i) {
+            for (int r = 1; r <= range; ++r) {
+                t = getTileAt(column + r * xDiff[i], row + r * yDiff[i]);
+                result.add(t);
+                if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
+                    break;
+                }
             }
         }
 
-        for (int y = row - 1; y >= row - range; y--) {
-            t = getTileAt(column, y);
-            result.add(t);
-            if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
-                break;
-            }
-        }
-        for (int y = row + 1; y <= row + range; y++) {
-            t = getTileAt(column, y);
-            result.add(t);
-            if (t.getType() == Tile.BRICKS || t.getType() == Tile.CONCRETE) {
-                break;
-            }
-        }
         return result;
     }
 
