@@ -27,7 +27,7 @@ public class MapImageManager {
             try {
                 tileMaper.put(type, ParticleImage.valueOf(type.toString()));
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Missing ParticleImage for tile: " + type.toString());
+                throw new RuntimeException("Missing ParticleImage for tile: " + type.toString(), e);
             }
         }
     }

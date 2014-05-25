@@ -57,7 +57,7 @@ public class SettingsManager {
                 setting.setValue(preferences.get(setting.getKey(), setting.getValue()));
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Exception during trying to load default_settings.xml", e);
         }
     }
 

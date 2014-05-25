@@ -66,7 +66,7 @@ public class MainController implements Initializable {
                 }
                 return fxmlLoader.load(resUrl);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("IOException while reading: fxml/" + viewName + ".fxml", e);
             }
         }
 
