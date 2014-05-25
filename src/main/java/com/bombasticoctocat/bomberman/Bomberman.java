@@ -6,12 +6,15 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.image.*;
 
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import org.slf4j.Logger;
+
+import java.io.InputStream;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
@@ -29,6 +32,9 @@ public class Bomberman extends GuiceApplication {
     @Override
     public void start(Stage primaryStage) throws Exception {
         log.info("Started application");
+
+        InputStream is = getClass().getResourceAsStream("images/live_icon.png");
+        primaryStage.getIcons().add(new Image(is));
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             e.printStackTrace();

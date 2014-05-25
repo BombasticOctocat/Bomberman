@@ -1,0 +1,14 @@
+.about-root {
+    -fx-pref-height="246.0"
+    -fx-pref-width="249.0"
+}
+
+.hyperlink {
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
+}
+
+#authors {
+    -fx-underline: true;
+}
