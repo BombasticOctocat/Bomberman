@@ -13,6 +13,7 @@ public class HeroTest {
     private @Mock CollisionDetector collisionDetector;
     private @Mock DeathDetector deathDetector;
     private @Mock GoombaTouchDetector goombaTouchDetector;
+    private @Mock Detonator detonator;
     private Hero subject;
     private double initialX;
     private double initialY;
@@ -20,7 +21,7 @@ public class HeroTest {
     @Before
     public void setUp() {
         initMocks(this);
-        subject = new Hero();
+        subject = new Hero(detonator);
         initialX = subject.getX();
         initialY = subject.getY();
         when(collisionDetector.blockDisplacement(eq(subject), isA(Displacement.class))).
