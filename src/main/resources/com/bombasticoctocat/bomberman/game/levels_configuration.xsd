@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="bombermanLevelConfiguration"
+           xmlns="bombermanLevelConfiguration"
+           elementFormDefault="qualified">
+
+  <xs:simpleType name="powerup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RANGE" />
+      <xs:enumeration value="BOMB" />
+      <xs:enumeration value="DETONATOR" />
+      <xs:enumeration value="SPEED" />
+      <xs:enumeration value="BOMBPASS" />
+      <xs:enumeration value="WALLPASS" />
+      <xs:enumeration value="FLAMEPASS" />
+      <xs:enumeration value="MYSTERY" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attributeGroup name="goombaAttributes">
+    <xs:attribute name="level" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="0"/>
+          <xs:maxInclusive value="7"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="amount" use="required" type="xs:positiveInteger"/>
+  </xs:attributeGroup>
+
+  <xs:element name="levelsConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="levelConfiguration" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="bricksDensity" type="xs:double" />
+              <xs:element name="powerup" type="powerup" />
+              <xs:element name="penaltyGoomba">
+                <xs:complexType>
+                  <xs:attributeGroup ref="goombaAttributes"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="goombas">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="goomba" minOccurs="1" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attributeGroup ref="goombaAttributes"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="level" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
