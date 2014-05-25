@@ -6,9 +6,9 @@
   <levelConfiguration level="1">
     <bricksDensity>0.25</bricksDensity>
     <powerup>RANGE</powerup>
-    <penaltyGoomba level="7" amount="5" />
+    <penaltyGoomba level="7" amount="5"/>
     <goombas>
-      <goomba level="0" amount="6" />
+      <goomba level="0" amount="6"/>
     </goombas>
   </levelConfiguration>
   <levelConfiguration level="2">
@@ -16,8 +16,8 @@
     <powerup>BOMB</powerup>
     <penaltyGoomba level="2" amount="5"/>
     <goombas>
-      <goomba level="0" amount="3" />
-      <goomba level="1" amount="3" />
+      <goomba level="0" amount="3"/>
+      <goomba level="1" amount="3"/>
     </goombas>
   </levelConfiguration>
   <levelConfiguration level="3">
@@ -28,6 +28,530 @@
       <goomba level="0" amount="2"/>
       <goomba level="1" amount="2"/>
       <goomba level="2" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="4">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>SPEED</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="1"/>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="5">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="4"/>
+      <goomba level="2" amount="3"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="6">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="2"/>
+      <goomba level="2" amount="3"/>
+      <goomba level="3" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="7">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>RANGE</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="2"/>
+      <goomba level="2" amount="3"/>
+      <goomba level="4" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="8">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="4"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="9">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="4"/>
+      <goomba level="4" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="10">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>WALLPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="5" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="11">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="1"/>
+      <goomba level="5" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="12">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="4"/>
+      <goomba level="5" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="13">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="3"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="3"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="14">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="5" amount="7"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="15">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>RANGE</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="16">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>WALLPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="4"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="17">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="5"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="18">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="3"/>
+      <goomba level="1" amount="3"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="19">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="1"/>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="3"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="20">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="21">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="4"/>
+      <goomba level="5" amount="3"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="22">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="4"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="1"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="23">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="24">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="4"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="25">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="2"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="26">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>MYSTERY</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="1"/>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="27">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>RANGE</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="1"/>
+      <goomba level="1" amount="1"/>
+      <goomba level="4" amount="5"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="28">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="3"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="1"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="29">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="5"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="30">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>FLAMEPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="3"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="1"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="31">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>WALLPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="2"/>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="32">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="1" amount="1"/>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="4"/>
+      <goomba level="6" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="33">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="34">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>MYSTERY</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="3"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="35">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="36">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>FLAMEPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="6" amount="3"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="37">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="3"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="38">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>RANGE</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="2"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="6" amount="3"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="39">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>WALLPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="4"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="40">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>MYSTERY</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="2"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="6" amount="4"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="41">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="2" amount="1"/>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="4"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="42">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>WALLPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="3"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="5"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="43">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="6"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="44">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="3" amount="1"/>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="6"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="45">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>MYSTERY</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="6"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="46">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>WALLPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="6"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="47">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMBPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="6"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="48">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="2"/>
+      <goomba level="5" amount="1"/>
+      <goomba level="6" amount="6"/>
+      <goomba level="7" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="49">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>FLAMEPASS</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="1"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="6"/>
+      <goomba level="7" amount="1"/>
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="50">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>MYSTERY</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="4" amount="1"/>
+      <goomba level="5" amount="2"/>
+      <goomba level="6" amount="5"/>
+      <goomba level="7" amount="2"/>
     </goombas>
   </levelConfiguration>
 </levelsConfiguration>
