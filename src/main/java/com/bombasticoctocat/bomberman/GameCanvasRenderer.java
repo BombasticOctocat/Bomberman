@@ -258,7 +258,7 @@ public class GameCanvasRenderer {
                 BlackScreen blackScreen = new BlackScreen();
                 blackScreen.drawBackground();
                 if (game.isOver()) {
-                    blackScreen.setText("Game Over");
+                    blackScreen.setText(game.isWon() ? "You Won!" : "Game Over");
                 } else {
                     blackScreen.setText("Level " + game.getLevel());
                 }

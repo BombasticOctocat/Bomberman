@@ -17,7 +17,7 @@ public class Game {
         this.hero = new Hero(detonator);
         timer.schedule(LEVEL_DELAY, () -> startLevel());
         this.over = false;
-        this.won = true;
+        this.won = false;
     }
 
     private void startLevel() {
