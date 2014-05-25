@@ -12,3 +12,9 @@
 #authors {
     -fx-underline: true;
 }
+
+#title {
+   -fx-font-size: 29px;
+   -fx-font-family: "System Bold";
+   -fx-font-weight: bold;
+}

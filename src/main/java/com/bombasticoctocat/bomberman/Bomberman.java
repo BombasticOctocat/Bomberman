@@ -23,6 +23,7 @@ import com.google.inject.matcher.Matchers;
 
 import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
+import java.util.ArrayList;
 
 public class Bomberman extends GuiceApplication {
     @InjectLog private static Logger log;
@@ -33,8 +34,13 @@ public class Bomberman extends GuiceApplication {
     public void start(Stage primaryStage) throws Exception {
         log.info("Started application");
 
-        InputStream is = getClass().getResourceAsStream("images/live_icon.png");
-        primaryStage.getIcons().add(new Image(is));
+        List<InputStream> iconList = new ArrayList<InputStream>();
+        iconList.add(getClass().getResourceAsStream("images/icon16.png"));
+        iconList.add(getClass().getResourceAsStream("images/icon32.png"));
+        iconList.add(getClass().getResourceAsStream("images/icon64.png"));
+        iconList.add(getClass().getResourceAsStream("images/icon128.png"));
+        for(InputStream il : iconList)
+            primaryStage.getIcons().add(new Image(il));
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             e.printStackTrace();

@@ -19,11 +19,11 @@ public class AboutController implements ViewController {
 
     @FXML void handleGitHubClick(ActionEvent actionEvent){
         try {
-        URI uri = new URI("https://github.com/BombasticOctocat/Bomberman");
+            URI uri = new URI("https://github.com/BombasticOctocat/Bomberman");
             openPage(uri);
         }
         catch (URISyntaxException e) {
-            System.out.println("URI Syntax Error: " + e.getMessage());
+            throw new RuntimeException("Incorrect URI", e);
         }
     }
 
@@ -33,7 +33,7 @@ public class AboutController implements ViewController {
             try {
                 desktop.browse(uri);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException("Couldn't open webPage", e);
             }
         }
     }
