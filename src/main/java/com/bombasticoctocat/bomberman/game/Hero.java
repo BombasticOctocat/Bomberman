@@ -98,7 +98,9 @@ public class Hero extends Particle {
     }
 
     public void plantBomb() {
-        detonator.plantBomb(getColumn(), getRow());
+        if (isAlive()) {
+            detonator.plantBomb(getColumn(), getRow());
+        }
     }
 
     public Detonator getDetonator() {

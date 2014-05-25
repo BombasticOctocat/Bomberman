@@ -15,9 +15,14 @@ public class Game {
         this.timer = new Timer();
         this.detonator = new Detonator(timer);
         this.hero = new Hero(detonator);
-        timer.schedule(LEVEL_DELAY, () -> board = new Board(timer, hero, detonator, Configuration.forLevel(level)));
+        timer.schedule(LEVEL_DELAY, () -> startLevel());
         this.over = false;
         this.won = true;
+    }
+
+    private void startLevel() {
+        timer.clear();
+        board = new Board(timer, hero, detonator, Configuration.forLevel(level));
     }
 
     public void tick(long timeDelta, Directions directions, boolean plantBomb, boolean detonateBomb) {
@@ -33,7 +38,7 @@ public class Game {
             if (hero.getLives() < 0) {
                 over = true;
             } else {
-                timer.schedule(LEVEL_DELAY, () -> board = new Board(timer, hero, detonator, Configuration.forLevel(level)));
+                timer.schedule(LEVEL_DELAY, () -> startLevel());
             }
         }
 
@@ -45,7 +50,7 @@ public class Game {
                 board = null;
                 won = true;
             } else {
-                timer.schedule(LEVEL_DELAY, () -> board = new Board(timer, hero, detonator, Configuration.forLevel(level)));
+                timer.schedule(LEVEL_DELAY, () -> startLevel());
             }
         }
     }

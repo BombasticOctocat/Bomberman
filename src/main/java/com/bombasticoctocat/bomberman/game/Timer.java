@@ -21,6 +21,10 @@ public class Timer {
         events.add(new Event(timePassed + time, callback));
     }
 
+    public void clear() {
+        events.clear();
+    }
+
     public void tick(long timeDelta) {
         timePassed += timeDelta;
 
