@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<levelsConfiguration xmlns="bombermanLevelConfiguration"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="bombermanLevelConfiguration levels_configuration.xsd">
+  <levelConfiguration level="1">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>RANGE</powerup>
+    <penaltyGoomba level="7" amount="5" />
+    <goombas>
+      <goomba level="0" amount="6" />
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="2">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>BOMB</powerup>
+    <penaltyGoomba level="2" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="3" />
+      <goomba level="1" amount="3" />
+    </goombas>
+  </levelConfiguration>
+  <levelConfiguration level="3">
+    <bricksDensity>0.25</bricksDensity>
+    <powerup>DETONATOR</powerup>
+    <penaltyGoomba level="3" amount="5"/>
+    <goombas>
+      <goomba level="0" amount="2"/>
+      <goomba level="1" amount="2"/>
+      <goomba level="2" amount="2"/>
+    </goombas>
+  </levelConfiguration>
+</levelsConfiguration>
