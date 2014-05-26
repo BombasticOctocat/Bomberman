@@ -1,0 +1,24 @@
+.hyperlink {
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
+    -fx-border-color: transparent;
+}
+
+.hyperlink:visited {
+    -fx-underline: false;
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
+}
+
+#authors {
+    -fx-underline: true;
+}
+
+#title {
+   -fx-font-size: 29px;
+   -fx-font-family: "System";
+   -fx-font-weight: bold;
+}

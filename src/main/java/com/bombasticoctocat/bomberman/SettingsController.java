@@ -73,7 +73,7 @@ public class SettingsController implements ViewController {
     }
 
     @FXML
-    void handleButtonClick(ActionEvent actionEvent) {
+    private void handleButtonClick(ActionEvent actionEvent) {
         SettingButton button = (SettingButton) actionEvent.getSource();
         if(currentWaitingButton != null)
             return;

@@ -2,16 +2,20 @@ package com.bombasticoctocat.bomberman;
 
 import java.util.List;
 
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.image.*;
 
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import org.slf4j.Logger;
+
+import java.io.InputStream;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
@@ -20,15 +24,25 @@ import com.google.inject.matcher.Matchers;
 
 import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
+import java.util.ArrayList;
 
 public class Bomberman extends GuiceApplication {
     @InjectLog private static Logger log;
     @Inject private GuiceFXMLLoader fxmlLoader;
     private static MainController mainController;
+    private static HostServices hostServices;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         log.info("Started application");
+
+        List<InputStream> iconList = new ArrayList<InputStream>();
+        iconList.add(getClass().getResourceAsStream("images/icon16.png"));
+        iconList.add(getClass().getResourceAsStream("images/icon32.png"));
+        iconList.add(getClass().getResourceAsStream("images/icon64.png"));
+        iconList.add(getClass().getResourceAsStream("images/icon128.png"));
+        for(InputStream il : iconList)
+            primaryStage.getIcons().add(new Image(il));
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             e.printStackTrace();
@@ -50,6 +64,8 @@ public class Bomberman extends GuiceApplication {
             event.consume();
             Bomberman.handleExitEvent();
         });
+
+        hostServices = getHostServices();
 
         GuiceFXMLLoader.Result result = fxmlLoader.load(getClass().getResource("fxml/main.fxml"));
         mainController = result.getController();
@@ -82,6 +98,12 @@ public class Bomberman extends GuiceApplication {
             log.info("Exiting application");
             Platform.exit();
             System.exit(0);
+        }
+    }
+
+    public static void openPage(String uri) {
+        if (hostServices != null) {
+            hostServices.showDocument(uri);
         }
     }
 

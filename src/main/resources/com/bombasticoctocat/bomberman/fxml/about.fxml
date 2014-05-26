@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      AnchorPane.topAnchor="0.0"
-      AnchorPane.bottomAnchor="0.0"
-      AnchorPane.leftAnchor="0.0"
-      AnchorPane.rightAnchor="0.0">
+<VBox styleClass="about-root" alignment="CENTER"  spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bombasticoctocat.bomberman.AboutController">
+  <stylesheets>
+    <URL value="@../css/about.css"/>
+  </stylesheets>
   <children>
-    <Text text="Bomberman">
-      <font>
-        <Font name="System Bold" size="29.0" />
-      </font>
-    </Text>
+    <Text id="title" text="Bomberman" />
     <Text text="Clone of the most awesome NES game." />
+    <Hyperlink text="GitHub: github.com/BombasticOctocat/Bomberman" onAction="#handleGitHubClick" />
+    <Text id="authors" layoutX="30.0" layoutY="167.0" text="Authors:" />
+    <Text layoutX="30.0" layoutY="186.0" text="Marcin Kostrzewa" />
+    <Text layoutX="30.0" layoutY="204.0" text="Kamil Pietruszka" />
+    <Text layoutX="91.0" layoutY="223.0" text="Marek Rusinowski" />
+    <Text layoutX="91.0" layoutY="249.0" text="Grzegorz Świrski" />
   </children>
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
