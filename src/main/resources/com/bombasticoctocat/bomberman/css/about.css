@@ -1,12 +1,16 @@
-.about-root {
-    -fx-pref-height="246.0"
-    -fx-pref-width="249.0"
-}
-
 .hyperlink {
     -fx-cursor: hand;
     -fx-font-weight: bold;
     -fx-text-fill: green;
+    -fx-border-color: transparent;
+}
+
+.hyperlink:visited {
+    -fx-underline: false;
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
 }
 
 #authors {
@@ -15,6 +19,6 @@
 
 #title {
    -fx-font-size: 29px;
-   -fx-font-family: "System Bold";
+   -fx-font-family: "System";
    -fx-font-weight: bold;
 }

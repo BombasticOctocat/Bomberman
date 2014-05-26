@@ -2,6 +2,7 @@ package com.bombasticoctocat.bomberman;
 
 import java.util.List;
 
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -29,6 +30,7 @@ public class Bomberman extends GuiceApplication {
     @InjectLog private static Logger log;
     @Inject private GuiceFXMLLoader fxmlLoader;
     private static MainController mainController;
+    private static HostServices hostServices;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -63,6 +65,8 @@ public class Bomberman extends GuiceApplication {
             Bomberman.handleExitEvent();
         });
 
+        hostServices = getHostServices();
+
         GuiceFXMLLoader.Result result = fxmlLoader.load(getClass().getResource("fxml/main.fxml"));
         mainController = result.getController();
         Pane root = result.getRoot();
@@ -94,6 +98,12 @@ public class Bomberman extends GuiceApplication {
             log.info("Exiting application");
             Platform.exit();
             System.exit(0);
+        }
+    }
+
+    public static void openPage(String uri) {
+        if (hostServices != null) {
+            hostServices.showDocument(uri);
         }
     }
 
