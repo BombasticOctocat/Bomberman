@@ -6,7 +6,7 @@ public class Hero extends Particle {
     private static final int INITIAL_X_POSITION = 70;
     private static final int INITIAL_Y_POSITION = 70;
     private static final int INITIAL_LIVES = 2;
-    private static final double INITIAL_SPEED = 0.3;
+    private static final double INITIAL_SPEED = 0.25;
 
     private boolean isAlive = true;
 

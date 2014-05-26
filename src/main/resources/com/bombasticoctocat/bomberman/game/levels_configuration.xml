@@ -36,9 +36,9 @@
     <penaltyGoomba level="3" amount="5"/>
     <goombas>
       <goomba level="0" amount="1"/>
-      <goomba level="1" amount="1"/>
+      <goomba level="1" amount="2"/>
       <goomba level="2" amount="2"/>
-      <goomba level="3" amount="2"/>
+      <goomba level="3" amount="1"/>
     </goombas>
   </levelConfiguration>
   <levelConfiguration level="5">
