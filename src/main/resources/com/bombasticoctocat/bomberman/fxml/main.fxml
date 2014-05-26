@@ -2,9 +2,10 @@
 
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:controller="com.bombasticoctocat.bomberman.MainController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bombasticoctocat.bomberman.MainController">
   <top>
     <MenuBar useSystemMenuBar="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
       <menus>
@@ -29,6 +30,11 @@
     </MenuBar>
   </top>
   <center>
-    <AnchorPane fx:id="windowPane" BorderPane.alignment="CENTER" />
+    <AnchorPane fx:id="windowPane" BorderPane.alignment="CENTER">
+<children><ImageView fitHeight="150.0" fitWidth="200.0" layoutX="300.0" layoutY="212.5" pickOnBounds="true" preserveRatio="true">
+<image>
+<Image url="@../images/Bomberman_icon.png" />
+</image></ImageView>
+</children></AnchorPane>
   </center>
 </BorderPane>
