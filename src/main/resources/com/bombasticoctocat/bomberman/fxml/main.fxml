@@ -30,11 +30,13 @@
     </MenuBar>
   </top>
   <center>
-    <AnchorPane fx:id="windowPane" BorderPane.alignment="CENTER">
-<children><ImageView fitHeight="150.0" fitWidth="200.0" layoutX="300.0" layoutY="212.5" pickOnBounds="true" preserveRatio="true">
-<image>
-<Image url="@../images/Bomberman_icon.png" />
-</image></ImageView>
-</children></AnchorPane>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+    <children>
+      <ImageView fitHeight="300.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+          <Image url="@../images/Bomberman_icon.png" />
+        </image>
+      </ImageView>
+    </children></HBox>
   </center>
 </BorderPane>
