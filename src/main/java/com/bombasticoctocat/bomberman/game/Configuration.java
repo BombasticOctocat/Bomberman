@@ -22,7 +22,6 @@ public class Configuration {
             LevelConfiguration levelConfiguration = getLevelConfiguration((Element) nodes.item(i));
             levels.put(levelConfiguration.level, levelConfiguration);
         }
-        System.out.println("after static");
     }
 
     private static LevelConfiguration getLevelConfiguration(Element node) {
