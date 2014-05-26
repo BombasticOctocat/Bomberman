@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    public static final int FUSE_TIME = 1000;
+    public static final int FUSE_TIME = 1300;
     public static final int END_TIMEOUT = 1000;
     public static final long LEVEL_DURATION = 300 * 1000;
-    public static final int FLAMES_DURATION = 100;
-    public static final int TILES_HORIZONTAL = 31;
-    public static final int TILES_VERTICAL = 13;
+    public static final int FLAMES_DURATION = 230;
+    public static final int TILES_HORIZONTAL = 23;
+    public static final int TILES_VERTICAL = 11;
 
     private Hero hero;
     private BoardMap boardMap;
